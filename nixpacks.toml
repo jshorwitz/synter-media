@@ -1,5 +1,7 @@
 [variables]
 NIXPACKS_PYTHON_VERSION = "3.11"
+PORT = "8000"
+PYTHONPATH = "/app/ai-adwords"
 
 [phases.build]
 cmds = [
@@ -11,7 +13,3 @@ cmds = [
 
 [phases.start]
 cmd = "cd ai-adwords && python start_app.py"
-
-[variables]
-PORT = "8000"
-PYTHONPATH = "/app/ai-adwords"
