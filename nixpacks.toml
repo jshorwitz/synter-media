@@ -1,7 +1,17 @@
-providers = ["python"]
+[providers]
+node = true
 
-[variables]
-NIXPACKS_PYTHON_VERSION = "3.11"
+[phases.setup]
+nixPkgs = ['nodejs-18_x']
+
+[phases.install]
+cmds = [
+  'corepack enable',
+  'pnpm install --frozen-lockfile'
+]
+
+[phases.build] 
+cmds = ['pnpm build']
 
 [start]
-cmd = "cd ai-adwords && python start_app.py"
+cmd = 'cd packages/api && node dist/index.js'
