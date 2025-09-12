@@ -1,7 +1,9 @@
 {
   "name": "synter",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
@@ -9,9 +11,14 @@
   "scripts": {
     "dev": "pnpm -C packages/api dev & pnpm -C packages/workers dev",
     "build": "pnpm -r build",
-    "lint": "pnpm -r lint", 
-    "start": "pnpm -C packages/api start",
+    "lint": "pnpm -r lint",
+    "start": "node server.js",
+    "start:packages": "pnpm -C packages/api start",
     "migrate": "node scripts/migrate.js",
     "test:deploy": "node test-deploy.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
   }
 }
