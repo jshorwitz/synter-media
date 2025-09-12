@@ -1,1 +1,1 @@
-web: cd ai-adwords && python start_app.py
+web: cd ai-adwords && python robust_start.py
