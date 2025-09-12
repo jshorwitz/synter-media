@@ -1,0 +1,17 @@
+[variables]
+NIXPACKS_PYTHON_VERSION = "3.11"
+
+[phases.build]
+cmds = [
+  "cd ai-adwords",
+  "pip install poetry",
+  "poetry config virtualenvs.create false",
+  "poetry install --only=main --no-interaction"
+]
+
+[phases.start]
+cmd = "cd ai-adwords && python start_app.py"
+
+[variables]
+PORT = "8000"
+PYTHONPATH = "/app/ai-adwords"

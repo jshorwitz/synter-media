@@ -1,0 +1,12 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "python ai-adwords/start_app.py"
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "always"
+
+[variables]
+PORT = "8000"
+PYTHONPATH = "/app/ai-adwords"
