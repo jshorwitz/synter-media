@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "name": "ampcode-traffic-dashboard",
+  "builds": [
+    {
+      "src": "api/**.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ],
+  "env": {
+    "POSTHOG_API_KEY": "REDACTED_POSTHOG_SECRET",
+    "PROJECT_ID": "176241",
+    "POSTHOG_BASE_URL": "https://app.posthog.com"
+  }
+}

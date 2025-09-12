@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synter Traffic Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            color: #3b82f6;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+        }
+        
+        .stat-card h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .traffic-table {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+        }
+        
+        .traffic-table h2 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+        
+        th {
+            background: #374151;
+            color: #f1f5f9;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .utm-source {
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        
+        .reddit { color: #ff4500; }
+        .google { color: #4285f4; }
+        .bing { color: #00809d; }
+        .facebook { color: #1877f2; }
+        .twitter { color: #1da1f2; }
+        .direct { color: #10b981; }
+        .other { color: #6b7280; }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+        }
+        
+        .error {
+            background: #dc2626;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .controls {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .controls button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .controls button:hover {
+            background: #2563eb;
+        }
+        
+        .controls button.active {
+            background: #1d4ed8;
+        }
+        
+        .trends-chart {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+        }
+        
+        .reddit-details {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #334155;
+        }
+        
+        .reddit-details h2 {
+            color: #ff4500;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Synter Traffic Dashboard</h1>
+            <p>Live traffic analysis by UTM source from PostHog</p>
+        </div>
+        
+        <div class="controls">
+            <button onclick="loadData(1)" data-days="1">Today</button>
+            <button onclick="loadData(7)" data-days="7">Last 7 Days</button>
+            <button onclick="loadData(30)" data-days="30">Last 30 Days</button>
+            <button onclick="loadData(90)" data-days="90" class="active">Last 90 Days</button>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 2rem; color: #64748b;">
+            <p id="dataInfo">Showing accurate data from PostHog API</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Pageviews</h3>
+                <div class="stat-value" id="totalPageviews">-</div>
+                <div class="stat-label">All sources</div>
+            </div>
+            <div class="stat-card">
+                <h3>Unique Visitors</h3>
+                <div class="stat-value" id="totalVisitors">-</div>
+                <div class="stat-label">All sources</div>
+            </div>
+            <div class="stat-card">
+                <h3>Reddit Traffic</h3>
+                <div class="stat-value" id="redditPageviews">-</div>
+                <div class="stat-label">From Reddit sources</div>
+            </div>
+            <div class="stat-card">
+                <h3>UTM Sources</h3>
+                <div class="stat-value" id="utmSources">-</div>
+                <div class="stat-label">Active sources</div>
+            </div>
+        </div>
+        
+        <div class="traffic-table">
+            <h2>🎯 Traffic by UTM Source</h2>
+            <div id="loadingTable" class="loading">Loading traffic data...</div>
+            <div id="errorTable" class="error" style="display: none;"></div>
+            <table id="trafficTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>UTM Source</th>
+                        <th>Pageviews</th>
+                        <th>Unique Visitors</th>
+                        <th>Avg Session (s)</th>
+                        <th>Traffic %</th>
+                    </tr>
+                </thead>
+                <tbody id="trafficBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="reddit-details">
+            <h2>🟠 Reddit Traffic Details</h2>
+            <div id="loadingReddit" class="loading">Loading Reddit data...</div>
+            <div id="redditContent"></div>
+        </div>
+        
+        <div class="trends-chart">
+            <h2>📈 Daily Traffic Trends</h2>
+            <div id="loadingTrends" class="loading">Loading trends...</div>
+            <div id="trendsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentPeriod = 90;
+        
+        async function loadData(days = 90) {
+            currentPeriod = days;
+            updateActiveButton(days);
+            
+            // Show loading states
+            document.getElementById('loadingTable').style.display = 'block';
+            document.getElementById('trafficTable').style.display = 'none';
+            document.getElementById('loadingReddit').style.display = 'block';
+            document.getElementById('loadingTrends').style.display = 'block';
+            
+            try {
+                // Load main traffic data
+                const trafficResponse = await fetch(`/api/traffic-by-utm?days=${days}`);
+                const trafficData = await trafficResponse.json();
+                
+                if (trafficData.success) {
+                    displayTrafficTable(trafficData.data);
+                    updateStats(trafficData.data);
+                } else {
+                    showError('trafficTable', trafficData.error);
+                }
+                
+                // Load Reddit details
+                const redditResponse = await fetch('/api/reddit-traffic');
+                const redditData = await redditResponse.json();
+                
+                if (redditData.success) {
+                    displayRedditDetails(redditData.data);
+                } else {
+                    document.getElementById('redditContent').innerHTML = 
+                        '<div class="error">Error loading Reddit data</div>';
+                }
+                
+                // Load trends
+                const trendsResponse = await fetch(`/api/traffic-trends?days=${days}`);
+                const trendsData = await trendsResponse.json();
+                
+                if (trendsData.success) {
+                    displayTrends(trendsData.data);
+                } else {
+                    document.getElementById('trendsContent').innerHTML = 
+                        '<div class="error">Error loading trends</div>';
+                }
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('trafficTable', 'Failed to load data from PostHog');
+            }
+        }
+        
+        function updateActiveButton(days) {
+            document.querySelectorAll('.controls button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-days') == days) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        function displayTrafficTable(data) {
+            document.getElementById('loadingTable').style.display = 'none';
+            document.getElementById('trafficTable').style.display = 'table';
+            
+            const tbody = document.getElementById('trafficBody');
+            tbody.innerHTML = '';
+            
+            const total = data.reduce((sum, row) => sum + row[1], 0);
+            
+            data.forEach(row => {
+                const [utm_source, pageviews, unique_visitors, avg_duration] = row;
+                const percentage = total > 0 ? ((pageviews / total) * 100).toFixed(1) : '0.0';
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="utm-source ${utm_source}">${utm_source || 'unknown'}</span></td>
+                    <td>${pageviews.toLocaleString()}</td>
+                    <td>${unique_visitors.toLocaleString()}</td>
+                    <td>${avg_duration || 'N/A'}</td>
+                    <td>${percentage}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        
+        function updateStats(data) {
+            const totalPageviews = data.reduce((sum, row) => sum + row[1], 0);
+            const totalVisitors = data.reduce((sum, row) => sum + row[2], 0);
+            const redditData = data.find(row => row[0] === 'reddit');
+            
+            document.getElementById('totalPageviews').textContent = totalPageviews.toLocaleString();
+            document.getElementById('totalVisitors').textContent = totalVisitors.toLocaleString();
+            document.getElementById('redditPageviews').textContent = 
+                redditData ? redditData[1].toLocaleString() : '0';
+            document.getElementById('utmSources').textContent = data.length;
+        }
+        
+        function displayRedditDetails(data) {
+            document.getElementById('loadingReddit').style.display = 'none';
+            
+            let content = '<table><thead><tr><th>Page</th><th>Campaign</th><th>Pageviews</th><th>Visitors</th></tr></thead><tbody>';
+            
+            data.forEach(row => {
+                const [page, campaign, pageviews, visitors] = row;
+                content += `<tr>
+                    <td>${page}</td>
+                    <td>${campaign}</td>
+                    <td>${pageviews}</td>
+                    <td>${visitors}</td>
+                </tr>`;
+            });
+            
+            content += '</tbody></table>';
+            document.getElementById('redditContent').innerHTML = content;
+        }
+        
+        function displayTrends(data) {
+            document.getElementById('loadingTrends').style.display = 'none';
+            
+            // Group data by date
+            const trendsByDate = {};
+            data.forEach(row => {
+                const [date, utm_source, pageviews] = row;
+                if (!trendsByDate[date]) trendsByDate[date] = {};
+                trendsByDate[date][utm_source] = pageviews;
+            });
+            
+            let content = '<h3>Daily Pageviews by Source</h3>';
+            content += '<table><thead><tr><th>Date</th><th>Reddit</th><th>Google</th><th>Bing</th><th>Other</th><th>Total</th></tr></thead><tbody>';
+            
+            Object.entries(trendsByDate).slice(0, 10).forEach(([date, sources]) => {
+                const reddit = sources.reddit || 0;
+                const google = sources.google || 0;
+                const bing = sources.bing || 0;
+                const other = Object.values(sources).reduce((sum, val) => sum + val, 0) - reddit - google - bing;
+                const total = Object.values(sources).reduce((sum, val) => sum + val, 0);
+                
+                content += `<tr>
+                    <td>${date}</td>
+                    <td class="reddit">${reddit}</td>
+                    <td class="google">${google}</td>
+                    <td class="bing">${bing}</td>
+                    <td>${other}</td>
+                    <td><strong>${total}</strong></td>
+                </tr>`;
+            });
+            
+            content += '</tbody></table>';
+            document.getElementById('trendsContent').innerHTML = content;
+        }
+        
+        function showError(containerId, message) {
+            document.getElementById(`loading${containerId.charAt(0).toUpperCase() + containerId.slice(1)}`).style.display = 'none';
+            document.getElementById(`error${containerId.charAt(0).toUpperCase() + containerId.slice(1)}`).style.display = 'block';
+            document.getElementById(`error${containerId.charAt(0).toUpperCase() + containerId.slice(1)}`).textContent = message;
+        }
+        
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            loadData(currentPeriod);
+        }, 5 * 60 * 1000);
+        
+        // Load initial data
+        loadData(90);
+    </script>
+</body>
+</html>

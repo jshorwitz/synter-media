@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CampaignPlan",
+  "type": "object",
+  "required": [
+    "brand",
+    "timeframe",
+    "channels"
+  ],
+  "properties": {
+    "brand": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timeframe": {
+      "type": "string",
+      "description": "ISO date or label e.g., 2025-09-11"
+    },
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "google": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "campaign_name",
+              "daily_budget",
+              "adgroups"
+            ],
+            "properties": {
+              "campaign_name": {
+                "type": "string"
+              },
+              "daily_budget": {
+                "type": "number",
+                "minimum": 0
+              },
+              "bidding_strategy": {
+                "type": "string"
+              },
+              "target_cpa": {
+                "type": "number",
+                "minimum": 0
+              },
+              "adgroups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "name"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "keywords_exact": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "keywords_phrase": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "negatives": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "initial_cpc": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "ads": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "headline_1",
+                          "headline_2",
+                          "description",
+                          "final_url"
+                        ],
+                        "properties": {
+                          "headline_1": {
+                            "type": "string",
+                            "maxLength": 30
+                          },
+                          "headline_2": {
+                            "type": "string",
+                            "maxLength": 30
+                          },
+                          "headline_3": {
+                            "type": "string",
+                            "maxLength": 30
+                          },
+                          "description": {
+                            "type": "string",
+                            "maxLength": 90
+                          },
+                          "final_url": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "reddit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "campaign_name",
+              "daily_budget",
+              "ads"
+            ],
+            "properties": {
+              "campaign_name": {
+                "type": "string"
+              },
+              "daily_budget": {
+                "type": "number",
+                "minimum": 0
+              },
+              "placements": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "keyword_targets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ads": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "title",
+                    "body",
+                    "destination_url"
+                  ],
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "maxLength": 300
+                    },
+                    "body": {
+                      "type": "string",
+                      "maxLength": 40000
+                    },
+                    "image_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "destination_url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "campaign_name",
+              "daily_budget",
+              "ads"
+            ],
+            "properties": {
+              "campaign_name": {
+                "type": "string"
+              },
+              "daily_budget": {
+                "type": "number",
+                "minimum": 0
+              },
+              "keywords": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "ads": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "text",
+                    "destination_url"
+                  ],
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "maxLength": 280
+                    },
+                    "destination_url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

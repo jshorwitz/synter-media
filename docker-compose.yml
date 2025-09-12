@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  singlestore:
+    image: singlestore/cluster-in-a-box:latest
+    environment:
+      LICENSE_KEY: "${SINGLESTORE_LICENSE_KEY:-}"
+      ROOT_PASSWORD: "root"
+    ports: ["3306:3306","8080:8080"]
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+  api:
+    build: ./packages/api
+    env_file: .env
+    depends_on: [singlestore, redis]
+    ports: ["8088:8088"]
+  workers:
+    build: ./packages/workers
+    env_file: .env
+    depends_on: [singlestore, redis]

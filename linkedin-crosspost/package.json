@@ -1,0 +1,27 @@
+{
+  "name": "linkedin-crosspost",
+  "version": "1.0.0",
+  "description": "Cross-post Amp news from RSS to LinkedIn",
+  "main": "public-web.js",
+  "scripts": {
+    "start": "node public-web.js",
+    "dev": "node public-web.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.5.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.5",
+    "rss-parser": "^3.13.0"
+  },
+  "keywords": [
+    "rss",
+    "linkedin",
+    "crosspost",
+    "amp"
+  ],
+  "author": "",
+  "license": "MIT"
+}

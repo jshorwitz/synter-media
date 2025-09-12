@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "public-web.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "public-web.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
