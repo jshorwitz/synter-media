@@ -12,9 +12,11 @@
     "dev": "pnpm -C packages/api dev & pnpm -C packages/workers dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
-    "start": "node server.js",
+    "start": "pnpm -C packages/api start & pnpm -C packages/workers start",
     "start:packages": "pnpm -C packages/api start",
     "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "db:init": "node scripts/migrate.js && node scripts/seed.js",
     "test:deploy": "node test-deploy.js"
   },
   "dependencies": {
