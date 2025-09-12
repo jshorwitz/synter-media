@@ -10,21 +10,19 @@ const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.get('/health', async (_req, res) => {
+app.get('/health', (_req, res) => {
+    // Fast, non-blocking healthcheck for platform probes
+    res.json({ ok: true, env: process.env.NODE_ENV || 'development' });
+});
+// Optional DB health (may block); do not use for platform health checks
+app.get('/health/db', async (_req, res) => {
     try {
-        // Basic health check - don't fail if DB isn't configured yet
-        if (process.env.DB_HOST) {
-            const [rows] = await db.query('SELECT 1 as ok');
-            const result = rows;
-            res.json({ ok: true, db: result[0].ok === 1 });
-        }
-        else {
-            res.json({ ok: true, db: 'not configured' });
-        }
+        const [rows] = await db.query('SELECT 1 as ok');
+        const result = rows;
+        res.json({ ok: true, db: result[0].ok === 1 });
     }
     catch (error) {
-        // Return healthy even if DB fails during initial deployment
-        res.json({ ok: true, db: 'unavailable', error: error.message });
+        res.status(200).json({ ok: false, db: 'unavailable', error: error.message });
     }
 });
 app.use('/auth', auth);
