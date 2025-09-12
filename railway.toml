@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd ai-adwords && python start_app.py"
+startCommand = "cd ai-adwords && python minimal_app.py"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "always"
