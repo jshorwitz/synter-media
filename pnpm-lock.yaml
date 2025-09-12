@@ -14,6 +14,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      mysql2:
+        specifier: ^3.11.0
+        version: 3.14.5
 
   packages/api:
     dependencies:
