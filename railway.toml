@@ -2,10 +2,10 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd ai-adwords && python start_app.py"
-healthcheckPath = "/"
+startCommand = "pnpm build && pnpm start"
+healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "always"
 
 [variables]
-PORT = "8000"
+PORT = "8088"

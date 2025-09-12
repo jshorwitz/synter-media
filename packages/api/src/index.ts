@@ -13,8 +13,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get('/health', async (_req, res) => {
-  const [rows] = await db.query('SELECT 1 as ok');
-  res.json({ ok: true, db: rows[0].ok === 1 });
+  try {
+    const [rows] = await db.query('SELECT 1 as ok');
+    const result = rows as any[];
+    res.json({ ok: true, db: result[0].ok === 1 });
+  } catch (error) {
+    res.status(500).json({ ok: false, error: 'Database connection failed' });
+  }
 });
 
 app.use('/auth', auth);
