@@ -1,0 +1,3 @@
+[submodule "ai-adwords"]
+	path = ai-adwords
+	url = https://github.com/jshorwitz/ai-adwords.git
