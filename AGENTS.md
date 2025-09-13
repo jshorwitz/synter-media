@@ -44,8 +44,13 @@ DRY_RUN=false
 REDIS_URL=redis://redis:6379
 
 # Storage
-DB_URL=mysql://ads_user:ads_pass@singlestore:3306/ads_unified
-# or BIGQUERY_DATASET=ads_unified
+# PostgreSQL for auth/transactional data
+POSTGRES_URL=postgresql://synter_user:synter_pass@postgres:5432/synter
+
+# BigQuery for analytics data  
+BIGQUERY_PROJECT_ID=your-gcp-project-id
+BIGQUERY_DATASET=synter_analytics
+GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
 
 # Providers (placeholders)
 GOOGLE_ADS_*=...
@@ -167,7 +172,7 @@ CREATE TABLE IF NOT EXISTS agent_runs (
 - **JWT (server-issued)** for API calls by dashboard and CLI.
 - **RBAC:** Roles `admin`, `analyst`, `viewer`. Admin can run agents and configure policies.
 
-### 5.2 Schema (MySQL/SingleStore; adapt to BigQuery if needed)
+### 5.2 Schema (PostgreSQL for auth data; BigQuery for analytics data)
 ```sql
 CREATE TABLE IF NOT EXISTS users (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
