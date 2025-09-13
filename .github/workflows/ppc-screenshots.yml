@@ -66,10 +66,13 @@ jobs:
       - name: Build web app
         working-directory: apps/web
         env:
+          NEXT_TELEMETRY_DISABLED: 1
           PPC_BACKEND_URL: http://localhost:8000
           PPC_BACKEND_BASIC_USER: admin
           PPC_BACKEND_BASIC_PASS: change-me
-        run: npm run build
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee web-build.log
 
       - name: Start web app
         working-directory: apps/web
@@ -119,4 +122,5 @@ jobs:
           path: |
             apps/ppc-backend/backend.log
             apps/web/web.log
+            apps/web/web-build.log
           if-no-files-found: ignore
