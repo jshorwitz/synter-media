@@ -1,0 +1,265 @@
+// Synter Settings Schema - Credits, Team Management, Report Sharing
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  id              String   @id @default(uuid())
+  name            String
+  domain          String?
+  ownerId         String
+  sharingPolicy   Json     // { allowExternalLinks, allowPublicLinks, requirePassword, defaultExpiryDays, memberCanInvite }
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  users           User[]
+  creditWallet    CreditWallet?
+  paymentMethods  PaymentMethod[]
+  invoices        Invoice[]
+  invites         Invite[]
+  reports         Report[]
+  auditEvents     AuditEvent[]
+
+  @@map("workspaces")
+}
+
+model User {
+  id            String      @id @default(uuid())
+  workspaceId   String      
+  email         String      @unique
+  name          String?
+  role          Role
+  status        UserStatus  @default(ACTIVE)
+  lastActiveAt  DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relations
+  workspace     Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@index([workspaceId])
+  @@map("users")
+}
+
+enum Role {
+  OWNER
+  BILLING_ADMIN
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum UserStatus {
+  ACTIVE
+  DISABLED
+}
+
+model PaymentMethod {
+  id           String    @id @default(uuid())
+  workspaceId  String    
+  brand        String    // "visa", "mastercard", etc.
+  last4        String
+  expMonth     Int
+  expYear      Int
+  isDefault    Boolean   @default(false)
+  providerRef  String    // Stripe pm_...
+  createdAt    DateTime  @default(now())
+  
+  // Relations
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@index([workspaceId])
+  @@map("payment_methods")
+}
+
+model CreditWallet {
+  id           String         @id @default(uuid())
+  workspaceId  String         @unique
+  balance      Int            @default(0) // credits
+  autoEnabled  Boolean        @default(false)
+  threshold    Int?           // credits
+  topupAmount  Int?           // credits
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  
+  // Relations
+  ledger       CreditLedger[]
+  workspace    Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@map("credit_wallets")
+}
+
+model CreditLedger {
+  id           String        @id @default(uuid())
+  walletId     String        
+  delta        Int           // positive = credit, negative = debit
+  reason       LedgerReason
+  refType      String?       // "invoice", "report", "manual"
+  refId        String?
+  metadata     Json?
+  createdAt    DateTime      @default(now())
+  
+  // Relations
+  wallet       CreditWallet  @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  
+  @@index([walletId])
+  @@index([createdAt])
+  @@map("credit_ledger")
+}
+
+enum LedgerReason {
+  PURCHASE
+  AUTO_RECHARGE
+  CONSUMPTION
+  REFUND
+  ADJUSTMENT
+  PROMO
+}
+
+model Invoice {
+  id           String    @id @default(uuid())
+  workspaceId  String    
+  totalCents   Int       // amount in cents
+  taxCents     Int       @default(0)
+  currency     String    @default("USD")
+  status       String    // "paid", "open", "void"
+  providerId   String    // Stripe invoice id
+  pdfUrl       String?
+  createdAt    DateTime  @default(now())
+  
+  // Relations
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@index([workspaceId])
+  @@index([createdAt])
+  @@map("invoices")
+}
+
+model Invite {
+  id           String       @id @default(uuid())
+  workspaceId  String       
+  email        String
+  role         Role
+  status       InviteStatus @default(PENDING)
+  token        String       @unique
+  expiresAt    DateTime
+  message      String?      // optional invite message
+  createdAt    DateTime     @default(now())
+  
+  // Relations
+  workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@index([workspaceId])
+  @@index([email])
+  @@index([expiresAt])
+  @@map("invites")
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  CANCELED
+  EXPIRED
+}
+
+model Report {
+  id            String         @id @default(uuid())
+  workspaceId   String         
+  ownerUserId   String
+  title         String
+  description   String?
+  data          Json?          // report data/configuration
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  // Relations
+  accesses      ReportAccess[]
+  shareLinks    ShareLink[]
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@index([workspaceId])
+  @@index([ownerUserId])
+  @@map("reports")
+}
+
+model ReportAccess {
+  id           String           @id @default(uuid())
+  reportId     String           
+  granteeType  GranteeType
+  granteeId    String?          // user id for USER type
+  email        String?          // email for EMAIL type
+  permission   ReportPermission
+  expiresAt    DateTime?
+  lastViewedAt DateTime?
+  createdAt    DateTime         @default(now())
+  
+  // Relations
+  report       Report           @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  
+  @@index([reportId])
+  @@index([email])
+  @@map("report_access")
+}
+
+enum GranteeType {
+  USER
+  EMAIL
+  LINK
+}
+
+enum ReportPermission {
+  VIEW
+  SHARE  // VIEW + Can Share
+}
+
+model ShareLink {
+  id           String    @id @default(uuid())
+  reportId     String    
+  scope        LinkScope
+  token        String    @unique
+  expiresAt    DateTime?
+  passwordHash String?   // argon2id hash
+  revokedAt    DateTime?
+  accessCount  Int       @default(0)
+  createdAt    DateTime  @default(now())
+  
+  // Relations
+  report       Report    @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  
+  @@index([reportId])
+  @@index([token])
+  @@map("share_links")
+}
+
+enum LinkScope {
+  WORKSPACE
+  PUBLIC
+}
+
+model AuditEvent {
+  id           String    @id @default(uuid())
+  workspaceId  String    
+  actorUserId  String
+  action       String    // e.g., "billing.purchase_succeeded"
+  targetType   String    // "user", "report", "payment_method", etc.
+  targetId     String?
+  context      Json?     // additional metadata
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime  @default(now())
+  
+  // Relations
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  @@index([workspaceId])
+  @@index([actorUserId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_events")
+}
