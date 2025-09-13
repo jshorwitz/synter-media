@@ -10,6 +10,7 @@ WORKDIR /app
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY packages/api/package.json ./packages/api/
 COPY packages/workers/package.json ./packages/workers/
+COPY packages/settings/package.json ./packages/settings/
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -20,8 +21,11 @@ COPY . .
 # Build the application
 RUN pnpm build
 
-# Expose port
-EXPOSE $PORT
+# Generate Prisma client for settings
+RUN cd packages/settings && npx prisma generate
+
+# Expose port (Railway will set this automatically)
+EXPOSE 8088
 
 # Start the application
 CMD ["pnpm", "start"]

@@ -1,19 +1,19 @@
-// Synter Settings Schema - Credits, Team Management, Report Sharing
+// Synter Settings Schema - SQLite version for local development
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Workspace {
-  id              String   @id @default(uuid())
+  id              String   @id @default(cuid())
   name            String
   domain          String?
   ownerId         String
-  sharingPolicy   Json     // { allowExternalLinks, allowPublicLinks, requirePassword, defaultExpiryDays, memberCanInvite }
+  sharingPolicy   String   // JSON stored as string in SQLite
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   
@@ -30,12 +30,12 @@ model Workspace {
 }
 
 model User {
-  id            String      @id @default(uuid())
+  id            String      @id @default(cuid())
   workspaceId   String      
   email         String      @unique
   name          String?
-  role          Role
-  status        UserStatus  @default(ACTIVE)
+  role          String      // OWNER, BILLING_ADMIN, ADMIN, MEMBER, VIEWER
+  status        String      @default("ACTIVE") // ACTIVE, DISABLED
   lastActiveAt  DateTime?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -47,26 +47,14 @@ model User {
   @@map("users")
 }
 
-enum Role {
-  OWNER
-  BILLING_ADMIN
-  ADMIN
-  MEMBER
-  VIEWER
-}
-
-enum UserStatus {
-  ACTIVE
-  DISABLED
-}
-
 model PaymentMethod {
-  id           String    @id @default(uuid())
+  id           String    @id @default(cuid())
   workspaceId  String    
-  brand        String    // "visa", "mastercard", etc.
-  last4        String
-  expMonth     Int
-  expYear      Int
+  type         String    // "card", "bank_account"
+  cardBrand    String?   // "visa", "mastercard", etc.
+  cardLast4    String?
+  cardExpMonth Int?
+  cardExpYear  Int?
   isDefault    Boolean   @default(false)
   providerRef  String    // Stripe pm_...
   createdAt    DateTime  @default(now())
@@ -79,7 +67,7 @@ model PaymentMethod {
 }
 
 model CreditWallet {
-  id           String         @id @default(uuid())
+  id           String         @id @default(cuid())
   workspaceId  String         @unique
   balance      Int            @default(0) // credits
   autoEnabled  Boolean        @default(false)
@@ -96,13 +84,13 @@ model CreditWallet {
 }
 
 model CreditLedger {
-  id           String        @id @default(uuid())
+  id           String        @id @default(cuid())
   walletId     String        
   delta        Int           // positive = credit, negative = debit
-  reason       LedgerReason
+  reason       String        // PURCHASE, AUTO_RECHARGE, CONSUMPTION, REFUND, ADJUSTMENT, PROMO
   refType      String?       // "invoice", "report", "manual"
   refId        String?
-  metadata     Json?
+  metadata     String?       // JSON stored as string in SQLite
   createdAt    DateTime      @default(now())
   
   // Relations
@@ -113,143 +101,107 @@ model CreditLedger {
   @@map("credit_ledger")
 }
 
-enum LedgerReason {
-  PURCHASE
-  AUTO_RECHARGE
-  CONSUMPTION
-  REFUND
-  ADJUSTMENT
-  PROMO
-}
-
 model Invoice {
-  id           String    @id @default(uuid())
-  workspaceId  String    
-  totalCents   Int       // amount in cents
-  taxCents     Int       @default(0)
-  currency     String    @default("USD")
-  status       String    // "paid", "open", "void"
-  providerId   String    // Stripe invoice id
-  pdfUrl       String?
-  createdAt    DateTime  @default(now())
+  id           String         @id @default(cuid())
+  workspaceId  String         
+  totalCents   Int            // amount in cents
+  taxCents     Int            @default(0) // tax in cents
+  currency     String         @default("USD")
+  status       String         @default("open") // "open", "paid", "voided", "uncollectible"
+  providerId   String?        // Stripe invoice ID
+  dueDate      DateTime?
+  paidAt       DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
   
   // Relations
-  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace    Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   
   @@index([workspaceId])
-  @@index([createdAt])
+  @@index([status])
   @@map("invoices")
 }
 
 model Invite {
-  id           String       @id @default(uuid())
-  workspaceId  String       
-  email        String
-  role         Role
-  status       InviteStatus @default(PENDING)
-  token        String       @unique
-  expiresAt    DateTime
-  message      String?      // optional invite message
-  createdAt    DateTime     @default(now())
+  id          String    @id @default(cuid())
+  workspaceId String    
+  email       String    
+  role        String    // ADMIN, MEMBER, VIEWER
+  status      String    @default("PENDING") // PENDING, ACCEPTED, CANCELED, EXPIRED
+  token       String    @unique
+  expiresAt   DateTime  
+  createdAt   DateTime  @default(now())
+  acceptedAt  DateTime?
   
   // Relations
-  workspace    Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   
   @@index([workspaceId])
-  @@index([email])
-  @@index([expiresAt])
+  @@index([token])
   @@map("invites")
 }
 
-enum InviteStatus {
-  PENDING
-  ACCEPTED
-  CANCELED
-  EXPIRED
-}
-
 model Report {
-  id            String         @id @default(uuid())
+  id            String         @id @default(cuid())
   workspaceId   String         
   ownerUserId   String
   title         String
   description   String?
-  data          Json?          // report data/configuration
+  data          String?        // JSON stored as string in SQLite
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   
   // Relations
-  accesses      ReportAccess[]
-  shareLinks    ShareLink[]
   workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  shareGrants   ShareGrant[]
   
   @@index([workspaceId])
   @@index([ownerUserId])
   @@map("reports")
 }
 
-model ReportAccess {
-  id           String           @id @default(uuid())
-  reportId     String           
-  granteeType  GranteeType
-  granteeId    String?          // user id for USER type
-  email        String?          // email for EMAIL type
-  permission   ReportPermission
-  expiresAt    DateTime?
-  lastViewedAt DateTime?
-  createdAt    DateTime         @default(now())
+model ShareGrant {
+  id          String    @id @default(cuid())
+  reportId    String    
+  granteeType String    // USER, EMAIL, LINK
+  granteeId   String?   // user ID or email
+  permission  String    // VIEW, SHARE
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
   
   // Relations
-  report       Report           @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  report      Report    @relation(fields: [reportId], references: [id], onDelete: Cascade)
   
   @@index([reportId])
-  @@index([email])
-  @@map("report_access")
+  @@index([granteeType, granteeId])
+  @@map("share_grants")
 }
 
-enum GranteeType {
-  USER
-  EMAIL
-  LINK
-}
-
-enum ReportPermission {
-  VIEW
-  SHARE  // VIEW + Can Share
-}
-
-model ShareLink {
-  id           String    @id @default(uuid())
-  reportId     String    
-  scope        LinkScope
-  token        String    @unique
-  expiresAt    DateTime?
-  passwordHash String?   // argon2id hash
-  revokedAt    DateTime?
-  accessCount  Int       @default(0)
-  createdAt    DateTime  @default(now())
-  
-  // Relations
-  report       Report    @relation(fields: [reportId], references: [id], onDelete: Cascade)
+model ShareableLink {
+  id          String    @id @default(cuid())
+  reportId    String    // Report this link provides access to
+  token       String    @unique // URL-safe random token
+  scope       String    @default("WORKSPACE") // WORKSPACE, PUBLIC
+  password    String?   // Optional password protection
+  maxViews    Int?      // Limit view count
+  viewCount   Int       @default(0)
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime?
   
   @@index([reportId])
   @@index([token])
-  @@map("share_links")
-}
-
-enum LinkScope {
-  WORKSPACE
-  PUBLIC
+  @@map("shareable_links")
 }
 
 model AuditEvent {
-  id           String    @id @default(uuid())
+  id           String    @id @default(cuid())
   workspaceId  String    
   actorUserId  String
   action       String    // e.g., "billing.purchase_succeeded"
   targetType   String    // "user", "report", "payment_method", etc.
   targetId     String?
-  context      Json?     // additional metadata
+  context      String?   // JSON stored as string in SQLite
   ipAddress    String?
   userAgent    String?
   createdAt    DateTime  @default(now())

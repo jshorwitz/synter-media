@@ -10,19 +10,36 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
+    "setup": "node setup-credentials.js",
     "dev": "pnpm -C packages/api dev & pnpm -C packages/workers dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
-    "start": "sh -c 'pnpm -C packages/workers start & pnpm -C packages/api start & wait'",
+    "start": "sh -c 'pnpm -C packages/workers start & pnpm -C packages/api start & pnpm -C packages/settings start & wait'",
     "start:packages": "pnpm -C packages/api start",
     "migrate": "node scripts/migrate.js",
     "seed": "node scripts/seed.js",
     "db:init": "node scripts/migrate.js && node scripts/seed.js",
-    "test:deploy": "node test-deploy.js"
+    "test:deploy": "node test-deploy.js",
+    "railway:init": "railway init && echo '✅ Railway initialized! Now run: git push'",
+    "tokens:refresh": "node scripts/refresh-google-tokens.js all",
+    "tokens:check": "node scripts/refresh-google-tokens.js check",
+    "tokens:ads": "node scripts/refresh-google-tokens.js ads",
+    "tokens:bigquery": "node scripts/refresh-google-tokens.js bigquery",
+    "tokens:check-openai": "node scripts/refresh-google-tokens.js check-openai",
+    "tokens:check-reddit": "node scripts/refresh-google-tokens.js check-reddit",
+    "tokens:check-twitter": "node scripts/refresh-google-tokens.js check-twitter",
+    "reddit:auth": "node scripts/reddit-auth.js",
+    "reddit:app-token": "node scripts/reddit-auth.js app",
+    "reddit:user-token": "node scripts/reddit-auth.js user"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.2",
-    "mysql2": "^3.11.0"
+    "mysql2": "^3.11.0",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6"
   }
 }

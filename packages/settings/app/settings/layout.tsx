@@ -1,3 +1,5 @@
+'use client';
+
 // Settings layout with navigation sidebar
 import { ReactNode } from 'react';
 import Link from 'next/link';
