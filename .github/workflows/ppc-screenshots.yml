@@ -95,7 +95,7 @@ jobs:
         working-directory: apps/web
         run: |
           npm i --no-save playwright
-          npx playwright install chromium
+          npx playwright install --with-deps chromium
 
       - name: Capture screenshots
         working-directory: apps/web
@@ -104,8 +104,19 @@ jobs:
         run: npm run screenshot:ppc
 
       - name: Upload screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ppc-screenshots
           path: apps/web/docs/ppc-screens/*.png
           if-no-files-found: warn
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ppc-logs
+          path: |
+            apps/ppc-backend/backend.log
+            apps/web/web.log
+          if-no-files-found: ignore
