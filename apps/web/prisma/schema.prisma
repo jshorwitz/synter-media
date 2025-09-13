@@ -1,0 +1,157 @@
+// Synter Database Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Auth & User Management Tables
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique @db.VarChar(320)
+  password_hash String? @db.VarChar(255)
+  name         String?  @db.VarChar(128)
+  role         Role     @default(VIEWER)
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime @updatedAt @db.Timestamptz(6)
+  is_active    Boolean  @default(true)
+
+  // Relations
+  sessions      Session[]
+  magic_links   MagicLink[]
+  oauth_accounts OAuthAccount[]
+
+  @@map("users")
+}
+
+model Session {
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  session_token String   @unique @db.Char(64)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  expires_at    DateTime @db.Timestamptz(6)
+  user_agent    String?  @db.VarChar(255)
+  ip            String?  @db.VarChar(64)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model MagicLink {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  token      String   @unique @db.Char(64)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  expires_at DateTime @db.Timestamptz(6)
+  used_at    DateTime? @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("magic_links")
+}
+
+model OAuthAccount {
+  id               Int      @id @default(autoincrement())
+  user_id          Int
+  provider         String   @db.VarChar(32) // 'google'
+  provider_user_id String   @db.VarChar(128)
+  access_token     String?  @db.Text
+  refresh_token    String?  @db.Text
+  expires_at       DateTime? @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([provider, provider_user_id])
+  @@map("oauth_accounts")
+}
+
+// Agent Management Tables
+model AgentRun {
+  id          Int      @id @default(autoincrement())
+  agent       String   @db.VarChar(64)
+  run_id      String   @db.VarChar(64)
+  started_at  DateTime @default(now()) @db.Timestamptz(6)
+  finished_at DateTime? @db.Timestamptz(6)
+  ok          Boolean?
+  stats       Json?
+  watermark   String?  @db.VarChar(64)
+
+  @@unique([agent, run_id])
+  @@map("agent_runs")
+}
+
+// Analytics Data Tables (simplified - main analytics in BigQuery)
+model AdMetrics {
+  id           Int      @id @default(autoincrement())
+  platform     String   @db.VarChar(32) // 'google', 'reddit', 'x'
+  date         DateTime @db.Date
+  account_id   String   @db.VarChar(64)
+  campaign_id  String   @db.VarChar(64)
+  adgroup_id   String?  @db.VarChar(64)
+  ad_id        String?  @db.VarChar(64)
+  impressions  Int      @default(0)
+  clicks       Int      @default(0)
+  spend        Decimal  @default(0) @db.Decimal(10,2)
+  conversions  Int      @default(0)
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([platform, date, account_id, campaign_id, adgroup_id, ad_id])
+  @@map("ad_metrics")
+}
+
+model Touchpoint {
+  id          Int      @id @default(autoincrement())
+  user_id     String?  @db.VarChar(255)
+  timestamp   DateTime @db.Timestamptz(6)
+  platform    String   @db.VarChar(32) // 'google', 'reddit', 'x', 'other'
+  campaign_id String?  @db.VarChar(64)
+  click_id    String?  @db.VarChar(255) // gclid, rdt_cid, twclid
+  raw_data    Json?
+
+  @@unique([user_id, timestamp, platform, campaign_id])
+  @@map("touchpoints")
+}
+
+model Conversion {
+  id           Int      @id @default(autoincrement())
+  user_id      String?  @db.VarChar(255)
+  timestamp    DateTime @db.Timestamptz(6)
+  action       String   @db.VarChar(128)
+  value        Decimal? @db.Decimal(10,2)
+  currency     String?  @db.VarChar(3)
+  touchpoint_id Int?
+  uploaded_at  DateTime? @db.Timestamptz(6)
+
+  @@map("conversions")
+}
+
+// Campaign Management
+model CampaignPolicy {
+  id            Int     @id @default(autoincrement())
+  platform      String  @db.VarChar(32)
+  campaign_id   String  @db.VarChar(64)
+  target_cac    Decimal? @db.Decimal(10,2)
+  max_cac       Decimal? @db.Decimal(10,2)
+  min_budget    Decimal? @db.Decimal(10,2)
+  max_budget    Decimal? @db.Decimal(10,2)
+  auto_optimize Boolean @default(false)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @updatedAt @db.Timestamptz(6)
+
+  @@unique([platform, campaign_id])
+  @@map("campaign_policies")
+}
+
+// Enums
+enum Role {
+  ADMIN
+  ANALYST
+  VIEWER
+}
