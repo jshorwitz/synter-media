@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LoginForm } from './LoginForm';
 import { SignupForm } from './SignupForm';
 import { MagicLinkForm } from './MagicLinkForm';
@@ -8,38 +8,73 @@ import { SynterLogo } from '@/components/ui/SynterLogo';
 
 type AuthMode = 'login' | 'signup' | 'magic-link';
 
-export function AuthPage() {
-  const [mode, setMode] = useState<AuthMode>('login');
+interface AuthPageProps {
+  defaultTab?: 'login' | 'signup';
+  onSuccess?: () => void;
+  isModal?: boolean;
+}
+
+export function AuthPage({ defaultTab = 'login', onSuccess, isModal = false }: AuthPageProps) {
+  const [mode, setMode] = useState<AuthMode>(defaultTab);
+
+  useEffect(() => {
+    setMode(defaultTab);
+  }, [defaultTab]);
+
+  const containerClasses = isModal 
+    ? "w-full space-y-6" 
+    : "min-h-screen flex items-center justify-center bg-gradient-to-br from-synter-surface to-synter-surface-2 py-12 px-4 sm:px-6 lg:px-8";
+
+  const cardClasses = isModal
+    ? ""
+    : "max-w-md w-full space-y-8";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <SynterLogo className="mx-auto h-16 w-auto" />
-          <h2 className="mt-6 text-3xl font-bold text-slate-900">
-            {mode === 'login' && 'Welcome back'}
-            {mode === 'signup' && 'Create your account'}
-            {mode === 'magic-link' && 'Sign in with magic link'}
-          </h2>
-          <p className="mt-2 text-sm text-slate-600">
-            {mode === 'login' && 'Sign in to your Synter account'}
-            {mode === 'signup' && 'Start managing your cross-channel ads'}
-            {mode === 'magic-link' && 'We\'ll send you a secure link to sign in'}
-          </p>
-        </div>
+    <div className={containerClasses}>
+      <div className={cardClasses}>
+        {!isModal && (
+          <div className="text-center animate-slide-up">
+            <SynterLogo className="mx-auto" />
+            <h2 className="mt-6 text-3xl font-bold text-synter-ink">
+              {mode === 'login' && 'Welcome back'}
+              {mode === 'signup' && 'Create your account'}
+              {mode === 'magic-link' && 'Sign in with magic link'}
+            </h2>
+            <p className="mt-2 text-sm text-synter-ink-2">
+              {mode === 'login' && 'Sign in to your Synter account'}
+              {mode === 'signup' && 'Start managing your cross-channel ads'}
+              {mode === 'magic-link' && 'We\'ll send you a secure link to sign in'}
+            </p>
+          </div>
+        )}
 
-        <div className="bg-white py-8 px-6 shadow-xl rounded-lg border border-slate-200">
-          {mode === 'login' && <LoginForm />}
-          {mode === 'signup' && <SignupForm />}
-          {mode === 'magic-link' && <MagicLinkForm />}
+        {isModal && (
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-synter-ink">
+              {mode === 'login' && 'Welcome back'}
+              {mode === 'signup' && 'Create your account'}
+              {mode === 'magic-link' && 'Sign in with magic link'}
+            </h2>
+            <p className="mt-2 text-sm text-synter-ink-2">
+              {mode === 'login' && 'Sign in to your Synter account'}
+              {mode === 'signup' && 'Start managing your cross-channel ads'}
+              {mode === 'magic-link' && 'We\'ll send you a secure link to sign in'}
+            </p>
+          </div>
+        )}
+
+        <div className={isModal ? "" : "synter-card animate-slide-up [animation-delay:0.2s]"}>
+          {mode === 'login' && <LoginForm onSuccess={onSuccess} />}
+          {mode === 'signup' && <SignupForm onSuccess={onSuccess} />}
+          {mode === 'magic-link' && <MagicLinkForm onSuccess={onSuccess} />}
 
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-300" />
+                <div className="w-full" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-slate-500">Or</span>
+                <span className="px-2 bg-synter-surface-2 text-synter-ink-2">Or</span>
               </div>
             </div>
 
@@ -47,7 +82,7 @@ export function AuthPage() {
               {mode !== 'login' && (
                 <button
                   onClick={() => setMode('login')}
-                  className="synter-button-secondary w-full text-center"
+                  className="synter-btn synter-btn-secondary w-full"
                 >
                   Sign in to existing account
                 </button>
@@ -56,7 +91,7 @@ export function AuthPage() {
               {mode !== 'signup' && (
                 <button
                   onClick={() => setMode('signup')}
-                  className="synter-button-secondary w-full text-center"
+                  className="synter-btn synter-btn-secondary w-full"
                 >
                   Create new account
                 </button>
@@ -65,7 +100,7 @@ export function AuthPage() {
               {mode !== 'magic-link' && (
                 <button
                   onClick={() => setMode('magic-link')}
-                  className="synter-button-secondary w-full text-center"
+                  className="synter-btn synter-btn-ghost w-full"
                 >
                   Use magic link instead
                 </button>
@@ -75,13 +110,13 @@ export function AuthPage() {
         </div>
 
         <div className="text-center">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-synter-ink-2">
             By signing in, you agree to our{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-500">
+            <a href="#" className="text-synter-volt hover:text-synter-volt-2 transition-colors">
               Terms of Service
             </a>{' '}
             and{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-500">
+            <a href="#" className="text-synter-volt hover:text-synter-volt-2 transition-colors">
               Privacy Policy
             </a>
           </p>

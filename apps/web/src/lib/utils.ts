@@ -118,12 +118,17 @@ export function generateId(length = 8): string {
 export function getPlatformColor(platform: string): string {
   const colors: Record<string, string> = {
     google: 'text-blue-600 bg-blue-50',
-    reddit: 'text-orange-600 bg-orange-50',
-    twitter: 'text-sky-600 bg-sky-50',
-    x: 'text-slate-800 bg-slate-100',
+    meta: 'text-blue-800 bg-blue-100',
     facebook: 'text-blue-800 bg-blue-100',
+    x: 'text-slate-800 bg-slate-100',
+    twitter: 'text-sky-600 bg-sky-50',
     linkedin: 'text-blue-700 bg-blue-50',
+    reddit: 'text-orange-600 bg-orange-50',
     tiktok: 'text-pink-600 bg-pink-50',
+    youtube: 'text-red-600 bg-red-50',
+    direct: 'text-gray-600 bg-gray-50',
+    'organic search': 'text-green-600 bg-green-50',
+    programmatic: 'text-purple-600 bg-purple-50'
   };
   
   return colors[platform.toLowerCase()] || 'text-slate-600 bg-slate-50';

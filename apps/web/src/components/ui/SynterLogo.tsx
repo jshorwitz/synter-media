@@ -9,9 +9,9 @@ export function SynterLogo({ className, variant = 'full' }: SynterLogoProps) {
   if (variant === 'icon') {
     return (
       <div className={cn('flex items-center justify-center', className)}>
-        <div className="relative">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">S</span>
+        <div className="relative group">
+          <div className="w-10 h-10 bg-gradient-to-br from-synter-volt to-synter-sky rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-synter-accent transition-all duration-300 group-hover:scale-105">
+            <span className="text-synter-surface font-bold text-xl">S</span>
           </div>
         </div>
       </div>
@@ -19,15 +19,20 @@ export function SynterLogo({ className, variant = 'full' }: SynterLogoProps) {
   }
 
   return (
-    <div className={cn('flex items-center', className)}>
+    <div className={cn('flex items-center group', className)}>
       <div className="relative">
-        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-          <span className="text-white font-bold text-xl">S</span>
+        <div className="w-12 h-12 bg-gradient-to-br from-synter-volt to-synter-sky rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-synter-accent transition-all duration-300 group-hover:scale-105">
+          <span className="text-synter-surface font-bold text-2xl">S</span>
         </div>
       </div>
-      <span className="ml-3 text-2xl font-bold text-slate-900">
-        Synter
-      </span>
+      <div className="ml-3">
+        <span className="text-2xl font-bold bg-gradient-to-r from-synter-ink to-synter-volt bg-clip-text text-transparent">
+          Synter
+        </span>
+        <div className="text-xs text-synter-ink-2 font-medium tracking-wide">
+          AI Media Agent
+        </div>
+      </div>
     </div>
   );
 }

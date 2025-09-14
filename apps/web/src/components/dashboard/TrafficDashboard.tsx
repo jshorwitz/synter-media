@@ -23,20 +23,63 @@ export function TrafficDashboard({ timeRange }: TrafficDashboardProps) {
   const fetchTrafficData = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/traffic/utm?period=${period}`, {
-        credentials: 'include',
-      });
       
-      if (response.ok) {
-        const trafficData = await response.json();
-        setData(trafficData.data || []);
-      }
+      // Mock traffic data for now
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      const mockTrafficData: TrafficData[] = [
+        {
+          source: 'Google',
+          visitors: 3420,
+          pageviews: 8540,
+          percentage: 34.2,
+          change: 12.5
+        },
+        {
+          source: 'Meta',
+          visitors: 2180,
+          pageviews: 5320,
+          percentage: 21.8,
+          change: 8.3
+        },
+        {
+          source: 'Direct',
+          visitors: 1890,
+          pageviews: 4200,
+          percentage: 18.9,
+          change: -3.2
+        },
+        {
+          source: 'Organic Search',
+          visitors: 1560,
+          pageviews: 3780,
+          percentage: 15.6,
+          change: 15.7
+        },
+        {
+          source: 'LinkedIn',
+          visitors: 820,
+          pageviews: 1950,
+          percentage: 8.2,
+          change: 22.1
+        },
+        {
+          source: 'X',
+          visitors: 130,
+          pageviews: 290,
+          percentage: 1.3,
+          change: 45.8
+        }
+      ];
+      
+      setData(mockTrafficData);
     } catch (error) {
       console.error('Error fetching traffic data:', error);
+      setData([]);
     } finally {
       setLoading(false);
     }
-  }, [period]);
+  }, [period, timeRange]);
 
   useEffect(() => {
     fetchTrafficData();
@@ -45,149 +88,109 @@ export function TrafficDashboard({ timeRange }: TrafficDashboardProps) {
   const totalPageviews = data.reduce((sum, item) => sum + item.pageviews, 0);
   const totalVisitors = data.reduce((sum, item) => sum + item.visitors, 0);
 
+  if (loading) {
+    return (
+      <div className="synter-card">
+        <div className="synter-card-header">
+          <div className="synter-skeleton h-6 w-32 mb-2" />
+          <div className="synter-skeleton h-4 w-48" />
+        </div>
+        <div className="space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-center justify-between">
+              <div className="synter-skeleton h-4 w-24" />
+              <div className="synter-skeleton h-4 w-16" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-white shadow rounded-lg">
-      <div className="px-6 py-4 border-b border-slate-200">
+    <div className="synter-card">
+      <div className="synter-card-header">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-medium text-slate-900">Traffic Sources</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              UTM source breakdown and performance
+            <h3 className="synter-card-title">Traffic Sources</h3>
+            <p className="synter-card-subtitle">
+              {formatNumber(totalVisitors)} visitors • {formatNumber(totalPageviews)} pageviews
             </p>
           </div>
-          
-          <div className="flex items-center space-x-2">
-            <select
-              value={period}
-              onChange={(e) => setPeriod(e.target.value)}
-              className="synter-input w-auto text-sm"
-            >
-              <option value="today">Today</option>
-              <option value="7d">7 days</option>
-              <option value="30d">30 days</option>
-              <option value="90d">90 days</option>
-            </select>
-            
-            <button
-              onClick={fetchTrafficData}
-              className="p-2 text-slate-400 hover:text-slate-500 rounded-md border border-slate-300"
-              title="Refresh"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-              </svg>
-            </button>
-          </div>
+          <select
+            value={period}
+            onChange={(e) => setPeriod(e.target.value)}
+            className="synter-input w-auto text-sm"
+          >
+            <option value="today">Today</option>
+            <option value="7d">7 days</option>
+            <option value="30d">30 days</option>
+          </select>
         </div>
       </div>
 
-      <div className="p-6">
-        {/* Summary stats */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="text-center p-4 bg-slate-50 rounded-lg">
-            <div className="text-2xl font-bold text-slate-900">
-              {formatNumber(totalPageviews)}
-            </div>
-            <div className="text-sm text-slate-500">Total Pageviews</div>
-          </div>
-          <div className="text-center p-4 bg-slate-50 rounded-lg">
-            <div className="text-2xl font-bold text-slate-900">
-              {formatNumber(totalVisitors)}
-            </div>
-            <div className="text-sm text-slate-500">Unique Visitors</div>
-          </div>
-        </div>
-
-        {/* Traffic table */}
-        {loading ? (
-          <div className="space-y-3">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className="loading-skeleton h-8 w-8 rounded" />
-                  <div className="space-y-1">
-                    <div className="loading-skeleton h-4 w-20" />
-                    <div className="loading-skeleton h-3 w-16" />
-                  </div>
+      <div className="space-y-4">
+        {data.map((item, index) => (
+          <div 
+            key={item.source} 
+            className="flex items-center justify-between animate-slide-right"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <div className="flex items-center flex-1">
+              <div className={`w-3 h-3 rounded-full mr-3 ${getPlatformColor(item.source)}`} />
+              <div className="flex-1">
+                <div className={`text-sm font-medium px-2 py-1 rounded-md ${getPlatformColor(item.source)}`}>
+                  {item.source}
                 </div>
-                <div className="loading-skeleton h-4 w-12" />
+                <div className="text-xs text-synter-ink-2">
+                  {formatNumber(item.visitors)} visitors
+                </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="overflow-hidden">
-            <table className="synter-table">
-              <thead className="synter-table-header">
-                <tr>
-                  <th className="synter-table-header-cell">Source</th>
-                  <th className="synter-table-header-cell">Pageviews</th>
-                  <th className="synter-table-header-cell">Visitors</th>
-                  <th className="synter-table-header-cell">Share</th>
-                  <th className="synter-table-header-cell">Change</th>
-                </tr>
-              </thead>
-              <tbody className="synter-table-body">
-                {data.map((item, index) => (
-                  <tr key={index} className="synter-table-row">
-                    <td className="synter-table-cell">
-                      <div className="flex items-center">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPlatformColor(item.source)}`}>
-                          {item.source}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="synter-table-cell font-medium">
-                      {formatNumber(item.pageviews)}
-                    </td>
-                    <td className="synter-table-cell">
-                      {formatNumber(item.visitors)}
-                    </td>
-                    <td className="synter-table-cell">
-                      <div className="flex items-center">
-                        <div className="flex-1 bg-slate-200 rounded-full h-2 mr-2">
-                          <div
-                            className="bg-blue-600 h-2 rounded-full"
-                            style={{ width: `${item.percentage}%` }}
-                          />
-                        </div>
-                        <span className="text-sm text-slate-500 w-12">
-                          {item.percentage.toFixed(1)}%
-                        </span>
-                      </div>
-                    </td>
-                    <td className="synter-table-cell">
-                      <span
-                        className={`inline-flex items-center text-sm ${
-                          item.change > 0
-                            ? 'text-green-600'
-                            : item.change < 0
-                            ? 'text-red-600'
-                            : 'text-slate-500'
-                        }`}
-                      >
-                        {item.change > 0 && '+'}
-                        {item.change.toFixed(1)}%
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            </div>
             
-            {data.length === 0 && (
-              <div className="text-center py-12">
-                <svg className="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-                </svg>
-                <h3 className="mt-2 text-sm font-medium text-slate-900">No traffic data</h3>
-                <p className="mt-1 text-sm text-slate-500">
-                  Traffic data will appear here once analytics are configured.
-                </p>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <div className="text-sm font-semibold text-synter-ink">
+                  {item.percentage.toFixed(1)}%
+                </div>
+                <div className={`text-xs ${
+                  item.change > 0 
+                    ? 'text-synter-meadow' 
+                    : item.change < 0 
+                    ? 'text-synter-ember' 
+                    : 'text-synter-ink-2'
+                }`}>
+                  {item.change > 0 ? '+' : ''}{item.change.toFixed(1)}%
+                </div>
               </div>
-            )}
+              
+              <div className="w-20">
+                <div className="w-full bg-synter-surface-3 rounded-full h-2">
+                  <div 
+                    className="bg-synter-volt h-2 rounded-full transition-all duration-500"
+                    style={{ 
+                      width: `${Math.min(item.percentage * 2, 100)}%`,
+                      backgroundColor: `hsl(${index * 60}, 70%, 50%)`
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
+      
+      {data.length === 0 && !loading && (
+        <div className="text-center py-8">
+          <div className="text-synter-ink-2 mb-2">No traffic data available</div>
+          <button 
+            onClick={fetchTrafficData}
+            className="synter-btn synter-btn-secondary synter-btn-sm"
+          >
+            Retry
+          </button>
+        </div>
+      )}
     </div>
   );
 }

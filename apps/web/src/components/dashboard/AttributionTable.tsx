@@ -46,7 +46,7 @@ export function AttributionTable({ data = [] }: AttributionTableProps) {
 
   return (
     <div className="bg-white shadow rounded-lg">
-      <div className="px-6 py-4 border-b border-slate-200">
+      <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-medium text-slate-900">Attribution Report</h3>

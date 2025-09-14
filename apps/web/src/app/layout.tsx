@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Synter - Unified Cross-Channel Ads Platform",
-  description: "Run warehouse-centric, cross-platform ads & attribution for Google Ads, Reddit Ads, and X/Twitter Ads",
+  description: "Run warehouse-centric, cross-platform ads & attribution for Google, Meta, Reddit, X, and more",
 };
 
 export default function RootLayout({

@@ -17,7 +17,7 @@ export const TableBody = ({ className = '', ...props }: GenericProps<'tbody'>) =
 );
 
 export const TableRow = ({ className = '', ...props }: GenericProps<'tr'>) => (
-  <tr className={`border-b last:border-0 ${className}`} {...props} />
+  <tr className={`${className}`} {...props} />
 );
 
 export const TableHead = ({ className = '', ...props }: GenericProps<'th'>) => (

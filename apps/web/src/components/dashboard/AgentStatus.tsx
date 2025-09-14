@@ -58,7 +58,7 @@ export function AgentStatus({ agents = [] }: AgentStatusProps) {
 
   return (
     <div className="bg-white shadow rounded-lg">
-      <div className="px-6 py-4 border-b border-slate-200">
+      <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-medium text-slate-900">Agent Status</h3>
@@ -151,7 +151,7 @@ export function AgentStatus({ agents = [] }: AgentStatusProps) {
         ))}
       </div>
 
-      <div className="px-6 py-3 bg-slate-50 border-t border-slate-200">
+      <div className="px-6 py-3 bg-slate-50">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center space-x-4">
             <span className="flex items-center text-green-600">

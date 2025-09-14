@@ -7,7 +7,7 @@ export const Card = ({ className = '', ...props }: DivProps) => (
 );
 
 export const CardHeader = ({ className = '', ...props }: DivProps) => (
-  <div className={`p-4 border-b ${className}`} {...props} />
+  <div className={`p-4 ${className}`} {...props} />
 );
 
 export const CardTitle = ({ className = '', ...props }: DivProps) => (

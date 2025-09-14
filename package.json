@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "engines": {
     "node": ">=18.0.0",
@@ -11,10 +12,10 @@
   },
   "scripts": {
     "setup": "node setup-credentials.js",
-    "dev": "pnpm -C packages/api dev & pnpm -C packages/workers dev",
+    "dev": "pnpm -C packages/api dev & pnpm -C packages/workers dev & pnpm -C apps/web dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
-    "start": "sh -c 'pnpm -C packages/workers start & pnpm -C packages/api start & pnpm -C packages/settings start & wait'",
+    "start": "sh -c 'pnpm -C packages/workers start & pnpm -C packages/api start & pnpm -C apps/web start & wait'",
     "start:packages": "pnpm -C packages/api start",
     "migrate": "node scripts/migrate.js",
     "seed": "node scripts/seed.js",

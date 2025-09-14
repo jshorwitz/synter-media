@@ -1,6 +1,6 @@
 # Synter Setup and Quickstart
 
-This guide helps you run Synter locally using Railway Redis and either a local MySQL/SingleStore or a hosted DB. It seeds demo data, starts the API and workers, and verifies data flow with mock ingestors.
+This guide helps you run Synter - AI Advertising Agency locally. Complete setup includes the marketing homepage, dashboard, API, and background workers for cross-platform ads management.
 
 ## 1) Prerequisites
 
@@ -44,20 +44,40 @@ pnpm seed
 
 Keep the printed admin password for login.
 
-## 5) Start workers and API (connect to Railway Redis)
+## 5) Launch the Complete Application
 
-Use two terminals so the API and workers run simultaneously.
-
+### Quick Start (Recommended)
 ```bash
-# Terminal A – Workers
-REDIS_URL="$REDIS_URL" pnpm -C packages/workers dev
-
-# Terminal B – API
-REDIS_URL="$REDIS_URL" pnpm -C packages/api dev
+./launch.sh
 ```
 
-- API defaults to `http://localhost:8088`
-- Health: `GET /health`
+This will:
+1. Check your environment configuration
+2. Build all services  
+3. Start the complete application with homepage, dashboard, and workers
+
+### Manual Start (Alternative)
+```bash
+./start-dashboard.sh
+```
+
+### Access Points
+
+Once started, you can access:
+
+- **🏠 Synter Homepage:** http://localhost:8000
+- **📊 Dashboard:** http://localhost:8000/dashboard  
+- **🔐 Login/Signup:** http://localhost:8000 (click buttons)
+- **📈 Traffic Analytics:** http://localhost:3000
+- **🔧 API Health:** http://localhost:8000/health
+- **📋 API Documentation:** http://localhost:8000/docs
+
+### Test Account Configuration
+The system is configured for **sourcegraph.com** as the test account across:
+- Google Ads campaigns
+- Reddit Ads
+- X (Twitter) Ads  
+- Google Search Console
 
 ## 6) Authenticate and enqueue agent runs
 

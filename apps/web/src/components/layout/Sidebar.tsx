@@ -77,6 +77,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const navigation: NavigationItem[] = [
     { name: 'Overview', href: '/', icon: HomeIcon },
     { name: 'Dashboard', href: '/dashboard', icon: ChartIcon },
+    { name: 'Launch Campaign', href: '/workflow', icon: PlayIcon },
     { name: 'PPC Manager', href: '/ppc', icon: MegaphoneIcon, adminOnly: true },
     { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
     { name: 'Attribution', href: '/attribution', icon: DocumentTextIcon },
@@ -92,78 +93,95 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     !item.adminOnly || (user?.role === 'admin' || user?.role === 'analyst')
   );
 
-  return (
-    <div
-      className={cn(
-        'fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0',
-        open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      )}
-    >
-      <div className="flex flex-col h-full">
-        {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200">
-          <SynterLogo />
-          <button
-            onClick={onClose}
-            className="lg:hidden p-2 rounded-md text-slate-400 hover:text-slate-500 hover:bg-slate-50"
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+  const SidebarContent = () => (
+    <>
+      {/* Logo */}
+      <div className="flex items-center justify-between h-16 px-6">
+        <SynterLogo />
+        <button
+          onClick={onClose}
+          className="lg:hidden p-2 rounded-lg text-synter-ink-2 hover:text-synter-ink hover:bg-synter-hover transition-all duration-200"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          {filteredNavigation.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  'synter-nav-item',
-                  item.current
-                    ? 'synter-nav-item-active'
-                    : 'synter-nav-item-inactive'
-                )}
-                onClick={onClose}
-              >
-                <Icon className="mr-3 h-5 w-5 flex-shrink-0" />
-                <span className="flex-1">{item.name}</span>
-                {item.badge && (
-                  <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </nav>
+      {/* Navigation */}
+      <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+        {filteredNavigation.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
+                item.current
+                  ? 'bg-synter-volt/10 text-synter-volt'
+                  : 'text-synter-ink-2 hover:text-synter-ink hover:bg-synter-hover hover:translate-x-1'
+              )}
+              onClick={onClose}
+            >
+              <Icon className="h-5 w-5 flex-shrink-0" />
+              <span className="flex-1">{item.name}</span>
+              {item.badge && (
+                <span className="synter-badge synter-badge-info">
+                  {item.badge}
+                </span>
+              )}
+            </Link>
+          );
+        })}
+      </nav>
 
-        {/* User info */}
-        {user && (
-          <div className="border-t border-slate-200 p-4">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-                  <span className="text-sm font-medium text-white">
-                    {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              </div>
-              <div className="ml-3 flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">
-                  {user.name || user.email}
-                </p>
-                <p className="text-xs text-slate-500 truncate">
-                  {user.role}
-                </p>
+      {/* User info */}
+      {user && (
+        <div className="p-6">
+          <div className="flex items-center group">
+            <div className="flex-shrink-0">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-synter-volt to-synter-sky flex items-center justify-center shadow-lg group-hover:shadow-synter-accent transition-all duration-300">
+                <span className="text-sm font-bold text-synter-surface">
+                  {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                </span>
               </div>
             </div>
+            <div className="ml-4 flex-1 min-w-0">
+              <p className="text-sm font-semibold text-synter-ink truncate">
+                {user.name || user.email}
+              </p>
+              <p className="text-xs text-synter-ink-2 truncate capitalize">
+                {user.role}
+              </p>
+            </div>
+            <div className="ml-2">
+              <div className="h-2 w-2 bg-synter-meadow rounded-full animate-pulse"></div>
+            </div>
           </div>
-        )}
+        </div>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <div className="hidden lg:flex flex-col h-full w-[240px] bg-synter-surface-2 sidebar">
+        <SidebarContent />
       </div>
-    </div>
+
+      {/* Mobile sidebar */}
+      <div
+        className={cn(
+          'lg:hidden fixed inset-y-0 left-0 z-50 w-[240px] bg-synter-surface-2 transform transition-transform duration-300 ease-spring',
+          open ? 'translate-x-0' : '-translate-x-full'
+        )}
+      >
+        <div className="flex flex-col h-full">
+          <SidebarContent />
+        </div>
+      </div>
+    </>
   );
 }
