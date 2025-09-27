@@ -1,20 +1,151 @@
-version: "3.9"
+version: '3.8'
+
 services:
-  singlestore:
-    image: singlestore/cluster-in-a-box:latest
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
     environment:
-      LICENSE_KEY: "${SINGLESTORE_LICENSE_KEY:-}"
-      ROOT_PASSWORD: "root"
-    ports: ["3306:3306","8080:8080"]
+      POSTGRES_DB: synter
+      POSTGRES_USER: synter_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-synter_pass}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synter_user -d synter"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Queue
   redis:
     image: redis:7-alpine
-    ports: ["6379:6379"]
-  api:
-    build: ./packages/api
-    env_file: .env
-    depends_on: [singlestore, redis]
-    ports: ["8088:8088"]
-  workers:
-    build: ./packages/workers
-    env_file: .env
-    depends_on: [singlestore, redis]
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    restart: always
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Agent Orchestrator
+  orchestrator:
+    build:
+      context: .
+      dockerfile: packages/orchestrator/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://synter_user:${POSTGRES_PASSWORD:-synter_pass}@postgres:5432/synter
+      - PORT=3001
+      - ENABLE_SCHEDULER=true
+      - DRY_RUN=${DRY_RUN:-false}
+      - LOG_LEVEL=${LOG_LEVEL:-warn}
+      # Auth
+      - JWT_SECRET=${JWT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
+      # Platform credentials
+      - GOOGLE_ADS_CLIENT_ID=${GOOGLE_ADS_CLIENT_ID}
+      - GOOGLE_ADS_CLIENT_SECRET=${GOOGLE_ADS_CLIENT_SECRET}
+      - GOOGLE_ADS_DEVELOPER_TOKEN=${GOOGLE_ADS_DEVELOPER_TOKEN}
+      - GOOGLE_ADS_LOGIN_CUSTOMER_ID=${GOOGLE_ADS_LOGIN_CUSTOMER_ID}
+      - GOOGLE_ADS_REFRESH_TOKEN=${GOOGLE_ADS_REFRESH_TOKEN}
+      - GOOGLE_ADS_CUSTOMER_ID=${GOOGLE_ADS_CUSTOMER_ID}
+      - MICROSOFT_ADS_CLIENT_ID=${MICROSOFT_ADS_CLIENT_ID}
+      - MICROSOFT_ADS_CLIENT_SECRET=${MICROSOFT_ADS_CLIENT_SECRET}
+      - MICROSOFT_ADS_DEVELOPER_TOKEN=${MICROSOFT_ADS_DEVELOPER_TOKEN}
+      - MICROSOFT_ADS_CUSTOMER_ID=${MICROSOFT_ADS_CUSTOMER_ID}
+      - MICROSOFT_ADS_REFRESH_TOKEN=${MICROSOFT_ADS_REFRESH_TOKEN}
+      - LINKEDIN_ADS_CLIENT_ID=${LINKEDIN_ADS_CLIENT_ID}
+      - LINKEDIN_ADS_CLIENT_SECRET=${LINKEDIN_ADS_CLIENT_SECRET}
+      - LINKEDIN_ADS_ACCESS_TOKEN=${LINKEDIN_ADS_ACCESS_TOKEN}
+      - LINKEDIN_ADS_ACCOUNT_ID=${LINKEDIN_ADS_ACCOUNT_ID}
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
+      - REDDIT_CLIENT_SECRET=${REDDIT_CLIENT_SECRET}
+      - REDDIT_REFRESH_TOKEN=${REDDIT_REFRESH_TOKEN}
+      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+      - TWITTER_CLIENT_ID=${TWITTER_CLIENT_ID}
+      - TWITTER_CLIENT_SECRET=${TWITTER_CLIENT_SECRET}
+      # Analytics
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY}
+      - POSTHOG_HOST=${POSTHOG_HOST:-https://us.posthog.com}
+      # BigQuery
+      - BIGQUERY_PROJECT_ID=${BIGQUERY_PROJECT_ID}
+      - BIGQUERY_DATASET=${BIGQUERY_DATASET:-synter_analytics}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
+      # AI
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      # Mock flags
+      - MOCK_GOOGLE=${MOCK_GOOGLE:-false}
+      - MOCK_REDDIT=${MOCK_REDDIT:-true}
+      - MOCK_TWITTER=${MOCK_TWITTER:-true}
+      - MOCK_MICROSOFT=${MOCK_MICROSOFT:-true}
+      - MOCK_LINKEDIN=${MOCK_LINKEDIN:-true}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${GOOGLE_APPLICATION_CREDENTIALS}:/app/credentials/service-account.json:ro
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Web Dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_ORCHESTRATOR_API_URL=http://orchestrator:3001
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - DATABASE_URL=postgresql://synter_user:${POSTGRES_PASSWORD:-synter_pass}@postgres:5432/synter
+      # OAuth
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      # Analytics
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY}
+      - POSTHOG_HOST=${POSTHOG_HOST:-https://us.posthog.com}
+      # Billing (optional)
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+    ports:
+      - "3000:3000"
+    depends_on:
+      orchestrator:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  default:
+    name: synter-network

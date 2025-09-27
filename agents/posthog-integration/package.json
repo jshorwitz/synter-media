@@ -1,0 +1,16 @@
+{
+  "name": "@synter/posthog-integration-agent",
+  "version": "1.0.0",
+  "description": "PostHog to BigQuery integration agent for Synter",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "@google-cloud/bigquery": "^7.3.0"
+  },
+  "keywords": ["posthog", "bigquery", "conversion-tracking", "attribution", "synter"],
+  "author": "Synter Team",
+  "license": "MIT"
+}
