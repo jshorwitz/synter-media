@@ -35,12 +35,29 @@ export async function POST(req: NextRequest) {
     }
 
     const pkg = getPackageById(packageId);
-    if (!pkg || !pkg.stripePriceId) {
-      return NextResponse.json({ error: 'Invalid package' }, { status: 400 });
+    
+    if (!pkg) {
+      return NextResponse.json({ error: `Package not found: ${packageId}` }, { status: 400 });
     }
+
+    if (!pkg.stripePriceId) {
+      console.error(`Missing Stripe price ID for package ${packageId}`, pkg);
+      return NextResponse.json(
+        { error: `Package ${packageId} is not configured for purchases. Please contact support.` },
+        { status: 400 }
+      );
+    }
+
+    console.log('Creating checkout session:', {
+      packageId,
+      priceId: pkg.stripePriceId,
+      userId: user.id,
+      email: user.email,
+    });
 
     // Create Checkout Session for one-time payment
     const session = await stripe.checkout.sessions.create({
+      customer_email: user.email,
       payment_method_types: ['card'],
       line_items: [
         {
@@ -48,7 +65,7 @@ export async function POST(req: NextRequest) {
           quantity: 1,
         },
       ],
-      mode: 'payment', // One-time payment, not subscription
+      mode: 'payment',
       success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://synter-clean-web.vercel.app'}/dashboard?credits=success`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://synter-clean-web.vercel.app'}/credits?purchase=canceled`,
       metadata: {
@@ -60,10 +77,13 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Credit purchase error:', error);
     return NextResponse.json(
-      { error: 'Failed to create checkout session' },
+      { 
+        error: 'Failed to create checkout session',
+        details: error.message,
+      },
       { status: 500 }
     );
   }
