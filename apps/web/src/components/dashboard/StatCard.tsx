@@ -7,9 +7,11 @@ interface StatCardProps {
   icon?: React.ReactNode;
   color?: 'blue' | 'green' | 'amber' | 'red' | 'purple';
   progress?: number;
+  target?: number; // Target value for comparison
+  current?: number; // Current actual value
 }
 
-export function StatCard({ label, value, change, icon, color = 'blue', progress }: StatCardProps) {
+export function StatCard({ label, value, change, icon, color = 'blue', progress, target, current }: StatCardProps) {
   const colorClasses = {
     blue: 'from-blue-500/20 to-blue-600/20 border-blue-500/30 text-blue-400',
     green: 'from-emerald-500/20 to-emerald-600/20 border-emerald-500/30 text-emerald-400',
@@ -25,6 +27,15 @@ export function StatCard({ label, value, change, icon, color = 'blue', progress 
     red: 'from-red-500 to-red-600',
     purple: 'from-purple-500 to-purple-600',
   };
+
+  // Calculate progress from target if provided
+  let calculatedProgress = progress;
+  let isOnTrack = true;
+  
+  if (target && current !== undefined) {
+    calculatedProgress = (current / target) * 100;
+    isOnTrack = current >= target * 0.9; // On track if at 90% or above
+  }
 
   return (
     <div 
@@ -43,16 +54,9 @@ export function StatCard({ label, value, change, icon, color = 'blue', progress 
       
       <div className="relative p-6">
         {/* Header */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <p className="text-sm font-medium text-slate-400 mb-1">{label}</p>
-            <p className="text-3xl font-bold text-slate-100">{value}</p>
-          </div>
-          {icon && (
-            <div className={`p-3 rounded-lg bg-gradient-to-br ${colorClasses[color]}`}>
-              {icon}
-            </div>
-          )}
+        <div className="mb-4">
+          <p className="text-sm font-medium text-slate-400 mb-1">{label}</p>
+          <p className="text-3xl font-bold text-slate-100">{value}</p>
         </div>
 
         {/* Change indicator */}
@@ -81,13 +85,29 @@ export function StatCard({ label, value, change, icon, color = 'blue', progress 
           </div>
         )}
 
-        {/* Progress bar */}
-        {progress !== undefined && (
+        {/* Progress bar - Always show if target is set or progress is provided */}
+        {(calculatedProgress !== undefined || target) && (
           <div className="mt-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-slate-400">
+                {target && current !== undefined ? (
+                  <>Target: {target.toLocaleString()}</>
+                ) : (
+                  'Progress'
+                )}
+              </span>
+              <span className={`text-xs font-semibold ${isOnTrack ? 'text-emerald-400' : 'text-amber-400'}`}>
+                {calculatedProgress !== undefined ? `${Math.round(calculatedProgress)}%` : '0%'}
+              </span>
+            </div>
             <div className="w-full h-2 bg-slate-700/50 rounded-full overflow-hidden">
               <div 
-                className={`h-full bg-gradient-to-r ${progressColors[color]} rounded-full transition-all duration-1000 ease-out`}
-                style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                className={`h-full rounded-full transition-all duration-1000 ease-out ${
+                  isOnTrack 
+                    ? `bg-gradient-to-r ${progressColors[color]}` 
+                    : 'bg-gradient-to-r from-amber-500 to-amber-600'
+                }`}
+                style={{ width: `${Math.min(100, Math.max(0, calculatedProgress || 0))}%` }}
               />
             </div>
           </div>

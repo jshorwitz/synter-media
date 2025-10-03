@@ -20,9 +20,15 @@ model User {
   is_active    Boolean  @default(true)
 
   // Relations
-  sessions      Session[]
-  magic_links   MagicLink[]
-  oauth_accounts OAuthAccount[]
+  sessions          Session[]
+  magic_links       MagicLink[]
+  oauth_accounts    OAuthAccount[]
+  subscription      Subscription?
+  usage_records     UsageRecord[]
+  credit_balance    CreditBalance?
+  credit_transactions CreditTransaction[]
+  team_members      TeamMember[]
+  team_invites      TeamInvite[]
 
   @@map("users")
 }
@@ -149,9 +155,139 @@ model CampaignPolicy {
   @@map("campaign_policies")
 }
 
+// Subscription & Billing Tables
+model Subscription {
+  id                     Int      @id @default(autoincrement())
+  user_id                Int      @unique
+  tier                   PlanTier @default(FREE)
+  stripe_customer_id     String?  @unique @db.VarChar(255)
+  stripe_subscription_id String?  @unique @db.VarChar(255)
+  stripe_price_id        String?  @db.VarChar(255)
+  status                 SubscriptionStatus @default(ACTIVE)
+  current_period_start   DateTime? @db.Timestamptz(6)
+  current_period_end     DateTime? @db.Timestamptz(6)
+  cancel_at_period_end   Boolean  @default(false)
+  created_at             DateTime @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model UsageRecord {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  feature     String   @db.VarChar(64) // 'campaigns', 'chat_queries', etc.
+  count       Int      @default(1)
+  period      String   @db.VarChar(10) // 'YYYY-MM' for monthly tracking
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, feature, period])
+  @@map("usage_records")
+}
+
+// Credit System Tables
+model CreditBalance {
+  id          Int      @id @default(autoincrement())
+  user_id     Int      @unique
+  balance     Int      @default(0) // Current credit balance
+  lifetime    Int      @default(0) // Total credits ever purchased/earned
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @updatedAt @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("credit_balances")
+}
+
+model CreditTransaction {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  amount      Int      // Positive for credits added, negative for credits spent
+  type        CreditTransactionType
+  description String?  @db.VarChar(255)
+  metadata    Json?    // Purchase details, action info, etc.
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, created_at])
+  @@map("credit_transactions")
+}
+
+// Team & Collaboration Tables
+model TeamMember {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  email       String   @db.VarChar(320)
+  role        TeamRole @default(MEMBER)
+  invited_by  Int?
+  joined_at   DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, email])
+  @@map("team_members")
+}
+
+model TeamInvite {
+  id          Int      @id @default(autoincrement())
+  email       String   @db.VarChar(320)
+  role        TeamRole @default(MEMBER)
+  invited_by  Int
+  token       String   @unique @db.Char(64)
+  expires_at  DateTime @db.Timestamptz(6)
+  accepted_at DateTime? @db.Timestamptz(6)
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  inviter User @relation(fields: [invited_by], references: [id], onDelete: Cascade)
+
+  @@map("team_invites")
+}
+
 // Enums
 enum Role {
   ADMIN
   ANALYST
+  VIEWER
+}
+
+enum PlanTier {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+  INCOMPLETE
+}
+
+enum CreditTransactionType {
+  PURCHASE
+  SIGNUP_BONUS
+  REFERRAL_BONUS
+  ADMIN_ADJUSTMENT
+  SPENT
+  REFUND
+}
+
+enum TeamRole {
+  OWNER
+  ADMIN
+  MEMBER
   VIEWER
 }

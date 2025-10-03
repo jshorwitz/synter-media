@@ -57,31 +57,31 @@ export function AgentStatus({ agents = [] }: AgentStatusProps) {
   const displayAgents = agents.length > 0 ? agents : mockAgents;
 
   return (
-    <div className="bg-white shadow rounded-lg">
+    <div className="bg-slate-900/50 border border-slate-700 rounded-xl">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-medium text-slate-900">Agent Status</h3>
-            <p className="mt-1 text-sm text-slate-500">
+            <h3 className="text-lg font-medium text-white">Agent Status</h3>
+            <p className="mt-1 text-sm text-slate-400">
               Automated job status and health
             </p>
           </div>
           <a
             href="/agents"
-            className="text-sm text-blue-600 hover:text-blue-500"
+            className="text-sm text-blue-400 hover:text-blue-300"
           >
             Manage →
           </a>
         </div>
       </div>
 
-      <div className="divide-y divide-slate-200">
+      <div className="divide-y divide-slate-700">
         {displayAgents.map((agent, index) => (
-          <div key={index} className="p-4 hover:bg-slate-50 transition-colors">
+          <div key={index} className="p-4 hover:bg-slate-800/30 transition-colors">
             <div className="flex items-center justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center">
-                  <h4 className="text-sm font-medium text-slate-900 truncate">
+                  <h4 className="text-sm font-medium text-white truncate">
                     {agent.name}
                   </h4>
                   <span className={`ml-2 ${getStatusColor(agent.status)}`}>
@@ -89,7 +89,7 @@ export function AgentStatus({ agents = [] }: AgentStatusProps) {
                   </span>
                 </div>
                 
-                <div className="mt-1 flex items-center text-xs text-slate-500 space-x-4">
+                <div className="mt-1 flex items-center text-xs text-slate-400 space-x-4">
                   <span>
                     Last run: {getRelativeTimeString(new Date(agent.lastRun))}
                   </span>
@@ -114,7 +114,7 @@ export function AgentStatus({ agents = [] }: AgentStatusProps) {
                 </div>
 
                 {agent.error && (
-                  <div className="mt-1 text-xs text-red-600">
+                  <div className="mt-1 text-xs text-red-400">
                     Error: {agent.error}
                   </div>
                 )}
@@ -151,24 +151,24 @@ export function AgentStatus({ agents = [] }: AgentStatusProps) {
         ))}
       </div>
 
-      <div className="px-6 py-3 bg-slate-50">
+      <div className="px-6 py-3 bg-slate-800/50 border-t border-slate-700">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center space-x-4">
-            <span className="flex items-center text-green-600">
-              <div className="h-2 w-2 bg-green-500 rounded-full mr-1"></div>
+            <span className="flex items-center text-green-400">
+              <div className="h-2 w-2 bg-green-400 rounded-full mr-1"></div>
               {displayAgents.filter(a => a.status === 'success').length} Healthy
             </span>
-            <span className="flex items-center text-blue-600">
-              <div className="h-2 w-2 bg-blue-500 rounded-full mr-1"></div>
+            <span className="flex items-center text-blue-400">
+              <div className="h-2 w-2 bg-blue-400 rounded-full mr-1"></div>
               {displayAgents.filter(a => a.status === 'running').length} Running
             </span>
-            <span className="flex items-center text-red-600">
-              <div className="h-2 w-2 bg-red-500 rounded-full mr-1"></div>
+            <span className="flex items-center text-red-400">
+              <div className="h-2 w-2 bg-red-400 rounded-full mr-1"></div>
               {displayAgents.filter(a => a.status === 'failed').length} Failed
             </span>
           </div>
           
-          <button className="text-blue-600 hover:text-blue-500 text-sm font-medium">
+          <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">
             Run All
           </button>
         </div>

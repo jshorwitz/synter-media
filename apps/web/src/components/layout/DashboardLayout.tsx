@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { Launcher } from '@/components/ui/Launcher';
+import CampaignChat from '@/components/chat/CampaignChat';
 import { cn } from '@/lib/utils';
 
 interface DashboardLayoutProps {
@@ -58,6 +59,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         
         {/* Global launcher - positioned in top-right of main content area */}
         <Launcher />
+        
+        {/* Campaign chat assistant */}
+        <CampaignChat />
       </div>
     </div>
   );
