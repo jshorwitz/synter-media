@@ -87,8 +87,8 @@ function OnboardingContent() {
         body: JSON.stringify(formData),
       }).catch(() => {}) // Don't block if this fails
       
-      // Redirect to dashboard
-      router.push("/dashboard")
+      // Redirect to campaigns
+      router.push("/campaigns")
     } else {
       setCurrentStep(currentStep + 1)
     }
@@ -402,7 +402,7 @@ function OnboardingContent() {
 
               <div className="flex gap-4">
                 <button
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.push('/campaigns')}
                   className="flex-1 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-slate-700"
                   style={{
                     background: 'rgba(51, 65, 85, 0.5)',
