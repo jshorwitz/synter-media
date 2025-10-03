@@ -43,10 +43,9 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </div>
 
-        {/* Page header (the "Dashboard" bar) */}
+        {/* Page header */}
         <header className="row-[2] bg-synter-surface/60">
-          <div className="mx-auto max-w-[1400px] px-6 h-10 flex items-center">
-            <h1 className="text-sm tracking-wide text-synter-ink-2 font-medium">Dashboard</h1>
+          <div className="mx-auto max-w-[1400px] px-6 h-2 flex items-center">
           </div>
         </header>
 
