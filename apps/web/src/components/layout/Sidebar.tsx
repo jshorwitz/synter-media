@@ -83,7 +83,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
     { name: 'Attribution', href: '/attribution', icon: DocumentTextIcon },
     { name: 'Onboarding', href: '/onboarding', icon: PlayIcon },
-    { name: 'Settings', href: '/settings', icon: CogIcon },
+    { name: 'Settings', href: '/settings/apps', icon: CogIcon },
     { name: 'Team', href: '/team', icon: UserGroupIcon, adminOnly: true },
   ].map(item => ({
     ...item,

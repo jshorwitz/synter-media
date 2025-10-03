@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "screenshot:ppc": "node scripts/snapshot.js"
+    "screenshot:ppc": "node scripts/snapshot.js",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "@radix-ui/react-label": "^2.1.7",
     "@types/d3": "^7.4.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^6.4.19",
@@ -21,9 +23,10 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.469.0",
     "mysql2": "^3.11.0",
-    "nanoid": "^5.1.5",
+    "nanoid": "^5.1.6",
     "next": "15.5.3",
     "nodemailer": "^6.10.1",
+    "openai": "^6.1.0",
     "prisma": "^5.22.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
