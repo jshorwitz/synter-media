@@ -42,17 +42,17 @@ export default function ReferralCard() {
   }
 
   return (
-    <div className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/30 rounded-xl p-4 relative overflow-hidden">
+    <div className="bg-gradient-to-r from-orange-600/20 to-red-600/20 border border-orange-400/40 rounded-xl p-4 relative overflow-hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="bg-orange-500/20 p-2 rounded-lg">
-            <Gift className="w-5 h-5 text-orange-400" />
+          <div className="bg-orange-500/30 p-2 rounded-lg">
+            <Gift className="w-5 h-5 text-orange-300" />
           </div>
           <div>
             <h3 className="font-semibold text-white flex items-center gap-2">
               Refer & Earn 50 Credits
             </h3>
-            <p className="text-slate-300 text-sm">
+            <p className="text-slate-100 text-sm">
               Your friend gets 50 credits too • {stats.referred} referrals • {stats.earned} credits earned
             </p>
           </div>
@@ -60,7 +60,7 @@ export default function ReferralCard() {
         
         <button
           onClick={handleCopy}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 font-medium"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2 font-medium shadow-lg"
         >
           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
           {copied ? 'Copied!' : 'Copy Link'}
