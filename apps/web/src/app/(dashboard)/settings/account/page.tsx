@@ -116,15 +116,12 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="max-w-4xl">
-      <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
-      <p className="text-slate-400 mb-8">Manage your account and team members</p>
-
+    <div className="max-w-4xl space-y-6">
       <div className="space-y-6">
         {/* Profile Section */}
-        <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-            <User className="w-5 h-5" />
+        <div className="panel">
+          <h2 className="panel-title mb-4 flex items-center gap-2">
+            <User className="w-4 h-4" />
             Profile Information
           </h2>
           

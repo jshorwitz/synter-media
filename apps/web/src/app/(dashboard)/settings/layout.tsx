@@ -1,8 +1,7 @@
 "use client"
 
 import { usePathname, useRouter } from "next/navigation"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Key, Link2, Users, Bell } from "lucide-react"
+import { Key, Link2, CreditCard, User } from "lucide-react"
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -11,32 +10,40 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
   const tabs = [
     { value: "apps", label: "OAuth Apps", icon: Key, path: "/settings/apps" },
     { value: "credentials", label: "Connections", icon: Link2, path: "/settings/credentials" },
-    { value: "team", label: "Team", icon: Users, path: "/settings/team" },
-    { value: "notifications", label: "Notifications", icon: Bell, path: "/settings/notifications" },
+    { value: "account", label: "Account", icon: User, path: "/settings/account" },
+    { value: "billing", label: "Billing", icon: CreditCard, path: "/settings/billing" },
   ]
 
   const currentTab = tabs.find((tab) => pathname.startsWith(tab.path))?.value || "apps"
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Settings</h1>
-        <p className="text-gray-600">Manage your account, integrations, and preferences</p>
+    <div className="p-6">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold font-display text-text-hi mb-1 uppercase tracking-wide">Settings</h1>
+        <p className="text-text-low font-mono text-sm">Manage your account, integrations, and preferences</p>
       </div>
 
-      <Tabs value={currentTab} onValueChange={(value) => {
-        const tab = tabs.find((t) => t.value === value)
-        if (tab) router.push(tab.path)
-      }}>
-        <TabsList className="mb-8">
-          {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="flex items-center gap-2">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 border-b border-stroke-1">
+        {tabs.map((tab) => {
+          const isActive = currentTab === tab.value
+          return (
+            <button
+              key={tab.value}
+              onClick={() => router.push(tab.path)}
+              className={`
+                flex items-center gap-2 px-4 py-2 rounded-tactical font-mono text-xs uppercase tracking-wide transition-all
+                ${isActive 
+                  ? 'bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40' 
+                  : 'text-text-mid hover:text-text-hi hover:bg-carbon-800 border border-transparent'
+                }
+              `}
+            >
               <tab.icon className="w-4 h-4" />
               {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+            </button>
+          )
+        })}
+      </div>
 
       {children}
     </div>

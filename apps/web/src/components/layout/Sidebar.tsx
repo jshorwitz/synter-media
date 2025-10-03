@@ -134,32 +134,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           );
         })}
       </nav>
-
-      {/* User info */}
-      {user && (
-        <div className="p-6">
-          <div className="flex items-center group">
-            <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-synter-volt to-synter-sky flex items-center justify-center shadow-lg group-hover:shadow-synter-accent transition-all duration-300">
-                <span className="text-sm font-bold text-synter-surface">
-                  {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            </div>
-            <div className="ml-4 flex-1 min-w-0">
-              <p className="text-sm font-semibold text-synter-ink truncate">
-                {user.name || user.email}
-              </p>
-              <p className="text-xs text-synter-ink-2 truncate capitalize">
-                {user.role}
-              </p>
-            </div>
-            <div className="ml-2">
-              <div className="h-2 w-2 bg-synter-meadow rounded-full animate-pulse"></div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 
