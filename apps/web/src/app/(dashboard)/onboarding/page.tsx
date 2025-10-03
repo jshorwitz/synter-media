@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowRight, Building2, Target, Zap, Loader2, Sparkles, Mail, Check } from "lucide-react"
 
@@ -11,7 +11,7 @@ const STEPS = [
   { id: 3, title: "Connect Platforms", icon: Zap },
 ]
 
-export default function OnboardingPage() {
+function OnboardingContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const urlParam = searchParams.get('url')
@@ -415,5 +415,24 @@ export default function OnboardingPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        data-theme="dark"
+        style={{background: 'linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(220 39% 18%) 100%)'}}
+      >
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" style={{color: 'hsl(217 91% 60%)'}} />
+          <p style={{color: 'hsl(215 20% 65%)'}}>Loading...</p>
+        </div>
+      </div>
+    }>
+      <OnboardingContent />
+    </Suspense>
   )
 }
