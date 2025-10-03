@@ -77,6 +77,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const navigation: NavigationItem[] = [
     { name: 'Overview', href: '/', icon: HomeIcon },
     { name: 'Dashboard', href: '/dashboard', icon: ChartIcon },
+    { name: 'Campaigns', href: '/campaigns', icon: MegaphoneIcon },
     { name: 'Launch Campaign', href: '/workflow', icon: PlayIcon },
     { name: 'PPC Manager', href: '/ppc', icon: MegaphoneIcon, adminOnly: true },
     { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
