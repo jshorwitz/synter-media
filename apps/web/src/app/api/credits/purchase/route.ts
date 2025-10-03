@@ -13,8 +13,17 @@ function getStripe() {
 }
 
 export async function POST(req: NextRequest) {
-  const stripe = getStripe();
   try {
+    // Check Stripe configuration first
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: 'Stripe is not configured. Please contact support.' },
+        { status: 503 }
+      );
+    }
+
+    const stripe = getStripe();
+    
     // Get authenticated user
     const user = await getCurrentUser();
     

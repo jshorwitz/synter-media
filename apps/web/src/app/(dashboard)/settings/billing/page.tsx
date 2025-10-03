@@ -68,17 +68,37 @@ export default function BillingPage() {
       });
 
       if (!response.ok) {
-        const error = await response.json();
+        let error;
+        try {
+          error = await response.json();
+        } catch {
+          error = { error: 'Failed to create checkout session' };
+        }
         throw new Error(error.error || 'Failed to create checkout');
       }
 
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error('Invalid response from server');
+      }
+
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
       }
     } catch (error: any) {
       console.error('Purchase error:', error);
-      alert(error.message || 'Failed to start purchase. Please try again.');
+      
+      // Show user-friendly error message
+      const errorMsg = error.message || 'Failed to start purchase';
+      if (errorMsg.includes('not configured')) {
+        alert('💳 Billing is not yet configured.\n\nStripe integration is required to purchase credits. Please contact support or check back later.');
+      } else {
+        alert(`Error: ${errorMsg}\n\nPlease try again or contact support if the issue persists.`);
+      }
     }
   };
 
