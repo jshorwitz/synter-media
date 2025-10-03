@@ -4,8 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 from contextlib import asynccontextmanager
-from routers import sync, score, recommend, apply, audit, auth
+from routers import sync, score, recommend, apply, audit, auth, integrations, oauth_callbacks, scheduler_status
 from database import engine, init_db
+from scheduler import start_scheduler, stop_scheduler
 
 
 security = HTTPBasic()
@@ -30,9 +31,11 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize database on startup."""
+    """Initialize database and start scheduler on startup."""
     init_db()
+    await start_scheduler()
     yield
+    await stop_scheduler()
 
 
 app = FastAPI(
@@ -53,6 +56,9 @@ app.add_middleware(
 
 # Include routers with auth dependency (except healthz and auth routes)
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(oauth_callbacks.router)
+app.include_router(integrations.router, dependencies=[Depends(verify_credentials)])
+app.include_router(scheduler_status.router, dependencies=[Depends(verify_credentials)])
 app.include_router(sync.router, prefix="/sync", tags=["sync"], dependencies=[Depends(verify_credentials)])
 app.include_router(score.router, prefix="/score", tags=["icp"], dependencies=[Depends(verify_credentials)])
 app.include_router(recommend.router, prefix="/recommendations", tags=["recommendations"], dependencies=[Depends(verify_credentials)])
