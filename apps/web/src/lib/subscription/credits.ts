@@ -16,7 +16,7 @@ export type CreditCost = {
 export const CREDIT_COSTS: Record<CreditAction, CreditCost> = {
   chat_query: {
     action: 'chat_query',
-    cost: 1,
+    cost: 0.5, // ~200 queries per 100 credits = 1+ hour of chatting
     description: 'Ask the AI assistant a question',
   },
   campaign_launch: {

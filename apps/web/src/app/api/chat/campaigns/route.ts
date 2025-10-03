@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { 
           error: 'Insufficient credits',
-          message: 'You need 1 credit to ask a question. Visit /credits to buy more.',
+          message: 'You need 0.5 credits to ask a question. Visit /credits to buy more.',
           upgradeUrl: '/credits'
         },
         { status: 402 }

@@ -44,7 +44,7 @@ export default function CreditsPage() {
             Pay As You Grow
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-8">
-            Only pay for what you use. Start with 50 free credits, then buy more as needed.
+            Only pay for what you use. Start with 100 free credits (1+ hour of AI chat), then buy more as needed.
           </p>
           
           {/* Current Balance */}
@@ -148,10 +148,10 @@ export default function CreditsPage() {
             <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6">
               <h3 className="font-semibold mb-2 flex items-center gap-2">
                 <Check className="w-5 h-5 text-green-400" />
-                New users get 50 free credits
+                New users get 100 free credits
               </h3>
               <p className="text-slate-400 text-sm">
-                Start experimenting immediately with your welcome bonus. No credit card required.
+                Enough for 200+ AI chat questions or 10 campaign launches. Start experimenting immediately. No credit card required.
               </p>
             </div>
             <div className="bg-slate-900/50 border border-slate-700 rounded-lg p-6">
