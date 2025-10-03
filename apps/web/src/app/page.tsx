@@ -60,7 +60,7 @@ export default function HomePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-950 overflow-y-auto">
+      <div className="min-h-screen overflow-y-auto" data-theme="dark" style={{background: 'linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(220 39% 18%) 100%)'}}>
         <TopNav onLogin={handleLogin} onSignup={handleSignup} />
         <HeroSection onGetStarted={handleGetStarted} />
         <SocialProofSection />

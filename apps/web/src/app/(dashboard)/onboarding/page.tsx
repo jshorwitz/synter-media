@@ -2,12 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { ArrowRight, Building2, Target, Zap, Loader2, Sparkles, Mail } from "lucide-react"
+import { ArrowRight, Building2, Target, Zap, Loader2, Sparkles, Mail, Check } from "lucide-react"
 
 const STEPS = [
   { id: 0, title: "Website Analysis", icon: Sparkles },
@@ -68,13 +63,13 @@ export default function OnboardingPage() {
 
   const handleNext = async () => {
     if (currentStep === 1) {
-      // Create account
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
+          name: formData.businessName,
         }),
       })
       
@@ -85,7 +80,6 @@ export default function OnboardingPage() {
       
       setCurrentStep(currentStep + 1)
     } else if (currentStep === 3) {
-      // Save onboarding data and redirect
       await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,270 +91,329 @@ export default function OnboardingPage() {
     }
   }
 
-  const handleSkip = () => {
-    router.push("/dashboard")
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <div className="flex items-center justify-between mb-4">
-            {STEPS.map((step) => (
-              <div
-                key={step.id}
-                className={`flex items-center gap-2 ${
-                  step.id === currentStep ? "text-blue-600" : "text-gray-400"
-                }`}
-              >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    step.id <= currentStep
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-400"
-                  }`}
-                >
-                  <step.icon className="w-5 h-5" />
+    <div 
+      className="min-h-screen flex items-center justify-center p-4"
+      data-theme="dark"
+      style={{background: 'linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(220 39% 18%) 100%)'}}
+    >
+      <div className="w-full max-w-3xl">
+        {/* Progress Steps */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            {STEPS.map((step, idx) => (
+              <div key={step.id} className="flex flex-col items-center flex-1">
+                <div className="flex items-center w-full">
+                  <div
+                    className={`
+                      w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500
+                      ${step.id < currentStep ? 'bg-emerald-500 scale-110' : ''}
+                      ${step.id === currentStep ? 'bg-blue-500 ring-4 ring-blue-500/30 scale-110' : ''}
+                      ${step.id > currentStep ? 'bg-slate-700 scale-100' : ''}
+                    `}
+                  >
+                    {step.id < currentStep ? (
+                      <Check className="w-6 h-6 text-white" />
+                    ) : (
+                      <step.icon className="w-6 h-6 text-white" />
+                    )}
+                  </div>
+                  {idx < STEPS.length - 1 && (
+                    <div className="flex-1 h-1 mx-2 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-blue-500 transition-all duration-700 ease-out"
+                        style={{width: step.id < currentStep ? '100%' : '0%'}}
+                      />
+                    </div>
+                  )}
                 </div>
-                <span className="text-sm font-medium hidden sm:inline">{step.title}</span>
+                <span className={`
+                  mt-2 text-sm font-medium transition-colors duration-300
+                  ${step.id === currentStep ? 'text-blue-400' : 'text-slate-500'}
+                `}>
+                  {step.title}
+                </span>
               </div>
             ))}
           </div>
-          <CardTitle className="text-2xl">
-            {currentStep === 0 && "Analyzing your website..."}
-            {currentStep === 1 && "Create your account"}
-            {currentStep === 2 && "Tell us about your business"}
-            {currentStep === 3 && "Connect your ad platforms"}
-          </CardTitle>
-          <CardDescription>
-            {currentStep === 0 && "Using AI to understand your business and audience"}
-            {currentStep === 1 && "Sign up to save your campaign insights"}
-            {currentStep === 2 && "Review and refine the AI analysis"}
-            {currentStep === 3 && "Connect Google, Microsoft, LinkedIn, or Reddit Ads"}
-          </CardDescription>
-        </CardHeader>
+        </div>
 
-        <CardContent className="space-y-6">
+        {/* Card */}
+        <div 
+          className="rounded-2xl p-8 backdrop-blur-lg transition-all duration-500"
+          style={{
+            background: 'rgba(30, 41, 59, 0.9)',
+            border: '1px solid rgba(51, 65, 85, 0.6)',
+            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          }}
+        >
+          {/* Step 0: Analysis */}
           {currentStep === 0 && (
-            <div className="py-12">
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                  Analyzing your website...
+                </h2>
+                <p style={{color: 'hsl(215 20% 65%)'}}>
+                  Using AI to understand your business and audience
+                </p>
+              </div>
+
               {analyzing ? (
-                <div className="text-center">
-                  <Loader2 className="w-16 h-16 text-blue-500 animate-spin mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">Analyzing {formData.website}</h3>
-                  <p className="text-gray-600">Our AI is reviewing your website to understand your business...</p>
-                </div>
-              ) : analysis ? (
-                <div className="space-y-6">
-                  <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
-                    <div className="flex items-start gap-3 mb-4">
-                      <Sparkles className="w-6 h-6 text-blue-600 mt-1" />
-                      <div>
-                        <h3 className="text-lg font-semibold text-blue-900">AI Analysis Complete</h3>
-                        <p className="text-blue-700 text-sm">Here's what we learned about your business</p>
-                      </div>
-                    </div>
-                    <div className="grid gap-4 mt-4">
-                      <div>
-                        <div className="text-sm font-medium text-gray-700">Industry</div>
-                        <div className="text-lg font-semibold text-gray-900">{analysis.industry}</div>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-gray-700">Business Type</div>
-                        <div className="text-lg font-semibold text-gray-900">{analysis.businessType}</div>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-gray-700">Target Audience</div>
-                        <div className="text-gray-900">{analysis.targetAudience}</div>
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-gray-700">Suggested Monthly Budget</div>
-                        <div className="text-lg font-semibold text-green-700">${analysis.suggestedBudget?.toLocaleString()}</div>
-                      </div>
-                      {analysis.keyInsights && (
-                        <div>
-                          <div className="text-sm font-medium text-gray-700 mb-2">Key Insights</div>
-                          <ul className="space-y-1">
-                            {analysis.keyInsights.map((insight: string, i: number) => (
-                              <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
-                                <span className="text-blue-600 mt-0.5">•</span>
-                                {insight}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                <div className="py-16 text-center">
+                  <div className="relative inline-block">
+                    <Loader2 className="w-20 h-20 animate-spin" style={{color: 'hsl(217 91% 60%)'}} />
+                    <div className="absolute inset-0 animate-ping opacity-20">
+                      <Loader2 className="w-20 h-20" style={{color: 'hsl(217 91% 60%)'}} />
                     </div>
                   </div>
-                  <Button onClick={() => setCurrentStep(1)} className="w-full">
-                    Continue to Create Account
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                  <h3 className="text-xl font-semibold mt-6 mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                    Analyzing {formData.website}
+                  </h3>
+                  <p style={{color: 'hsl(215 20% 65%)'}}>
+                    Our AI is reviewing your website to understand your business...
+                  </p>
+                </div>
+              ) : analysis ? (
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
+                    <h4 className="font-semibold mb-1" style={{color: 'hsl(217 91% 60%)'}}>Business Type</h4>
+                    <p style={{color: 'hsl(210 40% 96%)'}}>{analysis.businessType}</p>
+                  </div>
+                  <div className="p-4 rounded-lg" style={{background: 'rgba(142, 199, 89, 0.1)', border: '1px solid rgba(142, 199, 89, 0.3)'}}>
+                    <h4 className="font-semibold mb-1" style={{color: 'hsl(142 76% 36%)'}}>Industry</h4>
+                    <p style={{color: 'hsl(210 40% 96%)'}}>{analysis.industry}</p>
+                  </div>
+                  <div className="p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)'}}>
+                    <h4 className="font-semibold mb-1" style={{color: 'hsl(45 93% 47%)'}}>Target Audience</h4>
+                    <p style={{color: 'hsl(210 40% 96%)'}}>{analysis.targetAudience}</p>
+                  </div>
+                  <div className="p-4 rounded-lg" style={{background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)'}}>
+                    <h4 className="font-semibold mb-1" style={{color: 'hsl(271 91% 65%)'}}>Suggested Budget</h4>
+                    <p style={{color: 'hsl(210 40% 96%)'}}>${analysis.suggestedBudget?.toLocaleString()}/month</p>
+                  </div>
+                  <button
+                    onClick={handleNext}
+                    className="w-full mt-6 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                    style={{background: 'hsl(217 91% 60%)', color: 'white'}}
+                  >
+                    Continue to Account Creation
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
                 </div>
               ) : null}
             </div>
           )}
 
+          {/* Step 1: Create Account */}
           {currentStep === 1 && (
-            <>
+            <div className="space-y-6 animate-fade-in">
               <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="you@company.com"
-                />
-              </div>
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  placeholder="Create a secure password"
-                />
-              </div>
-            </>
-          )}
-
-          {currentStep === 2 && (
-            <>
-              <div>
-                <Label htmlFor="businessName">Business Name</Label>
-                <Input
-                  id="businessName"
-                  value={formData.businessName}
-                  onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                  placeholder="Acme Corp"
-                />
-              </div>
-              <div>
-                <Label htmlFor="website">Website</Label>
-                <Input
-                  id="website"
-                  type="url"
-                  value={formData.website}
-                  onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                  placeholder="https://example.com"
-                />
-              </div>
-              <div>
-                <Label htmlFor="industry">Industry</Label>
-                <Input
-                  id="industry"
-                  value={formData.industry}
-                  onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                  placeholder="SaaS, E-commerce, Healthcare, etc."
-                />
-              </div>
-            </>
-          )}
-
-          {currentStep === 2 && analysis && (
-            <>
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
-                <p className="text-sm text-gray-600">
-                  <strong>AI found:</strong> {analysis.industry} • {analysis.businessType}
+                <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                  Create your account
+                </h2>
+                <p style={{color: 'hsl(215 20% 65%)'}}>
+                  Sign up to save your campaign insights
                 </p>
               </div>
-              <div>
-                <Label htmlFor="audience">Who is your ideal customer?</Label>
-                <Textarea
-                  id="audience"
-                  value={formData.audience}
-                  onChange={(e) => setFormData({ ...formData, audience: e.target.value })}
-                  placeholder="e.g., Software developers at B2B companies with 50-500 employees"
-                  rows={4}
-                />
-              </div>
-              <div>
-                <Label htmlFor="goals">What are your marketing goals?</Label>
-                <Textarea
-                  id="goals"
-                  value={formData.goals}
-                  onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
-                  placeholder="e.g., Generate qualified leads, increase brand awareness, drive conversions"
-                  rows={4}
-                />
-              </div>
-              <div>
-                <Label htmlFor="monthlyBudget">Monthly Ad Budget (USD)</Label>
-                <Input
-                  id="monthlyBudget"
-                  type="number"
-                  value={formData.monthlyBudget}
-                  onChange={(e) => setFormData({ ...formData, monthlyBudget: e.target.value })}
-                  placeholder="5000"
-                />
-              </div>
-            </>
-          )}
 
-          {currentStep === 3 && (
-            <div className="space-y-4">
-              <p className="text-sm text-gray-600 mb-4">
-                Connect your ad platforms now, or skip and do it later from Settings.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Button
-                  variant="outline"
-                  className="h-20 flex-col gap-2"
-                  onClick={() => router.push("/settings/credentials?platform=google_ads")}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{color: 'hsl(215 20% 65%)'}}>
+                    Business Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.businessName}
+                    onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                    className="w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      borderColor: 'rgba(51, 65, 85, 0.6)',
+                      color: 'hsl(210 40% 96%)'
+                    }}
+                    placeholder="Acme Corp"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{color: 'hsl(215 20% 65%)'}}>
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    className="w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      borderColor: 'rgba(51, 65, 85, 0.6)',
+                      color: 'hsl(210 40% 96%)'
+                    }}
+                    placeholder="you@company.com"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{color: 'hsl(215 20% 65%)'}}>
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      borderColor: 'rgba(51, 65, 85, 0.6)',
+                      color: 'hsl(210 40% 96%)'
+                    }}
+                    placeholder="••••••••"
+                  />
+                </div>
+                <button
+                  onClick={handleNext}
+                  disabled={!formData.email || !formData.password || !formData.businessName}
+                  className="w-full mt-6 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{background: 'hsl(217 91% 60%)', color: 'white'}}
                 >
-                  <div className="text-lg font-semibold">Google Ads</div>
-                  <div className="text-xs text-gray-500">Search & Display</div>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-20 flex-col gap-2"
-                  onClick={() => router.push("/settings/credentials?platform=microsoft_ads")}
-                >
-                  <div className="text-lg font-semibold">Microsoft Ads</div>
-                  <div className="text-xs text-gray-500">Bing Search</div>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-20 flex-col gap-2"
-                  onClick={() => router.push("/settings/credentials?platform=linkedin_ads")}
-                >
-                  <div className="text-lg font-semibold">LinkedIn Ads</div>
-                  <div className="text-xs text-gray-500">B2B Professional</div>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-20 flex-col gap-2"
-                  onClick={() => router.push("/settings/credentials?platform=reddit_ads")}
-                >
-                  <div className="text-lg font-semibold">Reddit Ads</div>
-                  <div className="text-xs text-gray-500">Community & Interest</div>
-                </Button>
+                  Create Account & Continue
+                  <ArrowRight className="w-5 h-5" />
+                </button>
               </div>
             </div>
           )}
 
-          <div className="flex justify-between pt-4">
-            {currentStep > 0 && (
-              <Button variant="ghost" onClick={handleSkip}>
-                Skip for now
-              </Button>
-            )}
-            {currentStep > 0 && (
-              <Button 
-                onClick={handleNext} 
-                disabled={
-                  (currentStep === 1 && (!formData.email || !formData.password)) ||
-                  (currentStep === 2 && !formData.businessName)
-                }
-              >
-                {currentStep === 3 ? "Get Started" : "Continue"}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+          {/* Step 2: Business Details */}
+          {currentStep === 2 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                  Tell us about your business
+                </h2>
+                <p style={{color: 'hsl(215 20% 65%)'}}>
+                  Review and refine the AI analysis
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{color: 'hsl(215 20% 65%)'}}>
+                    Industry
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.industry}
+                    onChange={(e) => setFormData({...formData, industry: e.target.value})}
+                    className="w-full px-4 py-3 rounded-lg border"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      borderColor: 'rgba(51, 65, 85, 0.6)',
+                      color: 'hsl(210 40% 96%)'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{color: 'hsl(215 20% 65%)'}}>
+                    Target Audience
+                  </label>
+                  <textarea
+                    value={formData.audience}
+                    onChange={(e) => setFormData({...formData, audience: e.target.value})}
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-lg border"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      borderColor: 'rgba(51, 65, 85, 0.6)',
+                      color: 'hsl(210 40% 96%)'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2" style={{color: 'hsl(215 20% 65%)'}}>
+                    Monthly Budget
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.monthlyBudget}
+                    onChange={(e) => setFormData({...formData, monthlyBudget: e.target.value})}
+                    className="w-full px-4 py-3 rounded-lg border"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      borderColor: 'rgba(51, 65, 85, 0.6)',
+                      color: 'hsl(210 40% 96%)'
+                    }}
+                    placeholder="5000"
+                  />
+                </div>
+                <button
+                  onClick={handleNext}
+                  className="w-full mt-6 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                  style={{background: 'hsl(217 91% 60%)', color: 'white'}}
+                >
+                  Continue
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Connect Platforms */}
+          {currentStep === 3 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                  Connect your ad platforms
+                </h2>
+                <p style={{color: 'hsl(215 20% 65%)'}}>
+                  Connect Google, Microsoft, LinkedIn, or Reddit Ads
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { name: 'Google Ads', color: 'hsl(217 91% 60%)' },
+                  { name: 'Microsoft Ads', color: 'hsl(142 76% 36%)' },
+                  { name: 'LinkedIn Ads', color: 'hsl(201 100% 35%)' },
+                  { name: 'Reddit Ads', color: 'hsl(16 100% 50%)' },
+                ].map((platform) => (
+                  <button
+                    key={platform.name}
+                    className="p-6 rounded-lg border-2 border-dashed transition-all duration-300 hover:scale-105 hover:shadow-lg text-center"
+                    style={{
+                      borderColor: platform.color,
+                      background: `${platform.color}15`
+                    }}
+                  >
+                    <Zap className="w-8 h-8 mx-auto mb-2" style={{color: platform.color}} />
+                    <p className="font-semibold" style={{color: 'hsl(210 40% 96%)'}}>{platform.name}</p>
+                    <p className="text-xs mt-1" style={{color: 'hsl(215 20% 65%)'}}>Click to connect</p>
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex gap-4">
+                <button
+                  onClick={() => router.push('/dashboard')}
+                  className="flex-1 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:bg-slate-700"
+                  style={{
+                    background: 'rgba(51, 65, 85, 0.5)',
+                    color: 'hsl(210 40% 96%)'
+                  }}
+                >
+                  Skip for now
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="flex-1 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                  style={{background: 'hsl(142 76% 36%)', color: 'white'}}
+                >
+                  Finish Setup
+                  <Check className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

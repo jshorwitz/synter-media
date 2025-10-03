@@ -100,6 +100,50 @@
   --synter-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* Dark theme - matching traffic dashboard aesthetic */
+[data-theme="dark"] {
+  --synter-surface: 222 47% 11%;       /* slate-950 */
+  --synter-surface-2: 220 39% 18%;     /* slate-800 */
+  --synter-surface-3: 215 28% 24%;     /* slate-700 */
+  --synter-surface-accent: 217 33% 17%; /* darker slate */
+  
+  --synter-ink: 210 40% 96%;           /* light text */
+  --synter-ink-2: 214 32% 91%;         /* e2e8f0 */
+  --synter-ink-3: 215 20% 65%;         /* 94a3b8 */
+  --synter-ink-muted: 215 16% 47%;     /* 64748b */
+  
+  --synter-volt: 78 95% 60%;           /* bright lime */
+  --synter-volt-2: 142 76% 36%;        /* 10b981 emerald */
+  --synter-volt-3: 142 71% 45%;
+  
+  --synter-sky: 217 91% 60%;           /* 3b82f6 */
+  --synter-sky-2: 221 83% 53%;         /* 2563eb */
+  --synter-sky-3: 224 76% 48%;
+  
+  --synter-border: 217 33% 21%;        /* subtle border */
+  --synter-border-light: 215 28% 17%;
+  
+  --synter-shadow: 220 40% 5%;
+  --synter-hover: 217 33% 14%;
+  --synter-active: 217 33% 17%;
+  
+  /* Data Visualization Colors */
+  --viz-series-1: 217 91% 60%;         /* blue */
+  --viz-series-2: 142 76% 36%;         /* green */
+  --viz-series-3: 45 93% 47%;          /* amber */
+  --viz-series-4: 0 84% 60%;           /* red */
+  --viz-series-5: 271 91% 65%;         /* purple */
+  --viz-series-6: 189 94% 43%;         /* cyan */
+  --viz-series-7: 340 82% 52%;         /* pink */
+  --viz-series-8: 142 76% 36%;         /* teal */
+  
+  --viz-gridline: 215 28% 24%;         /* subtle grid */
+  --viz-axis: 214 32% 91%;             /* axis text */
+  --viz-tooltip-bg: 217 33% 17%;       /* tooltip background */
+  --viz-tooltip-text: 210 40% 96%;     /* tooltip text */
+  --viz-tooltip-border: 217 91% 60%;   /* tooltip border */
+}
+
 /* Light theme overrides */
 [data-theme="light"] {
   --synter-surface: 210 20% 98%;
@@ -126,6 +170,22 @@
   --synter-shadow: 220 20% 95%;
   --synter-hover: 220 18% 94%;
   --synter-active: 220 20% 90%;
+  
+  /* Data Visualization Colors */
+  --viz-series-1: 217 91% 60%;
+  --viz-series-2: 142 76% 36%;
+  --viz-series-3: 45 93% 47%;
+  --viz-series-4: 0 84% 60%;
+  --viz-series-5: 271 91% 65%;
+  --viz-series-6: 189 94% 43%;
+  --viz-series-7: 340 82% 52%;
+  --viz-series-8: 142 76% 36%;
+  
+  --viz-gridline: 220 15% 88%;
+  --viz-axis: 220 15% 15%;
+  --viz-tooltip-bg: 0 0% 100%;
+  --viz-tooltip-text: 220 15% 15%;
+  --viz-tooltip-border: 217 91% 60%;
 }
 
 /* ==========================================
@@ -512,6 +572,31 @@ div[style*="bottom"][style*="left"] {
 
 .synter-table tr:last-child td {
   border-bottom: none;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Status badges */

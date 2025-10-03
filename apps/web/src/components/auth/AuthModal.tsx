@@ -43,20 +43,22 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = 'login' }: 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-50 overflow-y-auto" data-theme="dark">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-synter-surface/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 backdrop-blur-sm transition-opacity animate-fade-in"
+        style={{background: 'rgba(0, 0, 0, 0.7)'}}
         onClick={onClose}
       />
       
       {/* Modal */}
       <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative w-full max-w-md animate-slide-up">
+        <div className="relative w-full max-w-md animate-fade-in">
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute -top-12 right-0 synter-btn synter-btn-ghost p-2 text-synter-ink-2 hover:text-synter-ink"
+            className="absolute -top-12 right-0 p-2 rounded-lg transition-colors hover:bg-white/10"
+            style={{color: 'hsl(215 20% 65%)'}}
           >
             <span className="sr-only">Close</span>
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -65,7 +67,14 @@ export function AuthModal({ isOpen, onClose, onSuccess, defaultTab = 'login' }: 
           </button>
           
           {/* Auth content */}
-          <div className="synter-card shadow-synter-xl">
+          <div 
+            className="rounded-2xl p-8 backdrop-blur-lg"
+            style={{
+              background: 'rgba(30, 41, 59, 0.95)',
+              border: '1px solid rgba(51, 65, 85, 0.6)',
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)'
+            }}
+          >
             <AuthPage defaultTab={defaultTab} onSuccess={handleSuccess} isModal={true} />
           </div>
         </div>

@@ -5,29 +5,35 @@ import { useResizeObserver } from "./useResizeObserver";
 
 type Datum = { label: string; value: number; color?: string };
 
-export default function BarChart({ data, height = 300 }: { data: Datum[]; height?: number }) {
+export default function DonutChart({ data, height = 300 }: { data: Datum[]; height?: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const size = useResizeObserver(containerRef);
 
   useEffect(() => {
     if (!size || !containerRef.current || !globalThis.d3) return;
     const { width } = size;
-    const margin = { top: 20, right: 20, bottom: 50, left = 60 };
-    const w = Math.max(0, width - margin.left - margin.right);
-    const h = Math.max(0, height - margin.top - margin.bottom);
 
     const root = containerRef.current;
     root.innerHTML = "";
 
     // Get CSS variables for theming
     const styles = getComputedStyle(root);
-    const gridlineColor = styles.getPropertyValue('--viz-gridline') || '215 28% 24%';
     const axisColor = styles.getPropertyValue('--viz-axis') || '214 32% 91%';
     const tooltipBg = styles.getPropertyValue('--viz-tooltip-bg') || '217 33% 17%';
     const tooltipText = styles.getPropertyValue('--viz-tooltip-text') || '210 40% 96%';
     const tooltipBorder = styles.getPropertyValue('--viz-tooltip-border') || '217 91% 60%';
 
-    // Color scale using CSS variables
+    // Platform-specific colors
+    const platformColors: Record<string, string> = {
+      google: '217 91% 60%',    // blue
+      reddit: '16 100% 50%',    // reddit orange
+      microsoft: '142 76% 36%', // green  
+      linkedin: '201 100% 35%', // linkedin blue
+      facebook: '221 44% 41%',  // facebook blue
+      twitter: '203 89% 53%',   // twitter blue
+    };
+
+    // Default color scale
     const colorScale = [
       styles.getPropertyValue('--viz-series-1') || '217 91% 60%',
       styles.getPropertyValue('--viz-series-2') || '142 76% 36%',
@@ -37,53 +43,28 @@ export default function BarChart({ data, height = 300 }: { data: Datum[]; height
       styles.getPropertyValue('--viz-series-6') || '189 94% 43%',
     ];
 
+    const radius = Math.min(width, height) / 2 - 20;
+    const innerRadius = radius * 0.6;
+
     const svg = d3
       .select(root)
       .append("svg")
       .attr("width", width)
       .attr("height", height)
-      .style("overflow", "visible")
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${width / 2},${height / 2})`);
 
-    const x = d3
-      .scaleBand()
-      .domain(data.map((d) => d.label))
-      .range([0, w])
-      .padding(0.3);
+    const pie = d3.pie<Datum>()
+      .value((d: any) => d.value)
+      .sort(null);
 
-    const y = d3
-      .scaleLinear()
-      .domain([0, (d3.max(data, (d: any) => d.value) || 0) * 1.1])
-      .nice()
-      .range([h, 0]);
+    const arc = d3.arc()
+      .innerRadius(innerRadius)
+      .outerRadius(radius);
 
-    // Gridlines
-    svg.append("g")
-      .attr("class", "grid")
-      .attr("opacity", 0.1)
-      .call(d3.axisLeft(y)
-        .tickSize(-w)
-        .tickFormat(() => "")
-      )
-      .style("stroke", `hsl(${gridlineColor})`);
-
-    // X axis
-    svg
-      .append("g")
-      .attr("transform", `translate(0,${h})`)
-      .call(d3.axisBottom(x))
-      .selectAll("text")
-      .style("font-size", "12px")
-      .style("color", `hsl(${axisColor})`)
-      .attr("transform", "rotate(-12)")
-      .style("text-anchor", "end");
-
-    // Y axis
-    svg.append("g")
-      .call(d3.axisLeft(y).ticks(5).tickFormat((d) => `$${d.toLocaleString()}`))
-      .style("color", `hsl(${axisColor})`)
-      .style("font-size", "12px");
+    const arcHover = d3.arc()
+      .innerRadius(innerRadius)
+      .outerRadius(radius + 8);
 
     // Tooltip
     const tooltip = d3.select(root)
@@ -101,34 +82,41 @@ export default function BarChart({ data, height = 300 }: { data: Datum[]; height
       .style("backdrop-filter", "blur(10px)")
       .style("box-shadow", "0 4px 12px rgba(0,0,0,0.3)");
 
-    // Bars
-    const bars = svg
-      .selectAll("rect")
-      .data(data)
+    const total = d3.sum(data, d => d.value);
+
+    const slices = svg
+      .selectAll("path")
+      .data(pie(data))
       .enter()
-      .append("rect")
-      .attr("x", (d) => x(d.label)!)
-      .attr("width", x.bandwidth())
-      .attr("y", h)
-      .attr("height", 0)
-      .attr("rx", 6)
-      .attr("fill", (d, i) => `hsl(${d.color || colorScale[i % colorScale.length]})`)
+      .append("path")
+      .attr("d", arc as any)
+      .attr("fill", (d: any, i) => {
+        const platformColor = platformColors[d.data.label.toLowerCase()];
+        return `hsl(${d.data.color || platformColor || colorScale[i % colorScale.length]})`;
+      })
+      .attr("stroke", "rgba(0,0,0,0.3)")
+      .attr("stroke-width", 2)
       .style("cursor", "pointer")
+      .style("opacity", 0)
       .on("mouseover", function(event, d: any) {
         d3.select(this)
           .transition()
           .duration(200)
-          .attr("opacity", 0.8)
-          .attr("y", y(d.value) - 3);
+          .attr("d", arcHover as any)
+          .style("opacity", 1);
         
+        const percentage = ((d.data.value / total) * 100).toFixed(1);
         tooltip
           .style("visibility", "visible")
           .html(`
             <div style="font-weight: 600; margin-bottom: 4px; text-transform: capitalize;">
-              ${d.label}
+              ${d.data.label}
             </div>
             <div style="font-weight: 700; font-size: 16px;">
-              $${d.value.toLocaleString()}
+              $${d.data.value.toLocaleString()}
+            </div>
+            <div style="font-size: 11px; margin-top: 4px; opacity: 0.8;">
+              ${percentage}% of total
             </div>
           `);
       })
@@ -137,45 +125,48 @@ export default function BarChart({ data, height = 300 }: { data: Datum[]; height
           .style("top", (event.pageY - 60) + "px")
           .style("left", (event.pageX + 10) + "px");
       })
-      .on("mouseout", function(event, d: any) {
+      .on("mouseout", function() {
         d3.select(this)
           .transition()
           .duration(200)
-          .attr("opacity", 1)
-          .attr("y", y(d.value));
+          .attr("d", arc as any)
+          .style("opacity", 0.9);
         
         tooltip.style("visibility", "hidden");
       });
 
-    // Animate bars
-    bars
+    // Animate slices
+    slices
       .transition()
       .delay((d, i) => i * 100)
-      .duration(800)
-      .ease(d3.easeCubicOut)
-      .attr("y", (d) => y(d.value))
-      .attr("height", (d) => h - y(d.value));
+      .duration(600)
+      .style("opacity", 0.9);
 
-    // Value labels
-    svg
-      .selectAll("text.bar-label")
-      .data(data)
-      .enter()
-      .append("text")
-      .attr("class", "bar-label")
+    // Center text - total
+    svg.append("text")
       .attr("text-anchor", "middle")
-      .attr("x", (d) => (x(d.label)! + x.bandwidth() / 2))
-      .attr("y", h)
-      .style("font-size", "11px")
-      .style("font-weight", "600")
+      .attr("dy", "-0.2em")
+      .style("font-size", "28px")
+      .style("font-weight", "700")
       .style("fill", `hsl(${axisColor})`)
       .style("opacity", 0)
-      .text((d) => d.value >= 1000 ? `$${Math.round(d.value / 1000)}k` : `$${d.value}`)
+      .text(`$${total.toLocaleString()}`)
       .transition()
-      .delay((d, i) => i * 100 + 400)
+      .delay(400)
       .duration(600)
-      .attr("y", (d) => y(d.value) - 8)
       .style("opacity", 1);
+
+    svg.append("text")
+      .attr("text-anchor", "middle")
+      .attr("dy", "1.5em")
+      .style("font-size", "12px")
+      .style("fill", `hsl(${axisColor})`)
+      .style("opacity", 0.7)
+      .text("Total Spend")
+      .transition()
+      .delay(400)
+      .duration(600)
+      .style("opacity", 0.7);
 
   }, [data, size, height]);
 
