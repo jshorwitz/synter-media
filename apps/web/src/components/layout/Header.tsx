@@ -37,12 +37,12 @@ export function Header({ onMenuClick }: HeaderProps) {
           <div className="flex items-center space-x-3">
             {/* Quick actions */}
             <div className="hidden md:flex items-center space-x-2">
-              <button className="synter-btn synter-btn-ghost synter-btn-sm">
+              <Link href="/campaigns/new" className="synter-btn synter-btn-ghost synter-btn-sm">
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
                 <span className="hidden sm:inline">New Campaign</span>
-              </button>
+              </Link>
             </div>
 
             {/* Notifications */}
