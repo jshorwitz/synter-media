@@ -80,12 +80,15 @@ function OnboardingContent() {
       
       setCurrentStep(currentStep + 1)
     } else if (currentStep === 3) {
+      // Save onboarding data
       await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-      })
-      router.push("/campaigns/new")
+      }).catch(() => {}) // Don't block if this fails
+      
+      // Redirect to dashboard
+      router.push("/dashboard")
     } else {
       setCurrentStep(currentStep + 1)
     }
@@ -364,19 +367,26 @@ function OnboardingContent() {
                   Connect your ad platforms
                 </h2>
                 <p style={{color: 'hsl(215 20% 65%)'}}>
-                  Connect Google, Microsoft, LinkedIn, or Reddit Ads
+                  Connect Google, LinkedIn, or Reddit Ads. You can also add platforms later in Settings.
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { name: 'Google Ads', color: 'hsl(217 91% 60%)' },
-                  { name: 'Microsoft Ads', color: 'hsl(142 76% 36%)' },
-                  { name: 'LinkedIn Ads', color: 'hsl(201 100% 35%)' },
-                  { name: 'Reddit Ads', color: 'hsl(16 100% 50%)' },
+                  { name: 'Google Ads', color: 'hsl(217 91% 60%)', route: '/api/auth/google' },
+                  { name: 'Microsoft Ads', color: 'hsl(142 76% 36%)', route: '/settings/apps' },
+                  { name: 'LinkedIn Ads', color: 'hsl(201 100% 35%)', route: '/api/auth/linkedin' },
+                  { name: 'Reddit Ads', color: 'hsl(16 100% 50%)', route: '/api/auth/reddit' },
                 ].map((platform) => (
                   <button
                     key={platform.name}
+                    onClick={() => {
+                      if (platform.route.startsWith('/api')) {
+                        window.location.href = platform.route
+                      } else {
+                        router.push(platform.route)
+                      }
+                    }}
                     className="p-6 rounded-lg border-2 border-dashed transition-all duration-300 hover:scale-105 hover:shadow-lg text-center"
                     style={{
                       borderColor: platform.color,
