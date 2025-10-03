@@ -9,6 +9,7 @@ import TimeSeriesLine from '../charts/TimeSeriesLine';
 import BarChart from '../charts/BarChart';
 import DonutChart from '../charts/DonutChart';
 import AreaChart from '../charts/AreaChart';
+import ReferralCard from './ReferralCard';
 
 interface AttributionData {
   platform: string;
@@ -287,6 +288,9 @@ export function Overview() {
           sparklineData={revenueSparkline}
         />
       </div>
+
+      {/* Referral Card */}
+      <ReferralCard />
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
