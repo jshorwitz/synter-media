@@ -418,11 +418,7 @@ export default function AuditPage() {
                       {log.error_message && (
                         <div>
                           <span className="font-medium text-red-600">Error Message:</span>
-<<<<<<< HEAD
-                          <div className="mt-1 p-3 bg-red-50 rounded-lg text-sm text-red-800">
-=======
                           <div className="mt-1 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
->>>>>>> b95e64dd98aa67154364eb1fae3a804228041603
                             {log.error_message}
                           </div>
                         </div>
