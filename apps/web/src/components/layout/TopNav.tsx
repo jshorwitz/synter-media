@@ -12,7 +12,7 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-xl">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-carbon-900/90 backdrop-blur-xl border-b border-stroke-1">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -21,44 +21,44 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center gap-8 font-mono">
             <a
               href="#features"
-              className="text-slate-300 hover:text-lime-400 transition-colors duration-200 font-medium"
+              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
             >
               Features
             </a>
             <a
               href="#pricing"
-              className="text-slate-300 hover:text-lime-400 transition-colors duration-200 font-medium"
+              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
             >
               Pricing
             </a>
             <a
               href="#docs"
-              className="text-slate-300 hover:text-lime-400 transition-colors duration-200 font-medium"
+              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
             >
               Docs
             </a>
             <a
               href="#support"
-              className="text-slate-300 hover:text-lime-400 transition-colors duration-200 font-medium"
+              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
             >
               Support
             </a>
           </div>
 
           {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={onLogin}
-              className="text-slate-300 hover:text-slate-100 px-4 py-2 transition-colors"
+              className="btn-tactical-ghost text-xs px-4 py-2"
             >
               Log in
             </button>
             <button
               onClick={onSignup}
-              className="bg-lime-500 text-slate-900 px-4 py-2 rounded-xl font-medium hover:bg-lime-400 transition-all"
+              className="btn-tactical-primary text-xs px-4 py-2"
             >
               Sign up
             </button>
