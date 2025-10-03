@@ -119,7 +119,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                     
                     <div className="p-2">
                       <Link
-                        href="/settings"
+                        href="/settings/account"
                         className="flex items-center px-3 py-2 text-sm text-synter-ink-2 hover:text-synter-ink hover:bg-synter-hover rounded-lg transition-all duration-200"
                         onClick={() => setUserMenuOpen(false)}
                       >
