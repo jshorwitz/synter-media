@@ -1,12 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Plus, Edit, Trash2, Eye, EyeOff, CheckCircle, XCircle } from "lucide-react"
+import { Plus, Eye, EyeOff, CheckCircle, XCircle } from "lucide-react"
 
 const PLATFORMS = [
   { id: "google_ads", name: "Google Ads", fields: ["developer_token", "login_customer_id"] },
@@ -140,54 +135,45 @@ export default function AppsSettingsPage() {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-32 bg-gray-200 rounded"></div>
-        </div>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-text-low font-mono text-sm">Loading...</div>
       </div>
     )
   }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">OAuth Apps & API Credentials</h1>
-        <p className="text-gray-600">
-          Manage OAuth applications and API credentials for each advertising platform.
-        </p>
-      </div>
-
-      <div className="grid gap-6">
+    <div className="max-w-6xl space-y-6">
+      <div className="space-y-6">
         {PLATFORMS.map((platform) => {
           const platformApps = apps[platform.id] || []
           const hasApps = platformApps.length > 0
 
           return (
-            <Card key={platform.id}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>{platform.name}</CardTitle>
-                    <CardDescription>OAuth application credentials for {platform.name}</CardDescription>
-                  </div>
-                  <Button onClick={() => setShowForm(platform.id)} size="sm">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add OAuth App
-                  </Button>
+            <div key={platform.id} className="panel">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="panel-title mb-1">{platform.name}</h3>
+                  <p className="text-text-low text-xs font-mono">OAuth application credentials for {platform.name}</p>
                 </div>
-              </CardHeader>
+                <button 
+                  onClick={() => setShowForm(platform.id)} 
+                  className="btn-tactical-secondary text-xs px-3 py-1.5 flex items-center gap-2"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add OAuth App
+                </button>
+              </div>
 
               {/* Add App Form */}
               {showForm === platform.id && (
-                <CardContent className="border-t pt-6">
-                  <div className="space-y-4 bg-blue-50 p-6 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-4">Add {platform.name} OAuth App</h3>
+                <div className="border-t border-stroke-1 pt-4 mt-4">
+                  <div className="space-y-4 bg-carbon-800/50 p-4 rounded-tactical border border-stroke-2">
+                    <h3 className="text-text-hi font-bold font-mono text-sm mb-4 uppercase tracking-wide">Add {platform.name} OAuth App</h3>
                     
                     <div>
-                      <Label htmlFor={`${platform.id}-label`}>App Label</Label>
-                      <Input
-                        id={`${platform.id}-label`}
+                      <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">App Label</label>
+                      <input
+                        className="input-tactical"
                         value={formData.label}
                         onChange={(e) => setFormData({ ...formData, label: e.target.value })}
                         placeholder="Production"
@@ -195,9 +181,9 @@ export default function AppsSettingsPage() {
                     </div>
 
                     <div>
-                      <Label htmlFor={`${platform.id}-client-id`}>Client ID</Label>
-                      <Input
-                        id={`${platform.id}-client-id`}
+                      <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">Client ID</label>
+                      <input
+                        className="input-tactical"
                         value={formData.client_id}
                         onChange={(e) => setFormData({ ...formData, client_id: e.target.value })}
                         placeholder="your-client-id"
@@ -205,20 +191,18 @@ export default function AppsSettingsPage() {
                     </div>
 
                     <div>
-                      <Label htmlFor={`${platform.id}-client-secret`}>Client Secret</Label>
+                      <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">Client Secret</label>
                       <div className="relative">
-                        <Input
-                          id={`${platform.id}-client-secret`}
+                        <input
+                          className="input-tactical"
                           type={showSecrets[platform.id] ? "text" : "password"}
                           value={formData.client_secret}
                           onChange={(e) => setFormData({ ...formData, client_secret=REDACTED })}
                           placeholder="your-client-secret"
                         />
-                        <Button
+                        <button
                           type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="absolute right-0 top-0 h-full px-3"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-text-mid hover:text-text-hi"
                           onClick={() =>
                             setShowSecrets({ ...showSecrets, [platform.id]: !showSecrets[platform.id] })
                           }
@@ -228,27 +212,27 @@ export default function AppsSettingsPage() {
                           ) : (
                             <Eye className="h-4 w-4" />
                           )}
-                        </Button>
+                        </button>
                       </div>
                     </div>
 
                     <div>
-                      <Label htmlFor={`${platform.id}-redirect`}>Redirect URI</Label>
-                      <Input
-                        id={`${platform.id}-redirect`}
+                      <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">Redirect URI</label>
+                      <input
+                        className="input-tactical"
                         value={formData.redirect_uri || getDefaultRedirectUri(platform.id)}
                         onChange={(e) => setFormData({ ...formData, redirect_uri: e.target.value })}
                         placeholder={getDefaultRedirectUri(platform.id)}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-[10px] text-text-muted font-mono mt-1">
                         Must match exactly in your {platform.name} developer console
                       </p>
                     </div>
 
                     <div>
-                      <Label htmlFor={`${platform.id}-scopes`}>Scopes (comma-separated)</Label>
-                      <Input
-                        id={`${platform.id}-scopes`}
+                      <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">Scopes (comma-separated)</label>
+                      <input
+                        className="input-tactical"
                         value={formData.scopes || getDefaultScopes(platform.id)}
                         onChange={(e) => setFormData({ ...formData, scopes: e.target.value })}
                         placeholder={getDefaultScopes(platform.id)}
@@ -257,9 +241,9 @@ export default function AppsSettingsPage() {
 
                     {platform.fields.includes("developer_token") && (
                       <div>
-                        <Label htmlFor={`${platform.id}-dev-token`}>Developer Token</Label>
-                        <Input
-                          id={`${platform.id}-dev-token`}
+                        <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">Developer Token</label>
+                        <input
+                          className="input-tactical"
                           type={showSecrets[`${platform.id}-dev`] ? "text" : "password"}
                           value={formData.developer_token}
                           onChange={(e) => setFormData({ ...formData, developer_token: e.target.value })}
@@ -270,109 +254,111 @@ export default function AppsSettingsPage() {
 
                     {platform.fields.includes("login_customer_id") && (
                       <div>
-                        <Label htmlFor={`${platform.id}-login-customer`}>Login Customer ID (MCC)</Label>
-                        <Input
-                          id={`${platform.id}-login-customer`}
+                        <label className="block text-xs font-mono text-text-low uppercase tracking-wider mb-2">Login Customer ID (MCC)</label>
+                        <input
+                          className="input-tactical"
                           value={formData.login_customer_id}
                           onChange={(e) => setFormData({ ...formData, login_customer_id: e.target.value })}
                           placeholder="1234567890"
                         />
-                        <p className="text-xs text-gray-500 mt-1">Optional: Manager account ID if using MCC</p>
+                        <p className="text-[10px] text-text-muted font-mono mt-1">Optional: Manager account ID if using MCC</p>
                       </div>
                     )}
 
                     <div className="flex gap-2 pt-4">
-                      <Button variant="outline" onClick={() => setShowForm(null)}>
+                      <button 
+                        className="btn-tactical-ghost text-xs px-4 py-2" 
+                        onClick={() => setShowForm(null)}
+                      >
                         Cancel
-                      </Button>
-                      <Button
+                      </button>
+                      <button
+                        className="btn-tactical-primary text-xs px-4 py-2"
                         onClick={() => handleSubmit(platform.id)}
                         disabled={!formData.label || !formData.client_id || !formData.client_secret}
                       >
                         Save OAuth App
-                      </Button>
+                      </button>
                     </div>
                   </div>
-                </CardContent>
+                </div>
               )}
 
               {/* Existing Apps */}
               {hasApps && (
-                <CardContent>
+                <div className="border-t border-stroke-1 pt-4 mt-4">
                   <div className="space-y-3">
                     {platformApps.map((app) => (
-                      <div key={app.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                      <div key={app.id} className="flex items-center justify-between p-3 bg-carbon-800 rounded-tactical border border-stroke-2">
                         <div className="flex-1">
-                          <div className="font-medium">{app.label}</div>
-                          <div className="text-sm text-gray-500">
+                          <div className="font-mono font-bold text-text-hi text-sm">{app.label}</div>
+                          <div className="text-xs font-mono text-text-low mt-1">
                             Client ID: {app.client_id.substring(0, 20)}...
                           </div>
-                          <div className="text-xs text-gray-400 mt-1">
+                          <div className="text-[10px] font-mono text-text-muted mt-1">
                             Created: {new Date(app.created_at).toLocaleDateString()}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           {app.is_active ? (
-                            <Badge className="bg-green-100 text-green-800">
-                              <CheckCircle className="w-3 h-3 mr-1" />
+                            <span className="status-pill success flex items-center gap-1">
+                              <CheckCircle className="w-3 h-3" />
                               Active
-                            </Badge>
+                            </span>
                           ) : (
-                            <Badge variant="secondary">
-                              <XCircle className="w-3 h-3 mr-1" />
+                            <span className="status-pill idle flex items-center gap-1">
+                              <XCircle className="w-3 h-3" />
                               Inactive
-                            </Badge>
+                            </span>
                           )}
                         </div>
                       </div>
                     ))}
                   </div>
-                </CardContent>
+                </div>
               )}
-            </Card>
+            </div>
           )
         })}
       </div>
 
-      <Card className="mt-8 bg-blue-50 border-blue-200">
-        <CardHeader>
-          <CardTitle className="text-lg">How to Get OAuth Credentials</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
+      <div className="panel border-accent-cyan/40 bg-carbon-850">
+        <h3 className="panel-title mb-4 text-accent-cyan">How to Get OAuth Credentials</h3>
+        <div className="space-y-4 text-xs font-mono">
           <div>
-            <strong>Google Ads:</strong>
-            <ol className="list-decimal ml-5 mt-1 space-y-1">
+            <div className="text-text-hi font-bold mb-2">GOOGLE ADS:</div>
+            <ol className="list-decimal ml-5 text-text-mid space-y-1">
               <li>Go to Google Cloud Console → APIs & Services → Credentials</li>
               <li>Create OAuth 2.0 Client ID (Web application)</li>
               <li>Get Developer Token from Google Ads API Center</li>
             </ol>
           </div>
           <div>
-            <strong>Microsoft Ads:</strong>
-            <ol className="list-decimal ml-5 mt-1 space-y-1">
+            <div className="text-text-hi font-bold mb-2">MICROSOFT ADS:</div>
+            <ol className="list-decimal ml-5 text-text-mid space-y-1">
               <li>Go to Azure Portal → App Registrations</li>
               <li>Create new registration, add redirect URI</li>
               <li>Get Developer Token from Microsoft Advertising</li>
             </ol>
           </div>
           <div>
-            <strong>LinkedIn Ads:</strong>
-            <ol className="list-decimal ml-5 mt-1 space-y-1">
+            <div className="text-text-hi font-bold mb-2">LINKEDIN ADS:</div>
+            <ol className="list-decimal ml-5 text-text-mid space-y-1">
               <li>Go to LinkedIn Developers → Create App</li>
               <li>Apply for Marketing Developer Platform access</li>
               <li>Add redirect URIs in App Settings</li>
             </ol>
           </div>
           <div>
-            <strong>Reddit Ads:</strong>
-            <ol className="list-decimal ml-5 mt-1 space-y-1">
+            <div className="text-text-hi font-bold mb-2">REDDIT ADS:</div>
+            <ol className="list-decimal ml-5 text-text-mid space-y-1">
               <li>Go to reddit.com/prefs/apps</li>
               <li>Create app (type: web app)</li>
               <li>Copy client ID and secret</li>
             </ol>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }

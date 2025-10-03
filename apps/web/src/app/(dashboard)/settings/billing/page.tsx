@@ -83,147 +83,142 @@ export default function BillingPage() {
   };
 
   return (
-    <div className="max-w-6xl">
-      <h1 className="text-3xl font-bold text-white mb-2">Billing & Usage</h1>
-      <p className="text-slate-400 mb-8">Manage your credits and view usage history</p>
-
+    <div className="max-w-6xl space-y-6">
       <div className="grid gap-6">
         {/* Credit Balance Overview */}
         <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <Coins className="w-6 h-6 text-blue-400" />
-              <span className="text-slate-300 text-sm">Current Balance</span>
+          <div className="metric-tile border-accent-cyan/40">
+            <div className="flex items-center gap-2 mb-2">
+              <Coins className="w-5 h-5 text-accent-cyan" />
+              <span className="panel-title">Current Balance</span>
             </div>
-            <div className="text-4xl font-bold text-white mb-1">{stats?.balance || 0}</div>
-            <div className="text-sm text-slate-400">credits available</div>
+            <div className="metric-value text-accent-cyan">{stats?.balance || 0}</div>
+            <div className="metric-label">credits available</div>
           </div>
 
-          <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <TrendingUp className="w-6 h-6 text-green-400" />
-              <span className="text-slate-300 text-sm">Lifetime Earned</span>
+          <div className="metric-tile border-accent-lime/40">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-5 h-5 text-accent-lime" />
+              <span className="panel-title">Lifetime Earned</span>
             </div>
-            <div className="text-4xl font-bold text-white mb-1">{stats?.lifetime || 0}</div>
-            <div className="text-sm text-slate-400">total credits</div>
+            <div className="metric-value text-accent-lime">{stats?.lifetime || 0}</div>
+            <div className="metric-label">total credits</div>
           </div>
 
-          <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
-            <div className="flex items-center gap-3 mb-2">
-              <TrendingDown className="w-6 h-6 text-orange-400" />
-              <span className="text-slate-300 text-sm">Last 30 Days</span>
+          <div className="metric-tile border-accent-amber/40">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingDown className="w-5 h-5 text-accent-amber" />
+              <span className="panel-title">Last 30 Days</span>
             </div>
-            <div className="text-4xl font-bold text-white mb-1">{stats?.spent30Days || 0}</div>
-            <div className="text-sm text-slate-400">credits spent</div>
+            <div className="metric-value text-accent-amber">{stats?.spent30Days || 0}</div>
+            <div className="metric-label">credits spent</div>
           </div>
         </div>
 
         {/* Quick Purchase */}
-        <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Top-Up</h2>
+        <div className="panel">
+          <h2 className="panel-title mb-4">Quick Top-Up</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <button
               onClick={() => handleQuickPurchase('mini')}
-              className="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg p-4 text-left transition-colors"
+              className="panel hover:border-accent-cyan/50 transition-all text-left"
             >
-              <div className="text-2xl font-bold text-white mb-1">50</div>
-              <div className="text-sm text-slate-400 mb-3">credits</div>
-              <div className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded text-sm font-medium inline-block">
+              <div className="text-3xl font-bold font-display text-text-hi mb-1">50</div>
+              <div className="text-xs text-text-low font-mono mb-3 uppercase tracking-wide">credits</div>
+              <div className="bg-accent-cyan/20 text-accent-cyan px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-cyan/40">
                 $5
               </div>
             </button>
 
             <button
               onClick={() => handleQuickPurchase('starter')}
-              className="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg p-4 text-left transition-colors"
+              className="panel hover:border-accent-lime/50 transition-all text-left"
             >
-              <div className="text-2xl font-bold text-white mb-1">100</div>
-              <div className="text-sm text-slate-400 mb-3">credits</div>
-              <div className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded text-sm font-medium inline-block">
+              <div className="text-3xl font-bold font-display text-text-hi mb-1">100</div>
+              <div className="text-xs text-text-low font-mono mb-3 uppercase tracking-wide">credits</div>
+              <div className="bg-accent-lime/20 text-accent-lime px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-lime/40">
                 $10
               </div>
             </button>
 
             <Link
               href="/credits"
-              className="bg-gradient-to-br from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 rounded-lg p-4 text-left transition-all flex flex-col justify-center items-center"
+              className="panel border-accent-red/50 hover:border-accent-red transition-all flex flex-col justify-center items-center"
             >
-              <Plus className="w-8 h-8 text-white mb-2" />
-              <div className="text-sm font-medium text-white">View All Packages</div>
+              <Plus className="w-8 h-8 text-accent-red mb-2" />
+              <div className="text-xs font-mono font-bold text-text-hi uppercase tracking-wide">View All Packages</div>
             </Link>
           </div>
         </div>
 
         {/* Usage Breakdown */}
-        <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Usage by Action Type</h2>
+        <div className="panel">
+          <h2 className="panel-title mb-4">Usage by Action Type</h2>
           {usageByAction.length > 0 ? (
             <div className="space-y-3">
               {usageByAction.map((item) => {
                 const actionCost = CREDIT_COSTS[item.action as keyof typeof CREDIT_COSTS];
                 return (
-                  <div key={item.action} className="flex items-center justify-between">
+                  <div key={item.action} className="flex items-center justify-between p-3 bg-carbon-800 rounded-tactical border border-stroke-2">
                     <div className="flex items-center gap-3">
-                      <Zap className="w-4 h-4 text-slate-400" />
+                      <Zap className="w-4 h-4 text-accent-yellow" />
                       <div>
-                        <div className="text-white text-sm">{actionCost?.description || item.action}</div>
-                        <div className="text-xs text-slate-500">{item.count} actions</div>
+                        <div className="text-text-hi text-sm font-mono font-bold">{actionCost?.description || item.action}</div>
+                        <div className="text-xs text-text-low font-mono">{item.count} actions</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-white font-semibold">{item.credits}</div>
-                      <div className="text-xs text-slate-400">credits</div>
+                      <div className="text-text-hi font-bold font-display">{item.credits}</div>
+                      <div className="text-[10px] text-text-low font-mono uppercase tracking-wide">credits</div>
                     </div>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div className="text-center py-8 text-slate-400">
+            <div className="text-center py-8 text-text-muted font-mono text-sm">
               No usage yet. Start using Synter to see your activity here.
             </div>
           )}
         </div>
 
         {/* Recent Transactions */}
-        <div className="bg-slate-900/50 border border-slate-700 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <History className="w-5 h-5" />
-              Recent Transactions
-            </h2>
+        <div className="panel">
+          <div className="flex items-center gap-2 mb-4">
+            <History className="w-4 h-4 text-text-low" />
+            <h2 className="panel-title">Recent Transactions</h2>
           </div>
 
           {stats?.recentTransactions && stats.recentTransactions.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {stats.recentTransactions.map((tx) => (
                 <div
                   key={tx.id}
-                  className="flex items-center justify-between py-3 border-b border-slate-700 last:border-0"
+                  className="flex items-center justify-between p-3 bg-carbon-800 rounded-tactical border border-stroke-2"
                 >
                   <div className="flex items-center gap-3">
                     <div
-                      className={`p-2 rounded-lg ${
-                        tx.amount > 0 ? 'bg-green-500/20' : 'bg-red-500/20'
+                      className={`p-2 rounded-tactical ${
+                        tx.amount > 0 ? 'bg-accent-lime/20 border border-accent-lime/40' : 'bg-accent-red/20 border border-accent-red/40'
                       }`}
                     >
                       {tx.amount > 0 ? (
-                        <TrendingUp className="w-4 h-4 text-green-400" />
+                        <TrendingUp className="w-4 h-4 text-accent-lime" />
                       ) : (
-                        <TrendingDown className="w-4 h-4 text-red-400" />
+                        <TrendingDown className="w-4 h-4 text-accent-red" />
                       )}
                     </div>
                     <div>
-                      <div className="text-white text-sm">{tx.description}</div>
-                      <div className="text-xs text-slate-500">
+                      <div className="text-text-hi text-sm font-mono font-bold">{tx.description}</div>
+                      <div className="text-[10px] text-text-muted font-mono">
                         {new Date(tx.created_at).toLocaleDateString()} at{' '}
                         {new Date(tx.created_at).toLocaleTimeString()}
                       </div>
                     </div>
                   </div>
                   <div
-                    className={`font-semibold ${
-                      tx.amount > 0 ? 'text-green-400' : 'text-red-400'
+                    className={`font-bold font-display ${
+                      tx.amount > 0 ? 'text-accent-lime' : 'text-accent-red'
                     }`}
                   >
                     {tx.amount > 0 ? '+' : ''}
@@ -233,7 +228,7 @@ export default function BillingPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-slate-400">No transactions yet</div>
+            <div className="text-center py-8 text-text-muted font-mono text-sm">No transactions yet</div>
           )}
         </div>
       </div>
