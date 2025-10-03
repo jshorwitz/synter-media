@@ -75,19 +75,17 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const { user } = useAuth();
 
   const navigation: NavigationItem[] = [
-    { name: 'Overview', href: '/', icon: HomeIcon },
-    { name: 'Dashboard', href: '/dashboard', icon: ChartIcon },
+    { name: 'Dashboard', href: '/', icon: HomeIcon },
     { name: 'Campaigns', href: '/campaigns', icon: MegaphoneIcon },
     { name: 'Launch Campaign', href: '/workflow', icon: PlayIcon },
-    { name: 'PPC Manager', href: '/ppc', icon: MegaphoneIcon, adminOnly: true },
+    { name: 'PPC Manager', href: '/ppc', icon: ChartIcon, adminOnly: true },
     { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
     { name: 'Attribution', href: '/attribution', icon: DocumentTextIcon },
-    { name: 'Onboarding', href: '/onboarding', icon: PlayIcon },
     { name: 'Settings', href: '/settings/apps', icon: CogIcon },
     { name: 'Team', href: '/team', icon: UserGroupIcon, adminOnly: true },
   ].map(item => ({
     ...item,
-    current: pathname === item.href || (item.href === '/ppc' && pathname.startsWith('/ppc')),
+    current: pathname === item.href || (item.href === '/ppc' && pathname.startsWith('/ppc')) || (pathname === '/' && item.href === '/'),
   }));
 
   const filteredNavigation = navigation.filter(item => 
