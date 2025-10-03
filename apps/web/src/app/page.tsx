@@ -30,16 +30,11 @@ export default function HomePage() {
   };
 
   const handleGetStarted = (websiteUrl: string) => {
-    // Clean the URL and redirect to our new workflow system
+    // Clean the URL and redirect to onboarding with analysis
     const cleanUrl = websiteUrl.startsWith('http') ? websiteUrl : `https://${websiteUrl}`;
     
-    // Store the URL for the workflow
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('workflow_website_url', cleanUrl);
-    }
-    
-    // Redirect to the new workflow launcher
-    window.location.href = `/workflow?url=${encodeURIComponent(cleanUrl)}`;
+    // Redirect to onboarding which will analyze the website first
+    window.location.href = `/onboarding?url=${encodeURIComponent(cleanUrl)}`;
   };
 
   const handleAuthSuccess = () => {
