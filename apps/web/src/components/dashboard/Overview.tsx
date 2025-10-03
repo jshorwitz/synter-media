@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { StatCard } from './StatCard';
-import { AttributionTable } from './AttributionTable';
+import { ConversionTrackingTable } from './ConversionTrackingTable';
 import { AgentStatus } from './AgentStatus';
 import { useAuth } from '@/contexts/AuthContext';
 import TimeSeriesLine from '../charts/TimeSeriesLine';
@@ -333,7 +333,7 @@ export function Overview() {
 
       {/* Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <AttributionTable data={data?.attribution} />
+        <ConversionTrackingTable data={data?.attribution} />
         {canViewAgents && <AgentStatus agents={data?.agents} />}
       </div>
     </section>

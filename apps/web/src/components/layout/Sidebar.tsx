@@ -80,7 +80,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     { name: 'Launch Campaign', href: '/workflow', icon: PlayIcon },
     { name: 'PPC Manager', href: '/ppc', icon: ChartIcon, adminOnly: true },
     { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
-    { name: 'Attribution', href: '/attribution', icon: DocumentTextIcon },
+    { name: 'Conversions', href: '/conversions', icon: DocumentTextIcon },
     { name: 'Settings', href: '/settings/apps', icon: CogIcon },
     { name: 'Team', href: '/team', icon: UserGroupIcon, adminOnly: true },
   ].map(item => ({

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Analytics } from "@vercel/analytics/react";
+import AnalyticsProvider from "./providers/AnalyticsProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Synter - Unified Cross-Channel Ads Platform",
-  description: "Run warehouse-centric, cross-platform ads & attribution for Google, Meta, Reddit, X, and more",
+  description: "Run warehouse-centric, cross-platform ads & conversion tracking for Google, Meta, Reddit, X, and more",
 };
 
 export default function RootLayout({
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-50`}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AnalyticsProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </AnalyticsProvider>
         <Analytics />
       </body>
     </html>
