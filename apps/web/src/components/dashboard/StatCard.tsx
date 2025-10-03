@@ -1,5 +1,7 @@
 "use client";
 
+import SparklineChart from '../charts/SparklineChart';
+
 interface StatCardProps {
   label: string;
   value: string | number;
@@ -9,9 +11,10 @@ interface StatCardProps {
   progress?: number;
   target?: number; // Target value for comparison
   current?: number; // Current actual value
+  sparklineData?: Array<{ value: number }>; // Mini trend chart
 }
 
-export function StatCard({ label, value, change, icon, color = 'blue', progress, target, current }: StatCardProps) {
+export function StatCard({ label, value, change, icon, color = 'blue', progress, target, current, sparklineData }: StatCardProps) {
   const colorClasses = {
     blue: 'from-blue-500/20 to-blue-600/20 border-blue-500/30 text-blue-400',
     green: 'from-emerald-500/20 to-emerald-600/20 border-emerald-500/30 text-emerald-400',
@@ -26,6 +29,14 @@ export function StatCard({ label, value, change, icon, color = 'blue', progress,
     amber: 'from-amber-500 to-amber-600',
     red: 'from-red-500 to-red-600',
     purple: 'from-purple-500 to-purple-600',
+  };
+
+  const sparklineColors = {
+    blue: '#3b82f6',
+    green: '#10b981',
+    amber: '#f59e0b',
+    red: '#ef4444',
+    purple: '#a855f7',
   };
 
   // Calculate progress from target if provided
@@ -55,8 +66,23 @@ export function StatCard({ label, value, change, icon, color = 'blue', progress,
       <div className="relative p-6">
         {/* Header */}
         <div className="mb-4">
-          <p className="text-sm font-medium text-slate-400 mb-1">{label}</p>
-          <p className="text-3xl font-bold text-slate-100">{value}</p>
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-slate-400 mb-1">{label}</p>
+              <p className="text-3xl font-bold text-slate-100">{value}</p>
+            </div>
+            {sparklineData && sparklineData.length > 0 && (
+              <div className="ml-4">
+                <SparklineChart 
+                  data={sparklineData}
+                  width={100}
+                  height={50}
+                  color={sparklineColors[color]}
+                  showArea={true}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Change indicator */}

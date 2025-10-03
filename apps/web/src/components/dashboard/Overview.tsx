@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import TimeSeriesLine from '../charts/TimeSeriesLine';
 import BarChart from '../charts/BarChart';
 import DonutChart from '../charts/DonutChart';
+import AreaChart from '../charts/AreaChart';
 
 interface AttributionData {
   platform: string;
@@ -135,6 +136,24 @@ export function Overview() {
     { date: new Date('2025-01-07'), value: 9400 },
   ];
 
+  // Sparkline data for KPI cards (last 7 days trend)
+  const spendSparkline = [
+    { value: 6000 }, { value: 6200 }, { value: 6100 }, 
+    { value: 6500 }, { value: 6800 }, { value: 7000 }, { value: 7230 }
+  ];
+  const clicksSparkline = [
+    { value: 2400 }, { value: 2600 }, { value: 2550 }, 
+    { value: 2700 }, { value: 2650 }, { value: 2800 }, { value: 2920 }
+  ];
+  const conversionsSparkline = [
+    { value: 120 }, { value: 125 }, { value: 122 }, 
+    { value: 130 }, { value: 128 }, { value: 135 }, { value: 142 }
+  ];
+  const revenueSparkline = [
+    { value: 24000 }, { value: 26000 }, { value: 25500 }, 
+    { value: 27000 }, { value: 26800 }, { value: 28500 }, { value: 30097 }
+  ];
+
   const platformSpendData = data?.attribution.map(a => ({
     label: a.platform,
     value: a.spend
@@ -222,6 +241,7 @@ export function Overview() {
           color="blue"
           target={50000}
           current={data?.kpis.spend}
+          sparklineData={spendSparkline}
         />
         <StatCard
           label="Total Clicks"
@@ -230,6 +250,7 @@ export function Overview() {
           color="purple"
           target={20000}
           current={data?.kpis.clicks}
+          sparklineData={clicksSparkline}
         />
         <StatCard
           label="Conversions"
@@ -238,6 +259,7 @@ export function Overview() {
           color="green"
           target={1000}
           current={data?.kpis.conversions}
+          sparklineData={conversionsSparkline}
         />
         <StatCard
           label="CAC"
@@ -262,6 +284,7 @@ export function Overview() {
           color="green"
           target={200000}
           current={data?.kpis.revenue}
+          sparklineData={revenueSparkline}
         />
       </div>
 
@@ -276,7 +299,7 @@ export function Overview() {
           <h3 className="text-lg font-semibold mb-4" style={{color: 'hsl(217 91% 60%)'}}>
             📈 Daily Spend Trend
           </h3>
-          <TimeSeriesLine data={timeSeriesData} height={300} />
+          <AreaChart data={timeSeriesData} height={300} color="#3b82f6" gradient={true} />
         </div>
 
         {/* Platform Distribution Donut */}
