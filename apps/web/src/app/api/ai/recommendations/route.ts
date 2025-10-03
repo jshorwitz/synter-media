@@ -1,13 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-})
+}) : null
 
 export async function POST(request: NextRequest) {
   try {
     const { goal, audience, budget, platform } = await request.json()
+    
+    // Return fallback if OpenAI not configured
+    if (!openai) {
+      return NextResponse.json({
+        keywords: [
+          'software solution',
+          'enterprise software',
+          'b2b platform',
+          'business tools',
+          'productivity software',
+        ],
+        adCopy: 'Powerful Software for Modern Teams\n\nIncrease productivity and streamline operations.',
+        targeting: 'Business professionals, decision makers, IT managers',
+        modelUsed: 'fallback-no-api-key',
+      })
+    }
 
     const prompt = `You are an expert digital marketing strategist. Generate campaign recommendations for:
 
