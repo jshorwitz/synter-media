@@ -1,0 +1,29 @@
+{
+  "name": "@synter/ai-campaign-agent",
+  "version": "1.0.0",
+  "description": "AI-powered campaign optimization agent for Sourcegraph Google Ads",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "openai": "^4.20.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": [
+    "ai",
+    "campaign-optimization", 
+    "google-ads",
+    "sourcegraph",
+    "automated-advertising",
+    "synter"
+  ],
+  "author": "Synter Team",
+  "license": "MIT"
+}
