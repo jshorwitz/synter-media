@@ -91,7 +91,11 @@ export function Header({ onMenuClick }: HeaderProps) {
                     className="fixed inset-0 z-10"
                     onClick={() => setUserMenuOpen(false)}
                   />
-                  <div className="absolute right-0 z-20 mt-2 w-64 origin-top-right rounded-xl bg-synter-surface-2/95 backdrop-blur-xl shadow-synter-xl animate-slide-up">
+                  <div className="absolute right-0 z-20 mt-2 w-64 origin-top-right rounded-xl border shadow-lg animate-slide-up" style={{
+                    background: 'hsl(var(--synter-surface-2))',
+                    borderColor: 'hsl(var(--synter-border))',
+                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2)'
+                  }}>
                   <div className="p-4">
                       <div className="flex items-center">
                         <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-synter-volt to-synter-sky flex items-center justify-center shadow-lg">
