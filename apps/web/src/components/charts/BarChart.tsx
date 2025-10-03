@@ -12,7 +12,7 @@ export default function BarChart({ data, height = 300 }: { data: Datum[]; height
   useEffect(() => {
     if (!size || !containerRef.current || !globalThis.d3) return;
     const { width } = size;
-    const margin = { top: 20, right: 20, bottom: 50, left = 60 };
+    const margin = { top: 20, right: 20, bottom: 50, left: 60 };
     const w = Math.max(0, width - margin.left - margin.right);
     const h = Math.max(0, height - margin.top - margin.bottom);
 
