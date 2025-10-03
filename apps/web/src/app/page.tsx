@@ -65,7 +65,7 @@ export default function HomePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-slate-950">
+      <div className="min-h-screen bg-slate-950 overflow-y-auto">
         <TopNav onLogin={handleLogin} onSignup={handleSignup} />
         <HeroSection onGetStarted={handleGetStarted} />
         <SocialProofSection />
