@@ -9,9 +9,13 @@ import {
 } from '@/lib/chat/campaignQueries';
 import { hasEnoughCredits, spendCredits } from '@/lib/subscription/creditManager';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+export const dynamic = 'force-dynamic';
+
+function getOpenAIClient() {
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
 
 // System prompt that teaches the LLM how to interpret campaign questions
 const SYSTEM_PROMPT = `You are a helpful campaign analytics assistant for Synter, a cross-platform advertising management tool.
@@ -77,6 +81,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Use OpenAI to interpret the user's question
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
