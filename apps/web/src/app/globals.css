@@ -7,16 +7,16 @@
    ========================================== */
 
 :root {
-  /* Brand Color Palette */
-  --synter-surface: 220 18% 7%;
-  --synter-surface-2: 220 20% 10%;
-  --synter-surface-3: 220 15% 15%;
-  --synter-surface-accent: 220 20% 12%;
+  /* Brand Color Palette - Light Theme by Default */
+  --synter-surface: 210 20% 98%;
+  --synter-surface-2: 210 20% 96%;
+  --synter-surface-3: 210 15% 94%;
+  --synter-surface-accent: 220 30% 97%;
   
-  --synter-ink: 210 15% 92%;
-  --synter-ink-2: 210 10% 70%;
-  --synter-ink-3: 210 8% 50%;
-  --synter-ink-muted: 210 6% 35%;
+  --synter-ink: 220 20% 15%;
+  --synter-ink-2: 220 15% 35%;
+  --synter-ink-3: 220 10% 50%;
+  --synter-ink-muted: 220 8% 65%;
   
   --synter-volt: 78 95% 60%;        /* Primary accent - lime green */
   --synter-volt-2: 78 85% 55%;      /* Darker variant */
@@ -45,16 +45,16 @@
   --synter-info: var(--synter-sky);
   
   /* Component Specific */
-  --synter-border: 220 15% 20%;
-  --synter-border-light: 220 12% 25%;
+  --synter-border: 220 15% 88%;
+  --synter-border-light: 220 12% 85%;
   --synter-border-accent: var(--synter-volt);
   
   --synter-shadow: 220 20% 5%;
   --synter-shadow-accent: var(--synter-volt);
   
   /* Interactive States */
-  --synter-hover: 220 18% 12%;
-  --synter-active: 220 20% 8%;
+  --synter-hover: 220 18% 92%;
+  --synter-active: 220 20% 90%;
   --synter-focus: var(--synter-volt);
   
   /* Typography Scale */
