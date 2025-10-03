@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 export function DemoSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isInView, setIsInView] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -24,6 +27,34 @@ export function DemoSection() {
     return () => observer.disconnect();
   }, []);
 
+  const generateSoraVideo = async () => {
+    setGenerating(true);
+    setError(null);
+    
+    try {
+      const res = await fetch('/api/sora/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: 'A professional product demo showing a unified advertising dashboard. The camera glides through a modern web interface displaying real-time campaign metrics from Google Ads, LinkedIn Ads, Microsoft Ads, and Reddit Ads. Smooth transitions between colorful data visualizations, charts updating with numbers, and AI-powered recommendations appearing. Sleek, minimal design with vibrant accent colors. High-tech, futuristic, professional.'
+        }),
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.videoUrl) {
+        setVideoUrl(data.videoUrl);
+      } else {
+        setError(data.error || 'Failed to generate video');
+      }
+    } catch (err) {
+      setError('Failed to generate video');
+      console.error('Sora generation error:', err);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   return (
     <section id="demo" className="py-16 lg:py-24 bg-slate-950">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
@@ -37,27 +68,50 @@ export function DemoSection() {
         </div>
 
         <div className="mt-8 rounded-2xl ring-1 ring-slate-800 overflow-hidden bg-slate-900">
-          {isInView ? (
+          {videoUrl ? (
             <video
               ref={videoRef}
               className="w-full h-auto block"
+              controls
               autoPlay
               muted
-              loop
               playsInline
-              poster="/demo/poster.jpg"
-              preload="metadata"
-            >
-              <source src="/demo/synter-demo.mp4" type="video/mp4" />
-              {/* Fallback GIF */}
-              <img src="/demo/synter-demo.gif" alt="Synter product demo showing AI campaign optimization" className="w-full" />
-            </video>
+              src={videoUrl}
+            />
           ) : (
-            // Placeholder while loading
             <div className="w-full h-96 bg-slate-900 flex items-center justify-center">
               <div className="text-center">
-                <div className="animate-spin w-8 h-8 border-2 border-lime-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-slate-400">Loading demo...</p>
+                {generating ? (
+                  <>
+                    <div className="animate-spin w-12 h-12 border-3 border-lime-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p className="text-slate-300 text-lg font-medium">Generating video with Sora...</p>
+                    <p className="text-slate-400 text-sm mt-2">This may take 30-60 seconds</p>
+                  </>
+                ) : error ? (
+                  <>
+                    <p className="text-red-400 mb-4">{error}</p>
+                    <button
+                      onClick={generateSoraVideo}
+                      className="px-6 py-3 bg-lime-500 text-slate-900 rounded-lg font-semibold hover:bg-lime-400 transition"
+                    >
+                      Try Again
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-16 h-16 text-lime-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                    </svg>
+                    <p className="text-slate-300 text-lg font-medium mb-4">Watch AI-Generated Product Demo</p>
+                    <button
+                      onClick={generateSoraVideo}
+                      className="px-8 py-4 bg-lime-500 text-slate-900 rounded-lg font-semibold hover:bg-lime-400 transition text-lg"
+                    >
+                      Generate Video with Sora
+                    </button>
+                    <p className="text-slate-400 text-sm mt-3">Powered by OpenAI Sora</p>
+                  </>
+                )}
               </div>
             </div>
           )}
