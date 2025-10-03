@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getPackageById } from '@/lib/subscription/credits';
+import { getCurrentUser } from '@/lib/auth/session';
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -14,11 +15,21 @@ function getStripe() {
 export async function POST(req: NextRequest) {
   const stripe = getStripe();
   try {
-    const { userId, packageId } = await req.json();
-
-    if (!userId || !packageId) {
+    // Get authenticated user
+    const user = await getCurrentUser();
+    
+    if (!user) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const { packageId } = await req.json();
+
+    if (!packageId) {
+      return NextResponse.json(
+        { error: 'Package ID required' },
         { status: 400 }
       );
     }
@@ -38,10 +49,10 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment', // One-time payment, not subscription
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?credits=success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/credits?purchase=canceled`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://synter-clean-web.vercel.app'}/dashboard?credits=success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://synter-clean-web.vercel.app'}/credits?purchase=canceled`,
       metadata: {
-        userId: userId.toString(),
+        userId: user.id.toString(),
         packageId,
         credits: pkg.credits.toString(),
         bonus: pkg.bonus.toString(),

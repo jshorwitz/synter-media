@@ -61,19 +61,24 @@ export default function BillingPage() {
 
   const handleQuickPurchase = async (packageId: string) => {
     try {
-      const userId = 1; // TODO: Get from session
       const response = await fetch('/api/credits/purchase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, packageId }),
+        body: JSON.stringify({ packageId }),
       });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create checkout');
+      }
 
       const data = await response.json();
       if (data.url) {
         window.location.href = data.url;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Purchase error:', error);
+      alert(error.message || 'Failed to start purchase. Please try again.');
     }
   };
 

@@ -12,13 +12,16 @@ export default function CreditsPage() {
     setLoading(packageId);
 
     try {
-      const userId = await getCurrentUserId();
-
       const response = await fetch('/api/credits/purchase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, packageId }),
+        body: JSON.stringify({ packageId }),
       });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create checkout');
+      }
 
       const data = await response.json();
 
@@ -27,9 +30,9 @@ export default function CreditsPage() {
       } else {
         throw new Error('No checkout URL returned');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Purchase error:', error);
-      alert('Failed to start purchase. Please try again.');
+      alert(error.message || 'Failed to start purchase. Please try again.');
     } finally {
       setLoading(null);
     }
@@ -177,8 +180,4 @@ export default function CreditsPage() {
       </div>
     </div>
   );
-}
-
-async function getCurrentUserId(): Promise<number> {
-  return 1; // Placeholder
 }
