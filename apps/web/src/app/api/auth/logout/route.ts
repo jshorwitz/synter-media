@@ -3,7 +3,7 @@ import { deleteSession } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const sessionToken = request.cookies.get('session')?.value;
+    const sessionToken = request.cookies.get('synter_session')?.value;
     
     if (sessionToken) {
       // Delete session from database
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
     // Clear session cookie
     const response = NextResponse.json({ success: true });
-    response.cookies.set('session', '', {
+    response.cookies.set('synter_session', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

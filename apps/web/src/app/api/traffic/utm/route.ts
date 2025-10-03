@@ -3,7 +3,7 @@ import { getSessionUser } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    const sessionToken = request.cookies.get('session')?.value;
+    const sessionToken = request.cookies.get('synter_session')?.value;
     
     if (!sessionToken) {
       return NextResponse.json(

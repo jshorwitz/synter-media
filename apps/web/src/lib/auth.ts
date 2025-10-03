@@ -136,6 +136,28 @@ export async function markMagicLinkAsUsed(token: string) {
   return true
 }
 
+export async function createSession({
+  userId,
+  sessionToken,
+  userAgent,
+  ip,
+}: {
+  userId: number
+  sessionToken: string
+  userAgent?: string
+  ip?: string
+}) {
+  const auth = new AuthService(process.env.JWT_SECRET!)
+  const expiresAt = auth.getSessionExpiry()
+  
+  // TODO: Implement session creation in database
+  // For now, return mock data - replace with actual DB insert when Prisma is wired up
+  return {
+    sessionToken,
+    expiresAt,
+  }
+}
+
 export class EmailService {
   private transporter: nodemailer.Transporter
   private from: string

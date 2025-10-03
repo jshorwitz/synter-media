@@ -12,8 +12,15 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Move outputFileTracingRoot out of experimental
-  outputFileTracingRoot: path.join(__dirname),
+  outputFileTracingRoot: path.join(__dirname, '../../'),
+  async rewrites() {
+    return [
+      {
+        source: '/api/workflow/:path*',
+        destination: '/api/workflow-proxy?path=:path*',
+      },
+    ]
+  },
 }
 
 export default nextConfig

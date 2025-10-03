@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
       token: jwtToken,
     });
 
-    response.cookies.set('session', sessionToken, {
+    response.cookies.set('synter_session', sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
