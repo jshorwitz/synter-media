@@ -393,14 +393,14 @@ export function WorkflowLauncher() {
           <div>
             <label className="synter-label">Total Budget</label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-synter-ink-2">$</span>
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">$</span>
               <input
                 type="number"
                 value={config.budget}
                 onChange={(e) => setConfig(prev => ({ ...prev, budget: parseInt(e.target.value) }))}
                 min="100"
                 max="50000"
-                className="synter-input pl-8"
+                className="synter-input pl-10"
               />
             </div>
             <p className="text-sm text-synter-ink-2 mt-2">
