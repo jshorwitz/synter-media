@@ -77,8 +77,8 @@ export default function NewCampaignPage() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Create New Campaign</h1>
-        <p className="text-gray-600">AI-powered campaign builder with intelligent recommendations</p>
+        <h1 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Create New Campaign</h1>
+        <p className="text-gray-700 dark:text-gray-300">AI-powered campaign builder with intelligent recommendations</p>
       </div>
 
       {/* Progress Steps */}
@@ -91,12 +91,12 @@ export default function NewCampaignPage() {
           <div key={s.num} className="flex items-center flex-1">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                s.num <= step ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-400"
+                s.num <= step ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
               }`}
             >
               {s.num < step ? <CheckCircle className="w-5 h-5" /> : s.num}
             </div>
-            <span className="ml-2 text-sm font-medium">{s.label}</span>
+            <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">{s.label}</span>
             {s.num < 3 && <div className="flex-1 h-0.5 bg-gray-200 mx-4" />}
           </div>
         ))}
@@ -195,11 +195,11 @@ export default function NewCampaignPage() {
           <CardContent className="space-y-6">
             {!loading && !aiRecommendations && (
               <div className="text-center py-12">
-                <Sparkles className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Ready to generate recommendations</h3>
-                <p className="text-gray-600 mb-6">
-                  Our AI will analyze your campaign goals and suggest the best keywords, audiences, and ad copy
-                </p>
+              <Sparkles className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Ready to generate recommendations</h3>
+              <p className="text-gray-700 dark:text-gray-300 mb-6">
+              Our AI will analyze your campaign goals and suggest the best keywords, audiences, and ad copy
+              </p>
                 <Button onClick={generateRecommendations} size="lg">
                   <Sparkles className="mr-2 h-5 w-5" />
                   Generate AI Recommendations
@@ -208,11 +208,11 @@ export default function NewCampaignPage() {
             )}
 
             {loading && (
-              <div className="text-center py-12">
-                <Loader2 className="w-16 h-16 text-blue-500 animate-spin mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">Analyzing your campaign...</h3>
-                <p className="text-gray-600">This may take a few moments</p>
-              </div>
+            <div className="text-center py-12">
+            <Loader2 className="w-16 h-16 text-blue-500 animate-spin mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Analyzing your campaign...</h3>
+            <p className="text-gray-700 dark:text-gray-300">This may take a few moments</p>
+            </div>
             )}
           </CardContent>
         </Card>
@@ -229,26 +229,26 @@ export default function NewCampaignPage() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-sm text-gray-500">Campaign Name</div>
-                  <div className="font-medium">{formData.name}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Campaign Name</div>
+                  <div className="font-medium text-gray-900 dark:text-white">{formData.name}</div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-500">Platform</div>
-                  <div className="font-medium capitalize">{formData.platform.replace("_", " ")}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Platform</div>
+                  <div className="font-medium capitalize text-gray-900 dark:text-white">{formData.platform.replace("_", " ")}</div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-500">Goal</div>
-                  <div className="font-medium capitalize">{formData.goal}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Goal</div>
+                  <div className="font-medium capitalize text-gray-900 dark:text-white">{formData.goal}</div>
                 </div>
                 <div>
-                  <div className="text-sm text-gray-500">Daily Budget</div>
-                  <div className="font-medium">${formData.budget}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Daily Budget</div>
+                  <div className="font-medium text-gray-900 dark:text-white">${formData.budget}</div>
                 </div>
               </div>
 
               {formData.keywords.length > 0 && (
                 <div>
-                  <div className="text-sm text-gray-500 mb-2">Recommended Keywords</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Recommended Keywords</div>
                   <div className="flex flex-wrap gap-2">
                     {formData.keywords.slice(0, 10).map((kw, i) => (
                       <Badge key={i} variant="secondary">
@@ -261,8 +261,8 @@ export default function NewCampaignPage() {
 
               {formData.adCopy && (
                 <div>
-                  <div className="text-sm text-gray-500 mb-2">Ad Copy</div>
-                  <div className="p-4 bg-gray-50 rounded-lg text-sm">{formData.adCopy}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">Ad Copy</div>
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-sm text-gray-900 dark:text-gray-100">{formData.adCopy}</div>
                 </div>
               )}
             </CardContent>
