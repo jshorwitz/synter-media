@@ -300,7 +300,7 @@ body {
 }
 
 /* Inputs */
-.input-tactical {
+.input-tactical, .synter-input {
   width: 100%;
   background: var(--bg-carbon-800);
   border: 1px solid var(--stroke-1);
@@ -312,24 +312,36 @@ body {
   transition: all var(--duration-normal) var(--ease-tactical);
 }
 
-.input-tactical::placeholder {
+.input-tactical::placeholder, .synter-input::placeholder {
   color: var(--text-low);
   opacity: 0.6;
 }
 
-.input-tactical:focus {
+.input-tactical:focus, .synter-input:focus {
   outline: none;
   border-color: var(--accent-cyan);
   box-shadow: var(--focus-ring);
 }
 
-.input-tactical:hover:not(:focus) {
+.input-tactical:hover:not(:focus), .synter-input:hover:not(:focus) {
   border-color: var(--stroke-2);
   background: rgba(19, 25, 34, 0.8);
 }
 
+/* Labels */
+.synter-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+}
+
 /* Buttons */
-.btn-tactical {
+.btn-tactical, .synter-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -348,36 +360,44 @@ body {
   overflow: hidden;
 }
 
-.btn-tactical-primary {
+.btn-tactical-primary, .synter-btn-primary {
   background: var(--accent-red);
   color: var(--bg-carbon-900);
   border-color: var(--accent-red);
 }
 
-.btn-tactical-primary:hover {
+.btn-tactical-primary:hover, .synter-btn-primary:hover {
   background: #c93a31;
   transform: translateY(-1px);
 }
 
-.btn-tactical-secondary {
+.btn-tactical-primary:disabled, .synter-btn-primary:disabled {
+  background: var(--bg-carbon-800);
+  color: var(--text-disabled);
+  border-color: var(--stroke-2);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-tactical-secondary, .synter-btn-secondary {
   background: transparent;
   color: var(--text-mid);
   border-color: var(--stroke-1);
 }
 
-.btn-tactical-secondary:hover {
+.btn-tactical-secondary:hover, .synter-btn-secondary:hover {
   background: var(--bg-carbon-800);
   color: var(--text-hi);
   border-color: var(--accent-cyan);
 }
 
-.btn-tactical-ghost {
+.btn-tactical-ghost, .synter-btn-ghost {
   background: transparent;
   color: var(--text-mid);
   border-color: transparent;
 }
 
-.btn-tactical-ghost:hover {
+.btn-tactical-ghost:hover, .synter-btn-ghost:hover {
   background: var(--bg-carbon-800);
   color: var(--text-hi);
 }

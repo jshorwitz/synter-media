@@ -41,6 +41,17 @@ export default {
         },
         danger: {
           DEFAULT: 'var(--danger-red)'
+        },
+        synter: {
+          ink: 'var(--text-hi)',
+          'ink-2': 'var(--text-mid)',
+          'surface-2': 'var(--bg-carbon-850)',
+          'surface-3': 'var(--bg-carbon-800)',
+          volt: 'var(--accent-yellow)',
+          ember: 'var(--accent-red)',
+          meadow: 'var(--sentinel-green)',
+          border: 'var(--stroke-1)',
+          hover: 'rgba(19, 25, 34, 0.6)'
         }
       },
       boxShadow: {

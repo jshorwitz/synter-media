@@ -104,10 +104,10 @@ export default function NewCampaignPage() {
 
       {/* Step 1: Setup */}
       {step === 1 && (
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle>Campaign Setup</CardTitle>
-            <CardDescription>Tell us about your campaign goals</CardDescription>
+            <CardTitle className="text-white">Campaign Setup</CardTitle>
+            <CardDescription className="text-gray-400">Tell us about your campaign goals</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
@@ -182,13 +182,13 @@ export default function NewCampaignPage() {
 
       {/* Step 2: AI Recommendations */}
       {step === 2 && (
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white">
               <Sparkles className="w-5 h-5 text-yellow-500" />
               AI-Powered Recommendations
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-400">
               Let AI analyze your goals and suggest keywords, targeting, and ad copy
             </CardDescription>
           </CardHeader>
@@ -221,10 +221,10 @@ export default function NewCampaignPage() {
       {/* Step 3: Review & Deploy */}
       {step === 3 && (
         <div className="space-y-6">
-          <Card>
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle>Campaign Summary</CardTitle>
-              <CardDescription>Review and deploy your campaign</CardDescription>
+              <CardTitle className="text-white">Campaign Summary</CardTitle>
+              <CardDescription className="text-gray-400">Review and deploy your campaign</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">

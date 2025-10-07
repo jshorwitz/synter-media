@@ -37,8 +37,8 @@ export default function CampaignsPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Campaigns</h1>
-          <p className="text-gray-600">Manage and monitor your advertising campaigns</p>
+          <h1 className="text-3xl font-bold mb-2 text-white">Campaigns</h1>
+          <p className="text-gray-400">Manage and monitor your advertising campaigns</p>
         </div>
         <Button onClick={() => router.push("/campaigns/new")}>
           <Plus className="mr-2 h-4 w-4" />
@@ -47,11 +47,11 @@ export default function CampaignsPage() {
       </div>
 
       {campaigns.length === 0 ? (
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <Target className="w-16 h-16 text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No campaigns yet</h3>
-            <p className="text-gray-600 mb-6">Create your first AI-powered campaign to get started</p>
+            <Target className="w-16 h-16 text-gray-500 mb-4" />
+            <h3 className="text-xl font-semibold mb-2 text-white">No campaigns yet</h3>
+            <p className="text-gray-400 mb-6">Create your first AI-powered campaign to get started</p>
             <Button onClick={() => router.push("/campaigns/new")}>
               <Plus className="mr-2 h-4 w-4" />
               Create Your First Campaign
@@ -63,21 +63,21 @@ export default function CampaignsPage() {
           {campaigns.map((campaign) => (
             <Card
               key={campaign.id}
-              className="hover:shadow-lg transition-shadow cursor-pointer"
+              className="bg-gray-900 border-gray-800 hover:shadow-lg transition-shadow cursor-pointer"
               onClick={() => router.push(`/campaigns/${campaign.id}`)}
             >
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle>{campaign.name}</CardTitle>
-                    <CardDescription className="mt-1">
-                      <Badge variant="outline" className="mr-2">
+                    <CardTitle className="text-white">{campaign.name}</CardTitle>
+                    <CardDescription className="mt-1 text-gray-400">
+                      <Badge variant="outline" className="mr-2 border-gray-700 text-gray-300">
                         {campaign.platform.replace("_", " ")}
                       </Badge>
                       Created {new Date(campaign.created).toLocaleDateString()}
                     </CardDescription>
                   </div>
-                  <Badge className={campaign.status === "active" ? "bg-green-100 text-green-800" : ""}>
+                  <Badge className={campaign.status === "active" ? "bg-green-600 text-white border-0" : "bg-gray-700 text-gray-300 border-0"}>
                     {campaign.status}
                   </Badge>
                 </div>
@@ -85,24 +85,24 @@ export default function CampaignsPage() {
               <CardContent>
                 <div className="grid grid-cols-3 gap-4">
                   <div className="flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-gray-400" />
+                    <DollarSign className="w-4 h-4 text-gray-500" />
                     <div>
                       <div className="text-sm text-gray-500">Budget</div>
-                      <div className="font-semibold">${campaign.budget}/day</div>
+                      <div className="font-semibold text-white">${campaign.budget}/day</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-gray-400" />
+                    <TrendingUp className="w-4 h-4 text-gray-500" />
                     <div>
                       <div className="text-sm text-gray-500">Spent</div>
-                      <div className="font-semibold">${campaign.spent.toFixed(2)}</div>
+                      <div className="font-semibold text-white">${campaign.spent.toFixed(2)}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Target className="w-4 h-4 text-gray-400" />
+                    <Target className="w-4 h-4 text-gray-500" />
                     <div>
                       <div className="text-sm text-gray-500">Conversions</div>
-                      <div className="font-semibold">{campaign.conversions}</div>
+                      <div className="font-semibold text-white">{campaign.conversions}</div>
                     </div>
                   </div>
                 </div>
