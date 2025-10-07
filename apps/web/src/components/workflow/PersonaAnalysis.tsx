@@ -417,7 +417,7 @@ export function PersonaAnalysis({ websiteUrl, onPersonasComplete, onBack }: Pers
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-synter-ink">Business Overview</h3>
           <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-            analysis.isRealAI ? 'bg-lime-100 text-lime-700' : 'bg-orange-100 text-orange-700'
+            analysis.isRealAI ? 'bg-lime-500/15 text-lime-300 border border-lime-500/30' : 'bg-orange-500/15 text-orange-300 border border-orange-500/30'
           }`}>
             {analysis.isRealAI ? '🤖 Synter AI Generated' : '⚡ Mock Data'}
           </div>
@@ -458,7 +458,7 @@ export function PersonaAnalysis({ websiteUrl, onPersonasComplete, onBack }: Pers
           <h3 className="text-lg font-semibold text-synter-ink mb-4">Competitor Keywords</h3>
           <div className="flex flex-wrap gap-2">
             {analysis.competitorKeywords.map((keyword, index) => (
-              <span key={index} className="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-sm">
+              <span key={index} className="px-3 py-1 bg-orange-500/15 text-orange-300 border border-orange-500/30 rounded-full text-sm">
                 {keyword}
               </span>
             ))}
@@ -534,7 +534,7 @@ export function PersonaAnalysis({ websiteUrl, onPersonasComplete, onBack }: Pers
                     <span key={index} className={`px-2 py-1 rounded text-xs ${
                       selectedPersonas.includes(persona.id) 
                         ? 'bg-lime-600 text-white' 
-                        : 'bg-blue-50 text-blue-600'
+                        : 'bg-blue-500/15 text-blue-300 border border-blue-500/30'
                     }`}>
                       {interest}
                     </span>
@@ -557,7 +557,7 @@ export function PersonaAnalysis({ websiteUrl, onPersonasComplete, onBack }: Pers
                     <span key={index} className={`px-2 py-1 rounded text-xs ${
                       selectedPersonas.includes(persona.id)
                         ? 'bg-lime-600 text-white'
-                        : 'bg-purple-50 text-purple-600'
+                        : 'bg-purple-500/15 text-purple-300 border border-purple-500/30'
                     }`}>
                       {keyword}
                     </span>
