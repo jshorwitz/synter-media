@@ -2,13 +2,14 @@
 
 import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { ArrowRight, Building2, Target, Zap, Loader2, Sparkles, Mail, Check } from "lucide-react"
+import { ArrowRight, Building2, Target, Zap, Loader2, Sparkles, Mail, Check, DollarSign } from "lucide-react"
 
 const STEPS = [
   { id: 0, title: "Website Analysis", icon: Sparkles },
-  { id: 1, title: "Create Account", icon: Mail },
-  { id: 2, title: "Your Business", icon: Building2 },
-  { id: 3, title: "Connect Platforms", icon: Zap },
+  { id: 1, title: "Ad Footprint & Savings", icon: DollarSign },
+  { id: 2, title: "Create Account", icon: Mail },
+  { id: 3, title: "Your Business", icon: Building2 },
+  { id: 4, title: "Connect Platforms", icon: Zap },
 ]
 
 function OnboardingContent() {
@@ -16,9 +17,12 @@ function OnboardingContent() {
   const searchParams = useSearchParams()
   const urlParam = searchParams.get('url')
   
-  const [currentStep, setCurrentStep] = useState(urlParam ? 0 : 1)
+  const [currentStep, setCurrentStep] = useState(urlParam ? 0 : 2)
   const [analyzing, setAnalyzing] = useState(false)
   const [analysis, setAnalysis] = useState<any>(null)
+  const [scanning, setScanning] = useState(false)
+  const [scanResult, setScanResult] = useState<any>(null)
+  const [scanId, setScanId] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -61,8 +65,55 @@ function OnboardingContent() {
     }
   }
 
+  const scanAdFootprint = async (url: string) => {
+    setScanning(true)
+    try {
+      const res = await fetch('/api/onboarding/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      })
+      
+      const data = await res.json()
+      setScanId(data.scan_id)
+      
+      // Poll for results
+      const pollInterval = setInterval(async () => {
+        const statusRes = await fetch(`/api/onboarding/status?scan_id=${data.scan_id}`)
+        const status = await statusRes.json()
+        
+        if (status.status === 'done') {
+          clearInterval(pollInterval)
+          const resultRes = await fetch(`/api/onboarding/result?scan_id=${data.scan_id}`)
+          const result = await resultRes.json()
+          setScanResult(result)
+          setScanning(false)
+        } else if (status.status === 'error') {
+          clearInterval(pollInterval)
+          setScanning(false)
+          console.error('Scan failed:', status.error)
+        }
+      }, 2000)
+      
+      // Timeout after 30 seconds
+      setTimeout(() => {
+        clearInterval(pollInterval)
+        if (scanning) {
+          setScanning(false)
+        }
+      }, 30000)
+    } catch (error) {
+      console.error('Scan failed:', error)
+      setScanning(false)
+    }
+  }
+
   const handleNext = async () => {
-    if (currentStep === 1) {
+    if (currentStep === 0) {
+      // After analysis, start ad footprint scan
+      setCurrentStep(currentStep + 1)
+      scanAdFootprint(formData.website)
+    } else if (currentStep === 2) {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -79,7 +130,7 @@ function OnboardingContent() {
       }
       
       setCurrentStep(currentStep + 1)
-    } else if (currentStep === 3) {
+    } else if (currentStep === 4) {
       // Save onboarding data
       await fetch("/api/onboarding", {
         method: "POST",
@@ -208,8 +259,111 @@ function OnboardingContent() {
             </div>
           )}
 
-          {/* Step 1: Create Account */}
+          {/* Step 1: Ad Footprint & Savings */}
           {currentStep === 1 && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                  Detecting your ad footprint...
+                </h2>
+                <p style={{color: 'hsl(215 20% 65%)'}}>
+                  Analyzing which platforms you're currently advertising on
+                </p>
+              </div>
+
+              {scanning ? (
+                <div className="py-16 text-center">
+                  <div className="relative inline-block">
+                    <Loader2 className="w-20 h-20 animate-spin" style={{color: 'hsl(142 76% 36%)'}} />
+                    <div className="absolute inset-0 animate-ping opacity-20">
+                      <Loader2 className="w-20 h-20" style={{color: 'hsl(142 76% 36%)'}} />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-semibold mt-6 mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                    Scanning {formData.website}
+                  </h3>
+                  <p style={{color: 'hsl(215 20% 65%)'}}>
+                    Checking for Google Ads, Meta, LinkedIn, X, Reddit, and Microsoft tracking pixels...
+                  </p>
+                </div>
+              ) : scanResult ? (
+                <div className="space-y-6">
+                  {/* ROI Callout */}
+                  <div className="p-6 rounded-lg" style={{background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.1) 100%)', border: '2px solid rgba(16, 185, 129, 0.4)'}}>
+                    <div className="flex items-start gap-4">
+                      <DollarSign className="w-12 h-12 flex-shrink-0" style={{color: 'hsl(142 76% 36%)'}} />
+                      <div>
+                        <h3 className="text-2xl font-bold mb-2" style={{color: 'hsl(142 76% 36%)'}}>
+                          You could save ${((scanResult.roi?.savings_low || 0) / 100).toLocaleString()} - ${((scanResult.roi?.savings_high || 0) / 100).toLocaleString()}/month
+                        </h3>
+                        <p className="text-lg mb-2" style={{color: 'hsl(210 40% 96%)'}}>
+                          Most agencies charge <strong>10-15% of your ad spend</strong>. With Synter's flat rate + credits model, you only pay <strong>${((scanResult.roi?.synter_effective_fee || 0) / 100).toLocaleString()}/month</strong> net.
+                        </p>
+                        <p className="text-sm" style={{color: 'hsl(215 20% 65%)'}}>
+                          Estimated monthly spend: <strong style={{color: 'hsl(210 40% 96%)'}}>${((scanResult.totals?.estimated_monthly_spend || 0) / 100).toLocaleString()}</strong>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Detected Platforms */}
+                  <div>
+                    <h4 className="text-lg font-semibold mb-4" style={{color: 'hsl(210 40% 96%)'}}>
+                      Detected Ad Platforms ({scanResult.totals?.platforms_detected || 0})
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {scanResult.platforms?.map((platform: any) => (
+                        <div
+                          key={platform.platform}
+                          className="p-4 rounded-lg border"
+                          style={{
+                            background: platform.detected ? 'rgba(16, 185, 129, 0.1)' : 'rgba(51, 65, 85, 0.3)',
+                            borderColor: platform.detected ? 'rgba(16, 185, 129, 0.4)' : 'rgba(51, 65, 85, 0.5)'
+                          }}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold capitalize" style={{color: 'hsl(210 40% 96%)'}}>
+                              {platform.platform}
+                            </span>
+                            {platform.detected && (
+                              <Check className="w-5 h-5" style={{color: 'hsl(142 76% 36%)'}} />
+                            )}
+                          </div>
+                          {platform.detected && (
+                            <>
+                              <p className="text-xs mb-1" style={{color: 'hsl(215 20% 65%)'}}>
+                                Confidence: {platform.confidence}%
+                              </p>
+                              <p className="text-sm font-semibold" style={{color: 'hsl(210 40% 96%)'}}>
+                                ~${((platform.estimated_monthly_spend || 0) / 100).toLocaleString()}/mo
+                              </p>
+                            </>
+                          )}
+                          {!platform.detected && (
+                            <p className="text-xs" style={{color: 'hsl(215 20% 65%)'}}>
+                              Not detected
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleNext}
+                    className="w-full mt-6 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+                    style={{background: 'hsl(142 76% 36%)', color: 'white'}}
+                  >
+                    Continue to Account Creation
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          )}
+
+          {/* Step 2: Create Account */}
+          {currentStep === 2 && (
             <div className="space-y-6 animate-fade-in">
               <div>
                 <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
@@ -285,8 +439,8 @@ function OnboardingContent() {
             </div>
           )}
 
-          {/* Step 2: Business Details */}
-          {currentStep === 2 && (
+          {/* Step 3: Business Details */}
+          {currentStep === 3 && (
             <div className="space-y-6 animate-fade-in">
               <div>
                 <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>
@@ -359,8 +513,8 @@ function OnboardingContent() {
             </div>
           )}
 
-          {/* Step 3: Connect Platforms */}
-          {currentStep === 3 && (
+          {/* Step 4: Connect Platforms */}
+          {currentStep === 4 && (
             <div className="space-y-6 animate-fade-in">
               <div>
                 <h2 className="text-3xl font-bold mb-2" style={{color: 'hsl(210 40% 96%)'}}>

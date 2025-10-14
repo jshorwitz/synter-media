@@ -324,3 +324,39 @@ enum TeamRole {
   MEMBER
   VIEWER
 }
+
+// Onboarding Ad Footprint Detection
+model OnboardingScan {
+  id          Int      @id @default(autoincrement())
+  user_id     Int?
+  scan_id     String   @unique @db.VarChar(64)
+  url         String   @db.VarChar(512)
+  domain      String   @db.VarChar(255)
+  status      String   @db.VarChar(32) // 'queued', 'discovering', 'analyzing', 'done', 'error'
+  progress    Int      @default(0)
+  error       String?  @db.Text
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  finished_at DateTime? @db.Timestamptz(6)
+
+  // Relations
+  platforms OnboardingScanPlatform[]
+
+  @@map("onboarding_scans")
+}
+
+model OnboardingScanPlatform {
+  id              Int      @id @default(autoincrement())
+  scan_id         Int
+  platform        String   @db.VarChar(32) // 'google', 'meta', 'linkedin', 'x', 'reddit', 'microsoft'
+  detected        Boolean  @default(false)
+  confidence      Int      @default(0) // 0-100
+  tags            Json?    // Array of detected tags/technologies
+  estimated_spend Int      @default(0) // Monthly spend in cents
+  created_at      DateTime @default(now()) @db.Timestamptz(6)
+
+  // Relations
+  scan OnboardingScan @relation(fields: [scan_id], references: [id], onDelete: Cascade)
+
+  @@unique([scan_id, platform])
+  @@map("onboarding_scan_platforms")
+}

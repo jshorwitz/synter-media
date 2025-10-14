@@ -33,6 +33,11 @@ export default function HomePage() {
     // Clean the URL and redirect to onboarding with analysis
     const cleanUrl = websiteUrl.startsWith('http') ? websiteUrl : `https://${websiteUrl}`;
     
+    // Store URL in localStorage for auth flow
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('onboarding_website_url', cleanUrl);
+    }
+    
     // Redirect to onboarding which will analyze the website first
     window.location.href = `/onboarding?url=${encodeURIComponent(cleanUrl)}`;
   };
