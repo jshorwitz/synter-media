@@ -4,45 +4,57 @@ import { randomBytes } from 'crypto';
 
 const prisma = new PrismaClient();
 
-// Platform detection signatures
+// Platform detection signatures (case-insensitive)
 const PLATFORM_SIGNATURES = {
   google: [
     'googleadservices.com',
     'doubleclick.net',
-    'gtag/js',
-    'gtag(\'config\', \'AW-',
+    'gtag',
+    'gtm.js',
+    'googletagmanager',
+    'google-analytics',
+    'ga(\'create\'',
+    'AW-',
     'googlesyndication.com',
     'adsbygoogle',
+    'google_conversion',
   ],
   meta: [
-    'connect.facebook.net/fbevents.js',
-    'fbq(\'init\'',
+    'connect.facebook.net',
+    'fbevents',
+    'fbq',
     'facebook.com/tr',
     '_fbp',
     'facebook-pixel',
+    'facebook.net',
   ],
   linkedin: [
-    'snap.licdn.com/li.lms-analytics',
+    'snap.licdn.com',
+    'li.lms-analytics',
     'insight.min.js',
-    '_linkedin_partner_id',
+    '_linkedin_partner',
     'linkedin.com/px',
+    'licdn.com',
   ],
   x: [
     'static.ads-twitter.com',
-    'twq(\'init\'',
+    'twq',
     'twitter.com/i/adsct',
     'analytics.twitter.com',
+    't.co/i/adsct',
   ],
   reddit: [
     'rdt.js',
-    'redditstatic.com/ads/pixel.js',
-    'rdt(\'init\'',
+    'redditstatic.com/ads',
+    'rdt(',
+    'reddit pixel',
   ],
   microsoft: [
     'bat.bing.com',
     'uetq',
     'UET',
-    'bing.com/bat.js',
+    'bing.com/bat',
+    'microsoft advertising',
   ],
 };
 
@@ -123,36 +135,43 @@ async function detectPlatformsScrape(url: string): Promise<Record<string, { dete
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; Synter/1.0)',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
       },
       signal: AbortSignal.timeout(10000),
     });
 
     if (!response.ok) {
+      console.log(`Scrape failed for ${url}: ${response.status}`);
       return {};
     }
 
     const html = await response.text();
+    const htmlLower = html.toLowerCase(); // Case-insensitive matching
     const results: Record<string, { detected: boolean; confidence: number; tags: string[] }> = {};
 
     for (const [platform, signatures] of Object.entries(PLATFORM_SIGNATURES)) {
       const matchedTags: string[] = [];
       
       for (const signature of signatures) {
-        if (html.includes(signature)) {
+        const sigLower = signature.toLowerCase();
+        // Check both original HTML and lowercase for case-insensitive matches
+        if (htmlLower.includes(sigLower)) {
           matchedTags.push(signature);
         }
       }
 
       if (matchedTags.length > 0) {
+        // Higher confidence with more matches
+        const confidence = Math.min(70 + (matchedTags.length * 5), 90);
         results[platform] = {
           detected: true,
-          confidence: 70,
+          confidence,
           tags: matchedTags,
         };
       }
     }
 
+    console.log(`Scrape results for ${url}:`, Object.keys(results));
     return results;
   } catch (error) {
     console.error('Scrape detection error:', error);
@@ -162,14 +181,17 @@ async function detectPlatformsScrape(url: string): Promise<Record<string, { dete
 
 function estimateSpend(platformsDetected: number): Record<string, number> {
   // Heuristic: more platforms = higher total spend
+  // If 0 detected, assume small baseline for estimation purposes
   let baseSpend = 0;
   
-  if (platformsDetected === 1) {
-    baseSpend = 250000; // $2,500/mo in cents
+  if (platformsDetected === 0) {
+    baseSpend = 100000; // $1,000/mo baseline if nothing detected
+  } else if (platformsDetected === 1) {
+    baseSpend = 300000; // $3,000/mo in cents
   } else if (platformsDetected === 2) {
-    baseSpend = 1000000; // $10,000/mo
+    baseSpend = 1200000; // $12,000/mo
   } else if (platformsDetected >= 3) {
-    baseSpend = 3000000; // $30,000/mo
+    baseSpend = 3500000; // $35,000/mo
   }
 
   // Distribution percentages by platform
