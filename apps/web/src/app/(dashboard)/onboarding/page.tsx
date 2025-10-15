@@ -56,9 +56,10 @@ function OnboardingContent() {
       setFormData({
         ...formData,
         website: url,
+        businessType: data.businessType || '',
         industry: data.industry || '',
+        productDescription: data.productDescription || '',
         audience: data.targetAudience || '',
-        monthlyBudget: data.suggestedBudget?.toString() || '',
       })
     } catch (error) {
       console.error('Analysis failed:', error)
