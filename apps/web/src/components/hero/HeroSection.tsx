@@ -38,9 +38,12 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
     
     // Simple check: contains a dot and has characters before and after
     const hasDot = trimmed.includes('.');
-    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-_.]*\.[a-zA-Z]{2,}/;
+    // Match domain.tld format (alphanumeric + hyphens, then dot, then 2+ letter TLD)
+    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}$/;
     
-    if (hasDot && domainPattern.test(trimmed.replace(/^https?:\/\//i, '').replace(/^www\./i, ''))) {
+    const cleanedForTest = trimmed.replace(/^https?:\/\//i, '').replace(/^www\./i, '').split('/')[0];
+    
+    if (hasDot && domainPattern.test(cleanedForTest)) {
       setIsValidUrl(true);
     } else {
       setIsValidUrl(false);
