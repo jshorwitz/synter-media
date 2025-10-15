@@ -60,7 +60,7 @@ export function HeroVisualization({ className = '' }: HeroVisualizationProps) {
       { id: "meta", label: "Meta", color: "#1877F2" },
       { id: "linkedin", label: "LinkedIn", color: "#0A66C2" },
       { id: "xads", label: "X", color: "#000000" },
-      { id: "tiktok", label: "TikTok", color: "#FF0050" },
+      { id: "microsoft", label: "Microsoft", color: "#00A4EF" },
       { id: "youtube", label: "YouTube", color: "#FF0000" },
       { id: "reddit", label: "Reddit", color: "#FF4500" }
     ];
