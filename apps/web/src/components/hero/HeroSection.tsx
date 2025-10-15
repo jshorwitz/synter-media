@@ -79,11 +79,12 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
           <form className="mt-7" onSubmit={(e) => { e.preventDefault(); handleGetStarted(); }}>
             <div className="relative flex w-full lg:max-w-xl items-center rounded-tactical border border-stroke-1 bg-carbon-800 backdrop-blur">
               <input
-                type="url"
+                type="text"
                 value={websiteUrl}
                 onChange={handleUrlChange}
                 className="flex-1 bg-transparent px-4 py-4 text-base text-text-hi placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
                 placeholder="example.com"
+                autoComplete="off"
               />
               <button 
                 type="submit" 
