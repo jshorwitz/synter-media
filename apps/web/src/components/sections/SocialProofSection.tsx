@@ -3,8 +3,9 @@ export function SocialProofSection() {
     { name: 'Google', logo: 'Google', available: true },
     { name: 'Meta', logo: 'Meta', available: false },
     { name: 'Reddit', logo: 'Reddit', available: true },
-    { name: 'X', logo: 'X', available: true },
-    { name: 'LinkedIn', logo: 'LinkedIn', available: true }
+    { name: 'X', logo: 'X', available: false },
+    { name: 'LinkedIn', logo: 'LinkedIn', available: false },
+    { name: 'Microsoft', logo: 'Microsoft', available: false }
   ];
 
   return (
