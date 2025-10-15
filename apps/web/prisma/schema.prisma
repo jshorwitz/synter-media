@@ -358,6 +358,34 @@ enum CampaignStatus {
   COMPLETED
 }
 
+enum ConnectionStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+  ERROR
+}
+
+// Platform Connections (OAuth)
+model PlatformConnection {
+  id                 Int      @id @default(autoincrement())
+  user_id            Int
+  platform           CampaignPlatform
+  provider_account_id String  @db.VarChar(255) // External account/customer ID
+  provider_account_name String? @db.VarChar(255)
+  access_token       String?  @db.Text // Encrypted
+  refresh_token      String?  @db.Text // Encrypted
+  token_expires_at   DateTime? @db.Timestamptz(6)
+  scopes             String[] // Array of granted scopes
+  status             ConnectionStatus @default(ACTIVE)
+  metadata           Json?    // Provider-specific data
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime @updatedAt @db.Timestamptz(6)
+  last_synced_at     DateTime? @db.Timestamptz(6)
+
+  @@unique([user_id, platform, provider_account_id])
+  @@map("platform_connections")
+}
+
 // Onboarding Ad Footprint Detection
 model OnboardingScan {
   id          Int      @id @default(autoincrement())

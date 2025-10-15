@@ -528,21 +528,22 @@ function OnboardingContent() {
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { name: 'Google Ads', color: 'hsl(217 91% 60%)', route: '/api/auth/google' },
-                  { name: 'Microsoft Ads', color: 'hsl(142 76% 36%)', route: '/settings/apps' },
-                  { name: 'LinkedIn Ads', color: 'hsl(201 100% 35%)', route: '/api/auth/linkedin' },
-                  { name: 'Reddit Ads', color: 'hsl(16 100% 50%)', route: '/api/auth/reddit' },
+                  { name: 'Google Ads', color: 'hsl(217 91% 60%)', route: '/api/oauth/google-ads/start', available: true },
+                  { name: 'Reddit Ads', color: 'hsl(16 100% 50%)', route: '/api/oauth/reddit-ads/start', available: true },
+                  { name: 'Microsoft Ads', color: 'hsl(142 76% 36%)', route: '/api/oauth/microsoft-ads/start', available: false },
+                  { name: 'LinkedIn Ads', color: 'hsl(201 100% 35%)', route: '/api/oauth/linkedin-ads/start', available: false },
+                  { name: 'X Ads', color: 'hsl(0 0% 0%)', route: '/api/oauth/x-ads/start', available: false },
+                  { name: 'Meta Ads', color: 'hsl(214 89% 52%)', route: '/api/oauth/meta-ads/start', available: false },
                 ].map((platform) => (
                   <button
                     key={platform.name}
                     onClick={() => {
-                      if (platform.route.startsWith('/api')) {
+                      if (platform.available) {
                         window.location.href = platform.route
-                      } else {
-                        router.push(platform.route)
                       }
                     }}
-                    className="p-6 rounded-lg border-2 border-dashed transition-all duration-300 hover:scale-105 hover:shadow-lg text-center"
+                    disabled={!platform.available}
+                    className="p-6 rounded-lg border-2 border-dashed transition-all duration-300 hover:scale-105 hover:shadow-lg text-center disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                     style={{
                       borderColor: platform.color,
                       background: `${platform.color}15`
@@ -550,7 +551,9 @@ function OnboardingContent() {
                   >
                     <Zap className="w-8 h-8 mx-auto mb-2" style={{color: platform.color}} />
                     <p className="font-semibold" style={{color: 'hsl(210 40% 96%)'}}>{platform.name}</p>
-                    <p className="text-xs mt-1" style={{color: 'hsl(215 20% 65%)'}}>Click to connect</p>
+                    <p className="text-xs mt-1" style={{color: 'hsl(215 20% 65%)'}}>
+                      {platform.available ? 'Click to connect' : 'Coming soon'}
+                    </p>
                   </button>
                 ))}
               </div>
