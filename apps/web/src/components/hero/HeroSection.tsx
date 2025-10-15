@@ -12,26 +12,44 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [isValidUrl, setIsValidUrl] = useState(false);
 
+  const normalizeUrl = (input: string): string => {
+    let url = input.trim();
+    
+    // Remove protocol if present to normalize
+    url = url.replace(/^https?:\/\//i, '');
+    
+    // Remove www. prefix to normalize
+    url = url.replace(/^www\./i, '');
+    
+    // Add https:// for validation
+    return `https://${url}`;
+  };
+
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setWebsiteUrl(value);
     
-    // Simple URL validation
-    try {
-      if (value && (value.startsWith('http://') || value.startsWith('https://') || value.includes('.'))) {
-        new URL(value.startsWith('http') ? value : `https://${value}`);
-        setIsValidUrl(true);
-      } else {
-        setIsValidUrl(false);
-      }
-    } catch {
+    // Quick validation: check if it looks like a domain
+    const trimmed = value.trim();
+    if (!trimmed) {
+      setIsValidUrl(false);
+      return;
+    }
+    
+    // Simple check: contains a dot and has characters before and after
+    const hasDot = trimmed.includes('.');
+    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-_.]*\.[a-zA-Z]{2,}/;
+    
+    if (hasDot && domainPattern.test(trimmed.replace(/^https?:\/\//i, '').replace(/^www\./i, ''))) {
+      setIsValidUrl(true);
+    } else {
       setIsValidUrl(false);
     }
   };
 
   const handleGetStarted = () => {
     if (isValidUrl && onGetStarted) {
-      const cleanUrl = websiteUrl.startsWith('http') ? websiteUrl : `https://${websiteUrl}`;
+      const cleanUrl = normalizeUrl(websiteUrl);
       onGetStarted(cleanUrl);
     }
   };
@@ -58,7 +76,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
                 value={websiteUrl}
                 onChange={handleUrlChange}
                 className="flex-1 bg-transparent px-4 py-4 text-base text-text-hi placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan/50"
-                placeholder="Enter your website URL (e.g., yoursite.com)"
+                placeholder="example.com"
               />
               <button 
                 type="submit" 

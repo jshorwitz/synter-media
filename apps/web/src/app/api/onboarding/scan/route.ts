@@ -302,13 +302,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
 
-    // Parse domain from URL
+    // Parse and normalize domain from URL
     let domain: string;
+    let normalizedUrl: string;
     try {
-      const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`);
-      domain = urlObj.hostname.replace(/^www\./, '');
-    } catch {
-      return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+      // Clean the input
+      let cleanUrl = url.trim();
+      
+      // Remove protocol if present
+      cleanUrl = cleanUrl.replace(/^https?:\/\//i, '');
+      
+      // Remove www. prefix
+      cleanUrl = cleanUrl.replace(/^www\./i, '');
+      
+      // Remove trailing slashes and paths
+      cleanUrl = cleanUrl.split('/')[0];
+      
+      // Build normalized URL for scraping
+      normalizedUrl = `https://${cleanUrl}`;
+      
+      // Parse to validate
+      const urlObj = new URL(normalizedUrl);
+      domain = urlObj.hostname;
+      
+      console.log(`[Scan] Input: "${url}" -> Domain: "${domain}" -> URL: "${normalizedUrl}"`);
+    } catch (error) {
+      console.error('[Scan] Invalid URL:', url, error);
+      return NextResponse.json({ error: 'Invalid URL format' }, { status: 400 });
     }
 
     // Generate scan ID
@@ -318,7 +338,7 @@ export async function POST(request: NextRequest) {
     await prisma.onboardingScan.create({
       data: {
         scan_id: scanId,
-        url,
+        url: normalizedUrl,
         domain,
         status: 'queued',
         progress: 0,
@@ -326,7 +346,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Start background scan (non-blocking)
-    performScan(scanId, url, domain).catch(console.error);
+    performScan(scanId, normalizedUrl, domain).catch(console.error);
 
     return NextResponse.json({ scan_id: scanId }, { status: 200 });
   } catch (error) {
