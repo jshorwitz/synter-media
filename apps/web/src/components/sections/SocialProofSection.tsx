@@ -5,7 +5,7 @@ export function SocialProofSection() {
     { name: 'Reddit', logo: 'Reddit', available: true },
     { name: 'X', logo: 'X', available: false },
     { name: 'LinkedIn', logo: 'LinkedIn', available: false },
-    { name: 'Microsoft', logo: 'Microsoft', available: false }
+    { name: 'Microsoft', logo: 'Microsoft', available: true }
   ];
 
   return (

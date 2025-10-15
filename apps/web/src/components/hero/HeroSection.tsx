@@ -36,14 +36,18 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
       return;
     }
     
-    // Simple check: contains a dot and has characters before and after
-    const hasDot = trimmed.includes('.');
-    // Match domain.tld format (alphanumeric + hyphens, then dot, then 2+ letter TLD)
-    const domainPattern = /^[a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}$/;
+    // Clean the input for testing
+    const cleanedForTest = trimmed
+      .replace(/^https?:\/\//i, '')  // Remove protocol
+      .replace(/^www\./i, '')         // Remove www
+      .split('/')[0];                 // Remove path
     
-    const cleanedForTest = trimmed.replace(/^https?:\/\//i, '').replace(/^www\./i, '').split('/')[0];
+    // Very permissive pattern: something.something (allows subdomains, hyphens, numbers)
+    const hasDot = cleanedForTest.includes('.');
+    const parts = cleanedForTest.split('.');
     
-    if (hasDot && domainPattern.test(cleanedForTest)) {
+    // Valid if: has at least 2 parts (domain.tld), each part has at least 1 char, TLD is 2+ letters
+    if (hasDot && parts.length >= 2 && parts.every(p => p.length > 0) && /^[a-zA-Z]{2,}$/.test(parts[parts.length - 1])) {
       setIsValidUrl(true);
     } else {
       setIsValidUrl(false);
