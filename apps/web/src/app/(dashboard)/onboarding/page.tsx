@@ -28,7 +28,9 @@ function OnboardingContent() {
     password: "",
     businessName: "",
     website: urlParam || "",
+    businessType: "",
     industry: "",
+    productDescription: "",
     audience: "",
     goals: "",
     monthlyBudget: "",
@@ -239,22 +241,51 @@ function OnboardingContent() {
                 </div>
               ) : analysis ? (
                 <div className="space-y-4">
-                  <div className="p-4 rounded-lg" style={{background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)'}}>
-                    <h4 className="font-semibold mb-1" style={{color: 'hsl(217 91% 60%)'}}>Business Type</h4>
-                    <p style={{color: 'hsl(210 40% 96%)'}}>{analysis.businessType}</p>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium" style={{color: 'hsl(217 91% 60%)'}}>Business Type</label>
+                    <input
+                      type="text"
+                      value={formData.businessType || analysis.businessType}
+                      onChange={(e) => setFormData({...formData, businessType: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-blue-500 focus:outline-none transition-colors"
+                      style={{color: 'hsl(210 40% 96%)'}}
+                    />
                   </div>
-                  <div className="p-4 rounded-lg" style={{background: 'rgba(142, 199, 89, 0.1)', border: '1px solid rgba(142, 199, 89, 0.3)'}}>
-                    <h4 className="font-semibold mb-1" style={{color: 'hsl(142 76% 36%)'}}>Industry</h4>
-                    <p style={{color: 'hsl(210 40% 96%)'}}>{analysis.industry}</p>
+                  
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium" style={{color: 'hsl(142 76% 36%)'}}>Industry</label>
+                    <input
+                      type="text"
+                      value={formData.industry || analysis.industry}
+                      onChange={(e) => setFormData({...formData, industry: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-green-500 focus:outline-none transition-colors"
+                      style={{color: 'hsl(210 40% 96%)'}}
+                    />
                   </div>
-                  <div className="p-4 rounded-lg" style={{background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)'}}>
-                    <h4 className="font-semibold mb-1" style={{color: 'hsl(45 93% 47%)'}}>Target Audience</h4>
-                    <p style={{color: 'hsl(210 40% 96%)'}}>{analysis.targetAudience}</p>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium" style={{color: 'hsl(45 93% 47%)'}}>Product/Service Description</label>
+                    <textarea
+                      value={formData.productDescription || ''}
+                      onChange={(e) => setFormData({...formData, productDescription: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-yellow-500 focus:outline-none transition-colors"
+                      style={{color: 'hsl(210 40% 96%)'}}
+                      rows={3}
+                      placeholder="Describe what you offer..."
+                    />
                   </div>
-                  <div className="p-4 rounded-lg" style={{background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)'}}>
-                    <h4 className="font-semibold mb-1" style={{color: 'hsl(271 91% 65%)'}}>Suggested Budget</h4>
-                    <p style={{color: 'hsl(210 40% 96%)'}}>${analysis.suggestedBudget?.toLocaleString()}/month</p>
+                  
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium" style={{color: 'hsl(271 91% 65%)'}}>Target Audience</label>
+                    <textarea
+                      value={formData.audience || analysis.targetAudience}
+                      onChange={(e) => setFormData({...formData, audience: e.target.value})}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border border-slate-700 focus:border-purple-500 focus:outline-none transition-colors"
+                      style={{color: 'hsl(210 40% 96%)'}}
+                      rows={3}
+                    />
                   </div>
+
                   <button
                     onClick={handleNext}
                     className="w-full mt-6 px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
