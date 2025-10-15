@@ -1,9 +1,10 @@
 export function SocialProofSection() {
   const logos = [
-    { name: 'Google', logo: 'Google' },
-    { name: 'Reddit', logo: 'R' },
-    { name: 'X', logo: 'X' },
-    { name: 'LinkedIn', logo: 'in' }
+    { name: 'Google', logo: 'Google', available: true },
+    { name: 'Meta', logo: 'M', available: false },
+    { name: 'Reddit', logo: 'R', available: true },
+    { name: 'X', logo: 'X', available: true },
+    { name: 'LinkedIn', logo: 'in', available: true }
   ];
 
   return (
@@ -19,11 +20,18 @@ export function SocialProofSection() {
           {logos.map((brand, index) => (
             <div 
               key={index} 
-              className="px-6 py-4 bg-slate-800/50 rounded-xl flex items-center justify-center opacity-60 hover:opacity-100 transition-all duration-300"
+              className="relative"
             >
-              <span className="text-slate-300 font-bold text-lg whitespace-nowrap">
-                {brand.logo}
-              </span>
+              <div className={`px-6 py-4 bg-slate-800/50 rounded-xl flex items-center justify-center transition-all duration-300 ${brand.available ? 'opacity-60 hover:opacity-100' : 'opacity-30'}`}>
+                <span className="text-slate-300 font-bold text-lg whitespace-nowrap">
+                  {brand.logo}
+                </span>
+              </div>
+              {!brand.available && (
+                <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Soon
+                </div>
+              )}
             </div>
           ))}
         </div>
