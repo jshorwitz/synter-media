@@ -1,11 +1,9 @@
 export function SocialProofSection() {
   const logos = [
-    { name: 'Google', logo: 'G' },
-    { name: 'Meta', logo: 'M' },
+    { name: 'Google', logo: 'Google' },
     { name: 'Reddit', logo: 'R' },
     { name: 'X', logo: 'X' },
-    { name: 'LinkedIn', logo: 'in' },
-    { name: 'TikTok', logo: 'TT' }
+    { name: 'LinkedIn', logo: 'in' }
   ];
 
   return (
@@ -21,9 +19,9 @@ export function SocialProofSection() {
           {logos.map((brand, index) => (
             <div 
               key={index} 
-              className="w-16 h-16 bg-slate-800/50 rounded-xl flex items-center justify-center opacity-60 hover:opacity-100 transition-all duration-300"
+              className="px-6 py-4 bg-slate-800/50 rounded-xl flex items-center justify-center opacity-60 hover:opacity-100 transition-all duration-300"
             >
-              <span className="text-slate-300 font-bold text-lg">
+              <span className="text-slate-300 font-bold text-lg whitespace-nowrap">
                 {brand.logo}
               </span>
             </div>

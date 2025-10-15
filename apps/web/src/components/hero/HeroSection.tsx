@@ -99,15 +99,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
             </p>
           </form>
 
-          {/* Secondary CTAs */}
-          <div className="mt-6 flex gap-3">
-            <a href="#demo" className="btn-tactical-secondary text-xs px-4 py-2.5">
-              Watch Demo
-            </a>
-            <a href="#docs" className="btn-tactical-ghost text-xs px-4 py-2.5">
-              View Docs
-            </a>
-          </div>
+
         </div>
 
         {/* Visual (d3 canvas with mask/overlay) */}
