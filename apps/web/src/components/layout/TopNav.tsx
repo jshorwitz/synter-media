@@ -20,34 +20,6 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
             <SynterLogo />
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8 font-mono">
-            <a
-              href="#features"
-              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
-            >
-              Features
-            </a>
-            <a
-              href="#pricing"
-              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
-            >
-              Pricing
-            </a>
-            <a
-              href="#docs"
-              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
-            >
-              Docs
-            </a>
-            <a
-              href="#support"
-              className="text-text-mid hover:text-accent-lime transition-colors duration-200 text-sm uppercase tracking-wide"
-            >
-              Support
-            </a>
-          </div>
-
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
             <button
@@ -87,37 +59,7 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
         {/* Mobile menu */}
         {mobileMenuOpen && (
           <div className="md:hidden animate-slide-up">
-            <div className="pt-4 pb-6 space-y-1">
-              <a
-                href="#features"
-                className="block px-3 py-2 text-synter-ink-2 hover:text-synter-volt hover:bg-synter-hover rounded-lg transition-all duration-200 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Features
-              </a>
-              <a
-                href="#pricing"
-                className="block px-3 py-2 text-synter-ink-2 hover:text-synter-volt hover:bg-synter-hover rounded-lg transition-all duration-200 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Pricing
-              </a>
-              <a
-                href="#docs"
-                className="block px-3 py-2 text-synter-ink-2 hover:text-synter-volt hover:bg-synter-hover rounded-lg transition-all duration-200 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Docs
-              </a>
-              <a
-                href="#support"
-                className="block px-3 py-2 text-synter-ink-2 hover:text-synter-volt hover:bg-synter-hover rounded-lg transition-all duration-200 font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Support
-              </a>
-              
-              <div className="pt-4 mt-4 space-y-3">
+            <div className="pt-4 pb-6 space-y-3">
                 <button
                   onClick={() => {
                     onLogin();
