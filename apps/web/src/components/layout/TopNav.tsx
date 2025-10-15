@@ -60,28 +60,27 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
         {mobileMenuOpen && (
           <div className="md:hidden animate-slide-up">
             <div className="pt-4 pb-6 space-y-3">
-                <button
-                  onClick={() => {
-                    onLogin();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="synter-btn synter-btn-ghost w-full justify-center"
-                >
-                  Log in
-                </button>
-                <button
-                  onClick={() => {
-                    onSignup();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="synter-btn synter-btn-primary w-full justify-center"
-                >
-                  Sign up
-                  <svg className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  onLogin();
+                  setMobileMenuOpen(false);
+                }}
+                className="synter-btn synter-btn-ghost w-full justify-center"
+              >
+                Log in
+              </button>
+              <button
+                onClick={() => {
+                  onSignup();
+                  setMobileMenuOpen(false);
+                }}
+                className="synter-btn synter-btn-primary w-full justify-center"
+              >
+                Sign up
+                <svg className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
             </div>
           </div>
         )}
