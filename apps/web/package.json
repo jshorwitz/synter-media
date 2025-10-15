@@ -36,6 +36,7 @@
     "nanoid": "^5.1.6",
     "next": "15.5.3",
     "nodemailer": "^6.10.1",
+    "oauth-1.0a": "^2.2.6",
     "openai": "^6.1.0",
     "posthog-js": "^1.269.1",
     "posthog-node": "^5.9.2",

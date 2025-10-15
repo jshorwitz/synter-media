@@ -530,9 +530,9 @@ function OnboardingContent() {
                 {[
                   { name: 'Google Ads', color: 'hsl(217 91% 60%)', route: '/api/oauth/google-ads/start', available: true },
                   { name: 'Reddit Ads', color: 'hsl(16 100% 50%)', route: '/api/oauth/reddit-ads/start', available: true },
+                  { name: 'X Ads', color: 'hsl(200 100% 40%)', route: '/api/oauth/x-ads/start', available: true },
                   { name: 'Microsoft Ads', color: 'hsl(142 76% 36%)', route: '/api/oauth/microsoft-ads/start', available: false },
                   { name: 'LinkedIn Ads', color: 'hsl(201 100% 35%)', route: '/api/oauth/linkedin-ads/start', available: false },
-                  { name: 'X Ads', color: 'hsl(0 0% 0%)', route: '/api/oauth/x-ads/start', available: false },
                   { name: 'Meta Ads', color: 'hsl(214 89% 52%)', route: '/api/oauth/meta-ads/start', available: false },
                 ].map((platform) => (
                   <button
