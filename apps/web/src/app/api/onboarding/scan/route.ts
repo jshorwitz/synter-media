@@ -77,6 +77,8 @@ interface BuiltWithResult {
 async function detectPlatformsBuiltWith(domain: string): Promise<Record<string, { detected: boolean; confidence: number; tags: string[] }>> {
   const apiKey = process.env.BUILTWITH_API_KEY;
   
+  console.log('[BuiltWith] API key present:', !!apiKey);
+  
   if (!apiKey) {
     console.warn('BuiltWith API key not configured, skipping BuiltWith detection');
     return {};
@@ -84,16 +86,23 @@ async function detectPlatformsBuiltWith(domain: string): Promise<Record<string, 
 
   try {
     const url = `https://api.builtwith.com/v22/api.json?KEY=${apiKey}&HIDETEXT=yes&NOMETA=yes&NOPII=yes&NOATTR=yes&LOOKUP=${domain}`;
+    console.log('[BuiltWith] Requesting:', domain);
+    
     const response = await fetch(url, {
       headers: { 'User-Agent': 'Synter/1.0' },
     });
 
+    console.log('[BuiltWith] Response status:', response.status);
+
     if (!response.ok) {
-      console.error('BuiltWith API error:', response.status, await response.text());
+      const errorText = await response.text();
+      console.error('[BuiltWith] API error:', response.status, errorText);
       return {};
     }
 
     const data: BuiltWithResult = await response.json();
+    console.log('[BuiltWith] Technologies found:', data.Results?.[0]?.Paths?.[0]?.Technologies?.length || 0);
+    
     const results: Record<string, { detected: boolean; confidence: number; tags: string[] }> = {};
 
     // Parse technologies from first result
@@ -124,9 +133,10 @@ async function detectPlatformsBuiltWith(domain: string): Promise<Record<string, 
       }
     }
 
+    console.log('[BuiltWith] Platforms detected:', Object.keys(results));
     return results;
   } catch (error) {
-    console.error('BuiltWith detection error:', error);
+    console.error('[BuiltWith] detection error:', error);
     return {};
   }
 }

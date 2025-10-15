@@ -294,13 +294,10 @@ function OnboardingContent() {
                       <DollarSign className="w-12 h-12 flex-shrink-0" style={{color: 'hsl(142 76% 36%)'}} />
                       <div>
                         <h3 className="text-2xl font-bold mb-2" style={{color: 'hsl(142 76% 36%)'}}>
-                          You could save ${((scanResult.roi?.savings_low || 0) / 100).toLocaleString()} - ${((scanResult.roi?.savings_high || 0) / 100).toLocaleString()}/month
+                          Synter Advantage
                         </h3>
                         <p className="text-lg mb-2" style={{color: 'hsl(210 40% 96%)'}}>
-                          Most agencies charge <strong>10-15% of your ad spend</strong>. With Synter's flat rate + credits model, you only pay <strong>${((scanResult.roi?.synter_effective_fee || 0) / 100).toLocaleString()}/month</strong> net.
-                        </p>
-                        <p className="text-sm" style={{color: 'hsl(215 20% 65%)'}}>
-                          Estimated monthly spend: <strong style={{color: 'hsl(210 40% 96%)'}}>${((scanResult.totals?.estimated_monthly_spend || 0) / 100).toLocaleString()}</strong>
+                          Most agencies charge <strong>10-15% of your ad spend</strong>. Synter uses a flat-rate + credits model that typically saves you money as you scale.
                         </p>
                       </div>
                     </div>
@@ -330,14 +327,9 @@ function OnboardingContent() {
                             )}
                           </div>
                           {platform.detected && (
-                            <>
-                              <p className="text-xs mb-1" style={{color: 'hsl(215 20% 65%)'}}>
-                                Confidence: {platform.confidence}%
-                              </p>
-                              <p className="text-sm font-semibold" style={{color: 'hsl(210 40% 96%)'}}>
-                                ~${((platform.estimated_monthly_spend || 0) / 100).toLocaleString()}/mo
-                              </p>
-                            </>
+                            <p className="text-xs" style={{color: 'hsl(215 20% 65%)'}}>
+                              Confidence: {platform.confidence}%
+                            </p>
                           )}
                           {!platform.detected && (
                             <p className="text-xs" style={{color: 'hsl(215 20% 65%)'}}>
