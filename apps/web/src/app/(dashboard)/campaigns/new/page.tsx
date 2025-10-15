@@ -59,16 +59,31 @@ export default function NewCampaignPage() {
   const createCampaign = async () => {
     setLoading(true)
     try {
-      const res = await fetch("/api/campaigns/create", {
+      // Convert budget from dollars to cents
+      const budgetCents = Math.round(parseFloat(formData.budget) * 100)
+      
+      const res = await fetch("/api/campaigns", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          platform: formData.platform,
+          daily_budget_cents: budgetCents,
+          objective: formData.goal,
+          target_audience: formData.targetAudience,
+          creative_brief: formData.adCopy,
+        }),
       })
       
-      const { campaignId } = await res.json()
-      router.push(`/campaigns/${campaignId}`)
+      if (!res.ok) {
+        throw new Error('Failed to create campaign')
+      }
+      
+      const { campaign } = await res.json()
+      router.push(`/campaigns/${campaign.id}`)
     } catch (error) {
       console.error("Campaign creation failed:", error)
+      alert('Failed to create campaign. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -132,10 +147,12 @@ export default function NewCampaignPage() {
                   <SelectValue placeholder="Select platform" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="google_ads">Google Ads</SelectItem>
-                  <SelectItem value="microsoft_ads">Microsoft Ads</SelectItem>
-                  <SelectItem value="linkedin_ads">LinkedIn Ads</SelectItem>
-                  <SelectItem value="reddit_ads">Reddit Ads</SelectItem>
+                  <SelectItem value="google">Google Ads</SelectItem>
+                  <SelectItem value="reddit">Reddit Ads</SelectItem>
+                  <SelectItem value="meta">Meta Ads (Coming Soon)</SelectItem>
+                  <SelectItem value="x">X Ads (Coming Soon)</SelectItem>
+                  <SelectItem value="linkedin">LinkedIn Ads (Coming Soon)</SelectItem>
+                  <SelectItem value="microsoft">Microsoft Ads (Coming Soon)</SelectItem>
                 </SelectContent>
               </Select>
             </div>

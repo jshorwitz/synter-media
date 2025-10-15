@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -17,27 +17,89 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
+  Loader2,
+  Rocket,
 } from "lucide-react"
+
+interface Campaign {
+  id: number
+  name: string
+  platform: string
+  status: string
+  daily_budget_cents: number
+  objective?: string
+  target_audience?: string
+  creative_brief?: string
+  created_at: string
+  launched_at?: string
+}
 
 export default function CampaignDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const [deploymentStatus, setDeploymentStatus] = useState("deployed")
+  const [campaign, setCampaign] = useState<Campaign | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [launching, setLaunching] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  // Mock data - in production, fetch from API
-  const campaign = {
-    id: params.id,
-    name: "Q4 Lead Generation",
-    platform: "google_ads",
-    status: "active",
-    budget: 150,
-    spent: 87.50,
-    conversions: 12,
-    impressions: 15420,
-    clicks: 342,
-    ctr: 2.22,
-    cpc: 0.26,
-    created: "2024-10-01",
+  useEffect(() => {
+    fetchCampaign()
+  }, [])
+
+  const fetchCampaign = async () => {
+    try {
+      const res = await fetch(`/api/campaigns/${params.id}`)
+      if (!res.ok) {
+        throw new Error('Campaign not found')
+      }
+      const data = await res.json()
+      setCampaign(data.campaign)
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const launchCampaign = async () => {
+    if (!campaign) return
+    
+    setLaunching(true)
+    try {
+      const res = await fetch(`/api/campaigns/${campaign.id}/launch`, {
+        method: 'POST',
+      })
+      
+      if (!res.ok) {
+        throw new Error('Failed to launch campaign')
+      }
+      
+      const data = await res.json()
+      setCampaign(data.campaign)
+      alert('Campaign launched successfully!')
+    } catch (err: any) {
+      alert('Failed to launch campaign: ' + err.message)
+    } finally {
+      setLaunching(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="p-8 flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+      </div>
+    )
+  }
+
+  if (error || !campaign) {
+    return (
+      <div className="p-8">
+        <div className="bg-red-900/20 border border-red-800 text-red-400 p-4 rounded">
+          {error || 'Campaign not found'}
+        </div>
+      </div>
+    )
   }
 
   const deploymentSteps = [
@@ -58,23 +120,29 @@ export default function CampaignDetailPage() {
         <div>
           <h1 className="text-3xl font-bold mb-2 text-white">{campaign.name}</h1>
           <div className="flex items-center gap-3">
-            <Badge variant="outline" className="border-gray-700 text-gray-200 bg-transparent">{campaign.platform.replace("_", " ")}</Badge>
-            <Badge className={campaign.status === "active" ? "bg-green-500/15 text-green-300 border border-green-500/30" : "bg-gray-500/15 text-gray-300 border border-gray-500/30"}>
+            <Badge variant="outline" className="border-gray-700 text-gray-200 bg-transparent">{campaign.platform}</Badge>
+            <Badge className={campaign.status === "ACTIVE" ? "bg-green-500/15 text-green-300 border border-green-500/30" : "bg-gray-500/15 text-gray-300 border border-gray-500/30"}>
               {campaign.status}
             </Badge>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="border-gray-700 text-gray-100 hover:bg-[#0F131A]">
-            <Settings className="mr-2 h-4 w-4" />
-            Edit
-          </Button>
-          {campaign.status === "active" ? (
+          {campaign.status === "DRAFT" && (
+            <Button onClick={launchCampaign} disabled={launching} className="bg-green-600 hover:bg-green-700">
+              {launching ? (
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Launching...</>
+              ) : (
+                <><Rocket className="mr-2 h-4 w-4" /> Launch Campaign</>
+              )}
+            </Button>
+          )}
+          {campaign.status === "ACTIVE" && (
             <Button variant="outline" className="border-gray-700 text-gray-100 hover:bg-[#0F131A]">
               <Pause className="mr-2 h-4 w-4" />
               Pause
             </Button>
-          ) : (
+          )}
+          {campaign.status === "PAUSED" && (
             <Button>
               <Play className="mr-2 h-4 w-4" />
               Resume
