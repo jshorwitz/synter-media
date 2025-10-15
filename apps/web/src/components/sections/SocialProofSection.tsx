@@ -1,10 +1,10 @@
 export function SocialProofSection() {
   const logos = [
     { name: 'Google', logo: 'Google', available: true },
-    { name: 'Meta', logo: 'M', available: false },
-    { name: 'Reddit', logo: 'R', available: true },
+    { name: 'Meta', logo: 'Meta', available: false },
+    { name: 'Reddit', logo: 'Reddit', available: true },
     { name: 'X', logo: 'X', available: true },
-    { name: 'LinkedIn', logo: 'in', available: true }
+    { name: 'LinkedIn', logo: 'LinkedIn', available: true }
   ];
 
   return (
