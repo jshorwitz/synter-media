@@ -14,7 +14,9 @@
     "zod": "^3.23.8",
     "mysql2": "^3.11.0",
     "ioredis": "^5.4.1",
-    "pino": "^9.3.2"
+    "pino": "^9.3.2",
+    "@google-cloud/bigquery": "^7.0.0",
+    "axios": "^1.6.0"
   },
   "devDependencies": {
     "tsx": "^4.19.2",
