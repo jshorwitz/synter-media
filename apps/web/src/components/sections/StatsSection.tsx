@@ -7,7 +7,7 @@ export function StatsSection() {
   ];
 
   return (
-    <section className="py-16 lg:py-24 bg-slate-900/50">
+    <section className="py-16 lg:py-24 bg-carbon-900">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-2xl lg:text-3xl font-semibold text-slate-100">

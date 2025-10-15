@@ -9,7 +9,7 @@ export function SocialProofSection() {
   ];
 
   return (
-    <section className="py-12 bg-slate-950">
+    <section className="py-12 bg-carbon-900">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-8">
         <div className="text-center mb-8">
           <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
