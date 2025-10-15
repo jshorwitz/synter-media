@@ -77,7 +77,16 @@ function OnboardingContent() {
       const data = await res.json()
       setScanId(data.scan_id)
       
-      // Poll for results
+      // If scan completed immediately (synchronous), fetch results right away
+      if (data.status === 'done') {
+        const resultRes = await fetch(`/api/onboarding/result?scan_id=${data.scan_id}`)
+        const result = await resultRes.json()
+        setScanResult(result)
+        setScanning(false)
+        return
+      }
+      
+      // Otherwise poll for results (fallback for async scans)
       const pollInterval = setInterval(async () => {
         const statusRes = await fetch(`/api/onboarding/status?scan_id=${data.scan_id}`)
         const status = await statusRes.json()

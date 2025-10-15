@@ -141,6 +141,23 @@ model Conversion {
 }
 
 // Campaign Management
+model Campaign {
+  id                 Int            @id @default(autoincrement())
+  user_id            Int
+  name               String         @db.VarChar(255)
+  platform           CampaignPlatform
+  daily_budget_cents Int            // Budget in cents
+  status             CampaignStatus @default(DRAFT)
+  objective          String?        @db.VarChar(128)
+  target_audience    String?        @db.Text
+  creative_brief     String?        @db.Text
+  created_at         DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime       @updatedAt @db.Timestamptz(6)
+  launched_at        DateTime?      @db.Timestamptz(6)
+
+  @@map("campaigns")
+}
+
 model CampaignPolicy {
   id            Int     @id @default(autoincrement())
   platform      String  @db.VarChar(32)
@@ -323,6 +340,22 @@ enum TeamRole {
   ADMIN
   MEMBER
   VIEWER
+}
+
+enum CampaignPlatform {
+  GOOGLE
+  META
+  REDDIT
+  X
+  LINKEDIN
+  MICROSOFT
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
 }
 
 // Onboarding Ad Footprint Detection

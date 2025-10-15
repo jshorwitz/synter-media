@@ -345,10 +345,10 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Start background scan (non-blocking)
-    performScan(scanId, normalizedUrl, domain).catch(console.error);
+    // Run scan synchronously (Vercel doesn't guarantee background work)
+    await performScan(scanId, normalizedUrl, domain);
 
-    return NextResponse.json({ scan_id: scanId }, { status: 200 });
+    return NextResponse.json({ scan_id: scanId, status: 'done' }, { status: 200 });
   } catch (error) {
     console.error('Scan creation error:', error);
     return NextResponse.json({ error: 'Failed to create scan' }, { status: 500 });
