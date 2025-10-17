@@ -65,7 +65,7 @@ export default function WaitlistPage() {
         <StickyProductDemo />
 
         {/* ROI Calculator */}
-        <section className="relative py-20 px-6">
+        <section className="relative py-12 px-6">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export default function WaitlistPage() {
         </section>
 
         {/* Value Props Section */}
-        <section className="relative py-20 px-6">
+        <section className="relative py-12 px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -134,7 +134,7 @@ export default function WaitlistPage() {
         </section>
 
         {/* Pricing Section */}
-        <section className="relative py-32 px-6 bg-carbon-850/50">
+        <section className="relative py-16 px-6 bg-carbon-850/50">
           <div className="max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
@@ -200,7 +200,7 @@ export default function WaitlistPage() {
       </section>
 
         {/* FAQ Section */}
-        <section className="relative py-32 px-6">
+        <section className="relative py-16 px-6">
           <div className="max-w-3xl mx-auto">
             <motion.h2
               initial={{ opacity: 0, y: 40 }}
@@ -251,7 +251,7 @@ export default function WaitlistPage() {
       </section>
 
         {/* Final CTA */}
-        <section className="relative py-40 px-6">
+        <section className="relative py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}

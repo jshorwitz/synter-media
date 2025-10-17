@@ -99,10 +99,7 @@ body {
    ========================================== */
 
 .synter-grid {
-  background:
-    linear-gradient(var(--grid-2) 1px, transparent 1px) 0 0/6px 6px,
-    linear-gradient(var(--grid-1) 1px, transparent 1px) 0 0/24px 24px,
-    var(--bg-carbon-900);
+  background: var(--bg-carbon-900);
 }
 
 /* ==========================================
