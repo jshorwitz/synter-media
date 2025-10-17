@@ -110,6 +110,59 @@ function WaitlistCheckContent() {
                   </div>
                 </div>
 
+                <div className="panel bg-accent-cyan/5 border-accent-cyan/20 p-6">
+                  <div className="flex items-start gap-3 mb-4">
+                    <svg className="w-6 h-6 text-accent-cyan flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-text-hi mb-2">Check Your Email</h3>
+                      <p className="text-sm text-text-mid mb-4">
+                        We've sent you a confirmation email with your waitlist position. Please check your inbox and <strong>spam/junk folder</strong> as this is a new service.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <a
+                          href="https://mail.google.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-tactical-ghost text-sm py-2 px-4"
+                        >
+                          Open Gmail
+                        </a>
+                        <a
+                          href="https://outlook.live.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-tactical-ghost text-sm py-2 px-4"
+                        >
+                          Open Outlook
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch('/api/waitlist/resend', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ email: email || searchParams.get('email') }),
+                        });
+                        if (response.ok) {
+                          alert('Email resent! Check your inbox.');
+                        } else {
+                          alert('Failed to resend. Please try again later.');
+                        }
+                      } catch (err) {
+                        alert('Failed to resend email.');
+                      }
+                    }}
+                    className="text-sm text-accent-cyan hover:underline"
+                  >
+                    Didn't receive it? Resend email
+                  </button>
+                </div>
+
                 <div className="panel bg-carbon-850/50 p-6">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm text-text-low">Status</span>

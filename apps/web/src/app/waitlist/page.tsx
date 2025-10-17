@@ -45,10 +45,8 @@ export default function WaitlistPage() {
 
       if (response.ok) {
         setSubmitted(true);
-        // Optionally redirect to dashboard after a delay
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 3000);
+        // Redirect to position check page
+        router.push('/waitlist/check');
       }
     } catch (error) {
       console.error('Error recording waitlist signup:', error);
