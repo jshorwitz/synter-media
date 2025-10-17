@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { TopNav } from '@/components/layout/TopNav';
 import { AuthModal } from '@/components/auth/AuthModal';
-import { WaitlistHero } from '@/components/waitlist/WaitlistHero';
+import { VideoHero } from '@/components/waitlist/VideoHero';
+import { StickyProductDemo } from '@/components/waitlist/StickyProductDemo';
 import { ScreenshotGallery } from '@/components/waitlist/ScreenshotGallery';
 import { ROICalculator } from '@/components/waitlist/ROICalculator';
 import { InteractiveBackground } from '@/components/waitlist/InteractiveBackground';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 export default function WaitlistPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
@@ -87,29 +89,42 @@ export default function WaitlistPage() {
         <TopNav onLogin={handleLogin} onSignup={handleSignup} />
 
         {/* Hero Section */}
-        <WaitlistHero onSignup={handleSignup} onLogin={handleLogin} />
+        <VideoHero onSignup={handleSignup} onLogin={handleLogin} />
+
+        {/* Sticky Product Demo */}
+        <StickyProductDemo />
 
         {/* ROI Calculator */}
-        <section className="relative py-16 px-6">
-          <ROICalculator />
+        <section className="relative py-32 px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <ROICalculator />
+          </motion.div>
         </section>
 
-        {/* Screenshot Gallery */}
-        <ScreenshotGallery />
-
         {/* Value Props Section */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-32 px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-text-hi mb-4">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="text-center mb-20"
+            >
+              <h2 className="font-display text-5xl md:text-6xl font-bold text-text-hi mb-6">
                 Why Performance Teams Choose Synter
               </h2>
-              <p className="text-lg text-text-mid max-w-2xl mx-auto">
+              <p className="text-xl text-text-mid max-w-2xl mx-auto">
                 Stop managing platforms in silos. Let AI orchestrate your entire media strategy.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
                 {
                   title: 'Cross-Platform Intelligence',
@@ -128,30 +143,43 @@ export default function WaitlistPage() {
                   description: 'Track conversions across the entire customer journey with multi-touch attribution that works seamlessly across all channels.',
                 }
               ].map((item, i) => (
-                <div key={i} className="panel p-6 group hover:border-accent-cyan/30 transition-colors">
-                  <h3 className="font-display text-xl font-semibold text-text-hi mb-2">
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  className="panel p-8 group hover:border-accent-cyan/50 transition-all hover:scale-[1.02]"
+                >
+                  <h3 className="font-display text-2xl font-semibold text-text-hi mb-3">
                     {item.title}
                   </h3>
-                  <p className="text-text-mid leading-relaxed text-sm">
+                  <p className="text-text-mid leading-relaxed">
                     {item.description}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
         {/* Pricing Section */}
-        <section className="relative py-24 px-6 bg-carbon-850/50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-4">
-              Simple, Transparent Pricing
-            </h2>
-            <p className="text-lg text-text-mid">
-              No subscriptions. No hidden fees. Just pay for what you use.
-            </p>
-          </div>
+        <section className="relative py-32 px-6 bg-carbon-850/50">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="text-center mb-16"
+            >
+              <h2 className="font-display text-5xl md:text-6xl font-bold text-text-hi mb-6">
+                Simple, Transparent Pricing
+              </h2>
+              <p className="text-xl text-text-mid">
+                No subscriptions. No hidden fees. Just pay for what you use.
+              </p>
+            </motion.div>
 
           <div className="panel p-12 text-center bg-gradient-to-br from-accent-cyan/5 to-accent-lime/5 border-accent-cyan/30">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-accent-lime/10 border border-accent-lime/30 mb-8">
@@ -202,11 +230,17 @@ export default function WaitlistPage() {
       </section>
 
         {/* FAQ Section */}
-        <section className="relative py-24 px-6">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-12 text-center">
-            Frequently Asked Questions
-          </h2>
+        <section className="relative py-32 px-6">
+          <div className="max-w-3xl mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="font-display text-5xl md:text-6xl font-bold text-text-hi mb-16 text-center"
+            >
+              Frequently Asked Questions
+            </motion.h2>
           <div className="space-y-6">
             {[
               {
@@ -226,14 +260,21 @@ export default function WaitlistPage() {
                 a: 'Flexible pricing based on ad spend and platform count. Early access users receive special founding member rates locked in for 12 months.'
               }
             ].map((faq, i) => (
-              <div key={i} className="panel p-6">
-                <h3 className="font-display text-lg font-semibold text-text-hi mb-2">
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="panel p-8 hover:border-accent-cyan/30 transition-colors"
+              >
+                <h3 className="font-display text-xl font-semibold text-text-hi mb-3">
                   {faq.q}
                 </h3>
-                <p className="text-text-mid leading-relaxed">
+                <p className="text-text-mid leading-relaxed text-lg">
                   {faq.a}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
