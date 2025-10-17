@@ -1,13 +1,27 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 interface VideoHeroProps {
-  onSignup: () => void;
+  onSubmit: (data: { name: string; email: string; website?: string }) => void;
   onLogin: () => void;
 }
 
-export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
+export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [website, setWebsite] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email) return;
+    
+    setLoading(true);
+    await onSubmit({ name, email, website: website || undefined });
+    setLoading(false);
+  };
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
       {/* Gradient accents - semi-transparent to show particle background */}
@@ -61,16 +75,22 @@ export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="max-w-2xl mx-auto"
         >
-          <div className="panel p-6">
+          <form onSubmit={handleSubmit} className="panel p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <input
                 type="text"
                 placeholder="Full name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
                 className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
               />
               <input
                 type="email"
                 placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
                 className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
               />
             </div>
@@ -79,20 +99,23 @@ export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
               <input
                 type="url"
                 placeholder="Company website (optional)"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
                 className="w-full bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
               />
             </div>
 
             <button
-              onClick={onSignup}
-              className="btn-tactical-primary w-full px-8 py-4 text-base group"
+              type="submit"
+              disabled={loading}
+              className="btn-tactical-primary w-full px-8 py-4 text-base group disabled:opacity-50"
             >
-              Join Waitlist
+              {loading ? 'Joining...' : 'Join Waitlist'}
               <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
               </svg>
             </button>
-          </div>
+          </form>
           
           <p className="mt-4 text-sm text-text-muted text-center">
             Already have an account?{' '}

@@ -15,12 +15,43 @@ function WaitlistCheckContent() {
   const [total, setTotal] = useState<number | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const emailParam = searchParams.get('email');
 
   useEffect(() => {
     if (token) {
       checkPositionByToken(token);
+    } else if (emailParam) {
+      setEmail(emailParam);
+      checkPositionByEmailDirect(emailParam);
     }
-  }, [token]);
+  }, [token, emailParam]);
+
+  const checkPositionByEmailDirect = async (emailAddress: string) => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch('/api/waitlist/position', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailAddress }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setPosition(data.position);
+        setTotal(data.total);
+        setStatus(data.status);
+      } else {
+        setError(data.error || 'Email not found on waitlist');
+      }
+    } catch (err) {
+      setError('Failed to check position');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const checkPositionByToken = async (token: string) => {
     setLoading(true);

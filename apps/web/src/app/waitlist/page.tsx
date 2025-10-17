@@ -8,29 +8,20 @@ import { StickyProductDemo } from '@/components/waitlist/StickyProductDemo';
 import { ScreenshotGallery } from '@/components/waitlist/ScreenshotGallery';
 import { ROICalculator } from '@/components/waitlist/ROICalculator';
 import { InteractiveBackground } from '@/components/waitlist/InteractiveBackground';
-import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 export default function WaitlistPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('signup');
-  const [submitted, setSubmitted] = useState(false);
-  const { user } = useAuth();
   const router = useRouter();
-
-  const handleSignup = () => {
-    setAuthModalTab('signup');
-    setAuthModalOpen(true);
-  };
 
   const handleLogin = () => {
     setAuthModalTab('login');
     setAuthModalOpen(true);
   };
 
-  const handleAuthSuccess = async () => {
-    // Record waitlist signup
+  const handleWaitlistSubmit = async (data: { name: string; email: string; website?: string }) => {
     try {
       const response = await fetch('/api/waitlist', {
         method: 'POST',
@@ -38,43 +29,24 @@ export default function WaitlistPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: user?.email,
+          name: data.name,
+          email: data.email,
+          website: data.website,
           source: 'waitlist',
         }),
       });
 
       if (response.ok) {
-        setSubmitted(true);
-        // Redirect to position check page
-        router.push('/waitlist/check');
+        // Redirect to position check page with email
+        router.push(`/waitlist/check?email=${encodeURIComponent(data.email)}`);
+      } else {
+        alert('Failed to join waitlist. Please try again.');
       }
     } catch (error) {
       console.error('Error recording waitlist signup:', error);
+      alert('An error occurred. Please try again.');
     }
   };
-
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-carbon-900 synter-grid">
-        <TopNav onLogin={handleLogin} onSignup={handleSignup} />
-        <div className="flex items-center justify-center min-h-screen px-6">
-          <div className="panel max-w-2xl w-full p-12 text-center">
-            <div className="text-6xl mb-6 animate-slide-up">🎉</div>
-            <h2 className="font-display text-3xl font-bold text-text-hi mb-4 animate-slide-up" style={{ animationDelay: '100ms' }}>
-              You're on the list!
-            </h2>
-            <p className="text-text-mid mb-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
-              Welcome to Synter. We're setting up your account now and will notify you when it's ready.
-            </p>
-            <div className="flex items-center justify-center gap-2 text-sm text-text-low animate-slide-up" style={{ animationDelay: '300ms' }}>
-              <span className="w-2 h-2 rounded-full bg-accent-lime animate-pulse"></span>
-              <span>Redirecting to dashboard...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-carbon-900 relative overflow-hidden">
@@ -84,10 +56,10 @@ export default function WaitlistPage() {
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <TopNav onLogin={handleLogin} onSignup={handleSignup} />
+        <TopNav onLogin={handleLogin} onSignup={handleLogin} />
 
         {/* Hero Section */}
-        <VideoHero onSignup={handleSignup} onLogin={handleLogin} />
+        <VideoHero onSubmit={handleWaitlistSubmit} onLogin={handleLogin} />
 
         {/* Sticky Product Demo */}
         <StickyProductDemo />
@@ -295,7 +267,7 @@ export default function WaitlistPage() {
                 Join performance marketing teams already on the waitlist.
               </p>
               <button
-                onClick={handleSignup}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 className="btn-tactical-primary px-12 py-6 text-lg group"
               >
                 Join the Waitlist
@@ -319,7 +291,10 @@ export default function WaitlistPage() {
       <AuthModal
         isOpen={authModalOpen}
         onClose={() => setAuthModalOpen(false)}
-        onSuccess={handleAuthSuccess}
+        onSuccess={() => {
+          setAuthModalOpen(false);
+          router.push('/dashboard');
+        }}
         defaultTab={authModalTab}
       />
     </div>

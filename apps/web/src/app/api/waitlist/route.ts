@@ -1,16 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { sendWaitlistEmail } from '@/lib/loops';
+import { getWaitlistPosition } from '@/lib/waitlist';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, website, company, role, ad_spend, source = 'waitlist', notes } = body;
+    const { name, email, website, company, role, ad_spend, source = 'waitlist', notes } = body;
 
     if (!email) {
       return NextResponse.json(
         { error: 'Email is required' },
         { status: 400 }
       );
+    }
+
+    // Check if email already exists
+    const existingLead = await db.waitlistLead.findUnique({
+      where: { email },
+    });
+
+    if (existingLead) {
+      // Return existing position without adding duplicate
+      const position = await getWaitlistPosition(email);
+      return NextResponse.json({
+        success: true,
+        alreadyExists: true,
+        lead: {
+          id: existingLead.id,
+          email: existingLead.email,
+          status: existingLead.status,
+        },
+        position: position?.position,
+        total: position?.total,
+      });
     }
 
     // Check if user is logged in
@@ -35,24 +58,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Upsert waitlist lead
-    const lead = await db.waitlistLead.upsert({
-      where: {
-        email,
-      },
-      update: {
-        user_id: userId,
-        website,
-        company,
-        role,
-        ad_spend,
-        source,
-        notes,
-        updated_at: new Date(),
-      },
-      create: {
+    // Create new waitlist lead
+    const lead = await db.waitlistLead.create({
+      data: {
         user_id: userId,
         email,
+        name: name || undefined,
         website,
         company,
         role,
@@ -62,6 +73,12 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Get position and send email
+    const position = await getWaitlistPosition(email);
+    if (position) {
+      await sendWaitlistEmail(email, position.position, position.total);
+    }
+
     return NextResponse.json({
       success: true,
       lead: {
@@ -69,6 +86,8 @@ export async function POST(request: NextRequest) {
         email: lead.email,
         status: lead.status,
       },
+      position: position?.position,
+      total: position?.total,
     });
   } catch (error) {
     console.error('Waitlist signup error:', error);
