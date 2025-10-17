@@ -6,6 +6,7 @@ import { AuthModal } from '@/components/auth/AuthModal';
 import { WaitlistHero } from '@/components/waitlist/WaitlistHero';
 import { ScreenshotGallery } from '@/components/waitlist/ScreenshotGallery';
 import { ROICalculator } from '@/components/waitlist/ROICalculator';
+import { InteractiveBackground } from '@/components/waitlist/InteractiveBackground';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -76,9 +77,14 @@ export default function WaitlistPage() {
   }
 
   return (
-    <div className="min-h-screen bg-carbon-900 synter-grid">
-      {/* Navigation */}
-      <TopNav onLogin={handleLogin} onSignup={handleSignup} />
+    <div className="min-h-screen bg-carbon-900 relative overflow-hidden">
+      {/* Interactive Background */}
+      <InteractiveBackground />
+      
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Navigation */}
+        <TopNav onLogin={handleLogin} onSignup={handleSignup} />
 
       {/* Hero Section */}
       <WaitlistHero onSignup={handleSignup} onLogin={handleLogin} />
@@ -88,10 +94,10 @@ export default function WaitlistPage() {
         <ROICalculator />
       </section>
 
-      {/* Screenshot Gallery */}
-      <ScreenshotGallery />
+        {/* Screenshot Gallery */}
+        <ScreenshotGallery />
 
-      {/* Value Props Section */}
+        {/* Value Props Section */}
       <section className="relative py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
