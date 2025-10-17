@@ -12,21 +12,33 @@ interface Screenshot {
 const screenshots: Screenshot[] = [
   {
     src: '/screenshots/dashboard-overview.png',
-    alt: 'Dashboard Overview',
+    alt: 'Dashboard Overview showing unified metrics across all platforms',
     title: 'Unified Dashboard',
     description: 'Real-time metrics across all platforms in one command center'
   },
   {
     src: '/screenshots/ppc-dashboard.png',
-    alt: 'PPC Manager',
+    alt: 'PPC Manager campaign list with performance metrics',
     title: 'PPC Manager',
-    description: 'AI-powered recommendations and automated optimization'
+    description: 'Manage campaigns, budgets, and pacing with confidence'
   },
   {
     src: '/screenshots/ppc-recommendations.png',
-    alt: 'AI Recommendations',
+    alt: 'AI-powered recommendations for campaign optimization',
     title: 'Smart Recommendations',
     description: 'Frontier models analyze performance and suggest improvements'
+  },
+  {
+    src: '/screenshots/integrations.png',
+    alt: 'Platform integrations and connections',
+    title: 'Platform Integrations',
+    description: 'Connect Google, LinkedIn, Reddit, X, and Microsoft in minutes'
+  },
+  {
+    src: '/screenshots/onboarding.png',
+    alt: 'Fast onboarding wizard',
+    title: 'Quick Setup',
+    description: 'Get up and running in minutes with our guided onboarding'
   }
 ];
 
@@ -49,15 +61,14 @@ export function ScreenshotGallery() {
           {/* First screenshot spans full width */}
           <div className="lg:col-span-2 panel overflow-hidden group">
             <div className="aspect-video relative bg-carbon-800 rounded-lg overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent-red/10 to-accent-cyan/10"></div>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl mb-4">📊</div>
-                  <p className="text-text-mid font-mono text-sm">
-                    {screenshots[0].title}
-                  </p>
-                </div>
-              </div>
+              <Image
+                src={screenshots[0].src}
+                alt={screenshots[0].alt}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                priority
+              />
             </div>
             <div className="p-6">
               <h3 className="font-display text-xl font-semibold text-text-hi mb-2">
@@ -73,15 +84,14 @@ export function ScreenshotGallery() {
           {screenshots.slice(1).map((screenshot, i) => (
             <div key={i} className="panel overflow-hidden group">
               <div className="aspect-video relative bg-carbon-800 rounded-lg overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent-amber/10 to-accent-lime/10"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-5xl mb-3">{i === 0 ? '⚡' : '🎯'}</div>
-                    <p className="text-text-mid font-mono text-sm">
-                      {screenshot.title}
-                    </p>
-                  </div>
-                </div>
+                <Image
+                  src={screenshot.src}
+                  alt={screenshot.alt}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  loading="lazy"
+                />
               </div>
               <div className="p-6">
                 <h3 className="font-display text-lg font-semibold text-text-hi mb-2">
