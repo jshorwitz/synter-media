@@ -12,6 +12,30 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
+export const metadata = {
+  title: 'Join the Waitlist - Synter AI Media Agent',
+  description: 'Stop paying 10% agency fees. Let frontier AI models optimize your campaigns across Google, LinkedIn, Reddit, X, and Microsoft. Join the waitlist today.',
+  openGraph: {
+    title: 'Synter - AI Media Agent for Cross-Channel Ads',
+    description: 'Optimize your ads using shared learnings and deep research by frontier models. Deploy in minutes. Pay-as-you-go pricing.',
+    images: [
+      {
+        url: '/screenshots/waitlist-hero.png',
+        width: 1440,
+        height: 900,
+        alt: 'Synter Waitlist - AI Media Agent Platform',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Synter - AI Media Agent for Cross-Channel Ads',
+    description: 'Stop paying agency fees. Let AI optimize your campaigns across all platforms.',
+    images: ['/screenshots/waitlist-hero.png'],
+  },
+};
+
 export default function WaitlistPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('signup');

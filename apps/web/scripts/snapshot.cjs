@@ -30,6 +30,7 @@ async function main() {
     { slug: '/ppc/recommendations', file: 'ppc-recommendations.png', wait: 2000 },
     { slug: '/settings/apps', file: 'integrations.png', wait: 2000 },
     { slug: '/onboarding', file: 'onboarding.png', wait: 2000 },
+    { slug: '/waitlist', file: 'waitlist-hero.png', wait: 3000 },
   ];
   
   // Capture marketing screenshots
