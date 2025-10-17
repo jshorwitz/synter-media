@@ -5,6 +5,7 @@ import { TopNav } from '@/components/layout/TopNav';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { WaitlistHero } from '@/components/waitlist/WaitlistHero';
 import { ScreenshotGallery } from '@/components/waitlist/ScreenshotGallery';
+import { ROICalculator } from '@/components/waitlist/ROICalculator';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -82,6 +83,11 @@ export default function WaitlistPage() {
       {/* Hero Section */}
       <WaitlistHero onSignup={handleSignup} onLogin={handleLogin} />
 
+      {/* ROI Calculator */}
+      <section className="relative py-16 px-6">
+        <ROICalculator />
+      </section>
+
       {/* Screenshot Gallery */}
       <ScreenshotGallery />
 
@@ -97,35 +103,30 @@ export default function WaitlistPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               {
                 title: 'Cross-Platform Intelligence',
-                description: 'Synter learns from your entire ad portfolio, identifying patterns and opportunities that single-platform tools miss. Share insights between Google, LinkedIn, Reddit, X, and more.',
-                icon: '🌐'
+                description: 'Learn from your entire ad portfolio. Share insights between Google, LinkedIn, Reddit, X, and Microsoft.',
               },
               {
                 title: 'Frontier Model Research',
-                description: 'Advanced AI models continuously research your market, competitors, and audience behavior—delivering strategic recommendations backed by deep analysis.',
-                icon: '🔬'
+                description: 'Advanced AI continuously researches your market, competitors, and audience—delivering strategic recommendations backed by deep analysis.',
               },
               {
                 title: 'Autonomous Optimization',
                 description: 'Set your goals and guardrails, then let Synter handle budget allocation, bid adjustments, and creative testing in real-time.',
-                icon: '⚡'
               },
               {
                 title: 'Unified Attribution',
-                description: 'Track conversions across the entire customer journey with multi-touch attribution that works seamlessly across all your channels.',
-                icon: '📊'
+                description: 'Track conversions across the entire customer journey with multi-touch attribution that works seamlessly across all channels.',
               }
             ].map((item, i) => (
-              <div key={i} className="panel p-8 group hover:border-accent-cyan/30 transition-colors">
-                <div className="text-5xl mb-4">{item.icon}</div>
-                <h3 className="font-display text-2xl font-semibold text-text-hi mb-3">
+              <div key={i} className="panel p-6 group hover:border-accent-cyan/30 transition-colors">
+                <h3 className="font-display text-xl font-semibold text-text-hi mb-2">
                   {item.title}
                 </h3>
-                <p className="text-text-mid leading-relaxed">
+                <p className="text-text-mid leading-relaxed text-sm">
                   {item.description}
                 </p>
               </div>
@@ -134,27 +135,62 @@ export default function WaitlistPage() {
         </div>
       </section>
 
-      {/* ROI Section */}
+      {/* Pricing Section */}
       <section className="relative py-24 px-6 bg-carbon-850/50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-12">
-            Results That Matter
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { metric: '3.2x', label: 'Average ROAS Improvement' },
-              { metric: '47%', label: 'Reduction in CAC' },
-              { metric: '12hrs', label: 'Time Saved Per Week' }
-            ].map((stat, i) => (
-              <div key={i} className="panel p-8">
-                <div className="text-5xl font-display font-bold text-accent-lime mb-2">
-                  {stat.metric}
-                </div>
-                <div className="text-text-mid font-mono text-sm uppercase tracking-wider">
-                  {stat.label}
-                </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-4">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-lg text-text-mid">
+              No subscriptions. No hidden fees. Just pay for what you use.
+            </p>
+          </div>
+
+          <div className="panel p-12 text-center bg-gradient-to-br from-accent-cyan/5 to-accent-lime/5 border-accent-cyan/30">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-accent-lime/10 border border-accent-lime/30 mb-8">
+              <svg className="w-5 h-5 text-accent-lime" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="text-sm font-mono text-accent-lime uppercase tracking-wider">Pay-As-You-Go</span>
+            </div>
+
+            <h3 className="font-display text-4xl font-bold text-text-hi mb-4">
+              Usage-Based Pricing
+            </h3>
+            <p className="text-text-mid text-lg mb-8 max-w-2xl mx-auto">
+              Only pay for the AI actions and optimizations you use. No monthly minimums, no contracts, no setup fees.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="panel bg-carbon-850/50 p-6">
+                <svg className="w-8 h-8 text-accent-cyan mx-auto mb-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <div className="text-sm font-mono text-text-mid uppercase tracking-wider mb-1">No Subscriptions</div>
+                <div className="text-xs text-text-low">Cancel anytime, no commitments</div>
               </div>
-            ))}
+
+              <div className="panel bg-carbon-850/50 p-6">
+                <svg className="w-8 h-8 text-accent-lime mx-auto mb-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div className="text-sm font-mono text-text-mid uppercase tracking-wider mb-1">No Hidden Fees</div>
+                <div className="text-xs text-text-low">Transparent usage-based billing</div>
+              </div>
+
+              <div className="panel bg-carbon-850/50 p-6">
+                <svg className="w-8 h-8 text-accent-amber mx-auto mb-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+                <div className="text-sm font-mono text-text-mid uppercase tracking-wider mb-1">Scale With You</div>
+                <div className="text-xs text-text-low">Grows as your business grows</div>
+              </div>
+            </div>
+
+            <p className="text-xs text-text-muted">
+              Get started with $100 in free credits. Pay only for AI research, optimization actions, and platform integrations you activate.
+            </p>
           </div>
         </div>
       </section>
