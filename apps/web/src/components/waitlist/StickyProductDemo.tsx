@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { DeviceFrame } from './DeviceFrame';
 
 interface Scene {
   title: string;
@@ -101,11 +102,11 @@ export function StickyProductDemo() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-[400vh]">
+    <section ref={containerRef} className="relative min-h-[400vh] py-20">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
           {/* Left: Scrolling scenes */}
-          <div className="lg:col-span-5 space-y-[90vh]">
+          <div className="lg:col-span-5 space-y-[100vh]">
             {scenes.map((scene, i) => (
               <motion.div
                 key={i}
@@ -139,9 +140,9 @@ export function StickyProductDemo() {
 
           {/* Right: Sticky demo */}
           <div className="lg:col-span-7 relative h-screen hidden lg:block">
-            <div ref={demoRef} className="sticky top-0 h-screen flex items-center justify-center">
-              <div className="relative w-full aspect-video max-h-[80vh] panel overflow-hidden bg-carbon-800">
-                {/* Stacked screenshots */}
+            <div ref={demoRef} className="sticky top-0 h-screen flex items-center justify-center py-12">
+              <div className="relative w-full max-w-5xl">
+                {/* Stacked device frames */}
                 {scenes.map((scene, i) => (
                   <div
                     key={i}
@@ -152,18 +153,13 @@ export function StickyProductDemo() {
                       transform: i === 0 ? 'scale(1)' : 'scale(0.95)',
                     }}
                   >
-                    <Image
+                    <DeviceFrame
                       src={scene.screenshot}
                       alt={scene.title}
-                      fill
-                      className="object-cover object-top"
-                      sizes="(max-width: 1200px) 100vw, 50vw"
+                      type="laptop"
                     />
                   </div>
                 ))}
-                
-                {/* Glow overlay */}
-                <div className="absolute inset-0 pointer-events-none border-2 border-accent-cyan/20 rounded-lg"></div>
               </div>
             </div>
           </div>
