@@ -424,19 +424,31 @@ model OnboardingScanPlatform {
 
 // Waitlist Management
 model WaitlistLead {
-  id         Int      @id @default(autoincrement())
-  user_id    Int?
-  email      String   @db.VarChar(320)
-  website    String?  @db.VarChar(512)
-  company    String?  @db.VarChar(255)
-  role       String?  @db.VarChar(64)
-  ad_spend   Int?     // Monthly spend in cents
-  source     String?  @db.VarChar(64) // e.g., 'waitlist', 'twitter', 'partner'
-  notes      Json?
-  status     String   @default("joined") // 'joined', 'invited', 'activated'
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @updatedAt @db.Timestamptz(6)
+  id              Int              @id @default(autoincrement())
+  user_id         Int?
+  email           String           @db.VarChar(320)
+  website         String?          @db.VarChar(512)
+  company         String?          @db.VarChar(255)
+  role            String?          @db.VarChar(64)
+  ad_spend        Int?             // Monthly spend in cents
+  source          String?          @db.VarChar(64) // e.g., 'waitlist', 'twitter', 'partner'
+  notes           Json?
+  status          WaitlistStatus   @default(JOINED)
+  invite_token    String?          @db.VarChar(128)
+  invited_at      DateTime?        @db.Timestamptz(6)
+  invited_by      Int?
+  activated_at    DateTime?        @db.Timestamptz(6)
+  created_at      DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime         @updatedAt @db.Timestamptz(6)
 
   @@index([email])
+  @@index([status])
+  @@index([invite_token])
   @@map("waitlist_leads")
+}
+
+enum WaitlistStatus {
+  JOINED
+  INVITED
+  ACTIVATED
 }

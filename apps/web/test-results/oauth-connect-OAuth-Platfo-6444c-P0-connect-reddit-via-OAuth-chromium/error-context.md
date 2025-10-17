@@ -1,18 +1,160 @@
 # Page snapshot
 
 ```yaml
-- main [ref=e3]:
-  - paragraph [ref=e4]:
-    - generic [ref=e5]:
-      - strong [ref=e6]: "404"
-      - text: ": NOT_FOUND"
-    - generic [ref=e7]:
-      - text: "Code:"
-      - code [ref=e8]: "`DEPLOYMENT_NOT_FOUND`"
-    - generic [ref=e9]:
-      - text: "ID:"
-      - code [ref=e10]: "`pdx1::nfxtd-1760487428455-b9c22662cb07`"
-  - link "This deployment cannot be found. For more information and troubleshooting, see our documentation." [ref=e11] [cursor=pointer]:
-    - /url: https://vercel.com/docs/errors/platform-error-codes#deployment_not_found
-    - generic [ref=e12] [cursor=pointer]: This deployment cannot be found. For more information and troubleshooting, see our documentation.
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6] [cursor=pointer]:
+          - img [ref=e9] [cursor=pointer]
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: Synter
+            - generic [ref=e14] [cursor=pointer]: AI Media Agent
+        - navigation [ref=e15]:
+          - link "Dashboard" [ref=e16] [cursor=pointer]:
+            - /url: /
+            - img [ref=e17] [cursor=pointer]
+            - generic [ref=e19] [cursor=pointer]: Dashboard
+          - link "Campaigns" [ref=e20] [cursor=pointer]:
+            - /url: /campaigns
+            - img [ref=e21] [cursor=pointer]
+            - generic [ref=e23] [cursor=pointer]: Campaigns
+          - link "Launch Campaign" [ref=e24] [cursor=pointer]:
+            - /url: /workflow
+            - img [ref=e25] [cursor=pointer]
+            - generic [ref=e27] [cursor=pointer]: Launch Campaign
+          - link "Conversions" [ref=e28] [cursor=pointer]:
+            - /url: /conversions
+            - img [ref=e29] [cursor=pointer]
+            - generic [ref=e31] [cursor=pointer]: Conversions
+          - link "Settings" [ref=e32] [cursor=pointer]:
+            - /url: /settings/apps
+            - img [ref=e33] [cursor=pointer]
+            - generic [ref=e36] [cursor=pointer]: Settings
+    - generic [ref=e37]:
+      - generic [ref=e40]:
+        - generic [ref=e42]:
+          - generic [ref=e43]: Oct 15
+          - generic [ref=e45]: 16:08 UTC
+        - generic [ref=e46]:
+          - link "New Campaign" [ref=e48] [cursor=pointer]:
+            - /url: /campaigns/new
+            - img [ref=e49] [cursor=pointer]
+            - generic [ref=e51] [cursor=pointer]: New Campaign
+          - button "View notifications" [ref=e53] [cursor=pointer]:
+            - generic [ref=e54] [cursor=pointer]: View notifications
+            - img [ref=e55] [cursor=pointer]
+          - button "Open user menu O OAuth Test User VIEWER" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61] [cursor=pointer]: Open user menu
+            - generic [ref=e63] [cursor=pointer]: O
+            - generic [ref=e64] [cursor=pointer]:
+              - paragraph [ref=e65] [cursor=pointer]: OAuth Test User
+              - paragraph [ref=e66] [cursor=pointer]: VIEWER
+            - img [ref=e67] [cursor=pointer]
+      - main [ref=e69]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - heading "Settings" [level=1] [ref=e73]
+            - paragraph [ref=e74]: Manage your account, integrations, and preferences
+          - generic [ref=e75]:
+            - button "OAuth Apps" [ref=e76] [cursor=pointer]:
+              - img [ref=e77] [cursor=pointer]
+              - text: OAuth Apps
+            - button "Connections" [ref=e81] [cursor=pointer]:
+              - img [ref=e82] [cursor=pointer]
+              - text: Connections
+            - button "Account" [ref=e85] [cursor=pointer]:
+              - img [ref=e86] [cursor=pointer]
+              - text: Account
+            - button "Billing" [ref=e89] [cursor=pointer]:
+              - img [ref=e90] [cursor=pointer]
+              - text: Billing
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - heading "Settings" [level=1] [ref=e94]
+              - paragraph [ref=e95]: Manage your account, integrations, and preferences
+            - generic [ref=e96]: "Failed to connect to reddit: token_exchange_failed"
+            - generic [ref=e97]:
+              - heading "Ad Platform Connections" [level=2] [ref=e98]
+              - paragraph [ref=e99]: Connect your advertising accounts to sync campaigns and performance data
+              - generic [ref=e100]:
+                - generic [ref=e101]:
+                  - generic [ref=e103]:
+                    - generic [ref=e104]:
+                      - generic [ref=e105]: 🔍
+                      - generic [ref=e106]:
+                        - heading "Google Ads" [level=3] [ref=e107]
+                        - paragraph [ref=e108]: Connect your Google Ads accounts
+                    - generic [ref=e109]: Not Connected
+                  - generic [ref=e111]:
+                    - paragraph [ref=e112]: Connect your Google Ads account to start syncing campaigns
+                    - button "Connect Google Ads" [ref=e113] [cursor=pointer]:
+                      - img [ref=e114] [cursor=pointer]
+                      - text: Connect Google Ads
+                - generic [ref=e118]:
+                  - generic [ref=e120]:
+                    - generic [ref=e121]:
+                      - generic [ref=e122]: 👍
+                      - generic [ref=e123]:
+                        - heading "Meta Ads" [level=3] [ref=e124]
+                        - paragraph [ref=e125]: Connect Facebook & Instagram Ads
+                    - generic [ref=e126]: Not Connected
+                  - generic [ref=e128]:
+                    - paragraph [ref=e129]: Connect your Meta Ads account to start syncing campaigns
+                    - button "Connect Meta Ads" [ref=e130] [cursor=pointer]:
+                      - img [ref=e131] [cursor=pointer]
+                      - text: Connect Meta Ads
+                - generic [ref=e135]:
+                  - generic [ref=e137]:
+                    - generic [ref=e138]:
+                      - generic [ref=e139]: 💼
+                      - generic [ref=e140]:
+                        - heading "LinkedIn Ads" [level=3] [ref=e141]
+                        - paragraph [ref=e142]: Connect LinkedIn Campaign Manager
+                    - generic [ref=e143]: Not Connected
+                  - generic [ref=e145]:
+                    - paragraph [ref=e146]: Connect your LinkedIn Ads account to start syncing campaigns
+                    - button "Connect LinkedIn Ads" [ref=e147] [cursor=pointer]:
+                      - img [ref=e148] [cursor=pointer]
+                      - text: Connect LinkedIn Ads
+                - generic [ref=e152]:
+                  - generic [ref=e154]:
+                    - generic [ref=e155]:
+                      - generic [ref=e156]: 🟠
+                      - generic [ref=e157]:
+                        - heading "Reddit Ads" [level=3] [ref=e158]
+                        - paragraph [ref=e159]: Connect Reddit advertising account
+                    - generic [ref=e160]: Not Connected
+                  - generic [ref=e162]:
+                    - paragraph [ref=e163]: Connect your Reddit Ads account to start syncing campaigns
+                    - button "Connect Reddit Ads" [ref=e164] [cursor=pointer]:
+                      - img [ref=e165] [cursor=pointer]
+                      - text: Connect Reddit Ads
+                - generic [ref=e169]:
+                  - generic [ref=e171]:
+                    - generic [ref=e172]:
+                      - generic [ref=e173]: 𝕏
+                      - generic [ref=e174]:
+                        - heading "X (Twitter) Ads" [level=3] [ref=e175]
+                        - paragraph [ref=e176]: Connect X advertising account
+                    - generic [ref=e177]: Not Connected
+                  - generic [ref=e179]:
+                    - paragraph [ref=e180]: Connect your X (Twitter) Ads account to start syncing campaigns
+                    - button "Connect X (Twitter) Ads" [ref=e181] [cursor=pointer]:
+                      - img [ref=e182] [cursor=pointer]
+                      - text: Connect X (Twitter) Ads
+            - generic [ref=e186]:
+              - generic [ref=e187]:
+                - heading "Need Help?" [level=3] [ref=e188]
+                - paragraph [ref=e189]: Learn how to connect your ad platforms
+              - generic [ref=e191]:
+                - paragraph [ref=e192]: • Make sure you have admin access to your ad accounts
+                - paragraph [ref=e193]: • Some platforms require app approval before connecting
+                - paragraph [ref=e194]: • Tokens are encrypted and securely stored
+                - paragraph [ref=e195]: • You can disconnect at any time
+      - button "Open campaign chat" [ref=e196] [cursor=pointer]:
+        - img [ref=e197] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e204] [cursor=pointer]:
+    - img [ref=e205] [cursor=pointer]
+  - alert [ref=e208]
 ```

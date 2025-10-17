@@ -1,18 +1,93 @@
 # Page snapshot
 
 ```yaml
-- main [ref=e3]:
-  - paragraph [ref=e4]:
-    - generic [ref=e5]:
-      - strong [ref=e6]: "404"
-      - text: ": NOT_FOUND"
-    - generic [ref=e7]:
-      - text: "Code:"
-      - code [ref=e8]: "`DEPLOYMENT_NOT_FOUND`"
-    - generic [ref=e9]:
-      - text: "ID:"
-      - code [ref=e10]: "`pdx1::qq7qv-1760487457984-46442cf8ab3f`"
-  - link "This deployment cannot be found. For more information and troubleshooting, see our documentation." [ref=e11] [cursor=pointer]:
-    - /url: https://vercel.com/docs/errors/platform-error-codes#deployment_not_found
-    - generic [ref=e12] [cursor=pointer]: This deployment cannot be found. For more information and troubleshooting, see our documentation.
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6] [cursor=pointer]:
+          - img [ref=e9] [cursor=pointer]
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: Synter
+            - generic [ref=e14] [cursor=pointer]: AI Media Agent
+        - navigation [ref=e15]:
+          - link "Dashboard" [ref=e16] [cursor=pointer]:
+            - /url: /
+            - img [ref=e17] [cursor=pointer]
+            - generic [ref=e19] [cursor=pointer]: Dashboard
+          - link "Campaigns" [ref=e20] [cursor=pointer]:
+            - /url: /campaigns
+            - img [ref=e21] [cursor=pointer]
+            - generic [ref=e23] [cursor=pointer]: Campaigns
+          - link "Launch Campaign" [ref=e24] [cursor=pointer]:
+            - /url: /workflow
+            - img [ref=e25] [cursor=pointer]
+            - generic [ref=e27] [cursor=pointer]: Launch Campaign
+          - link "Conversions" [ref=e28] [cursor=pointer]:
+            - /url: /conversions
+            - img [ref=e29] [cursor=pointer]
+            - generic [ref=e31] [cursor=pointer]: Conversions
+          - link "Settings" [ref=e32] [cursor=pointer]:
+            - /url: /settings/apps
+            - img [ref=e33] [cursor=pointer]
+            - generic [ref=e36] [cursor=pointer]: Settings
+    - generic [ref=e37]:
+      - generic [ref=e40]:
+        - generic [ref=e42]:
+          - generic [ref=e43]: Oct 15
+          - generic [ref=e45]: 16:08 UTC
+        - generic [ref=e46]:
+          - link "New Campaign" [ref=e48] [cursor=pointer]:
+            - /url: /campaigns/new
+            - img [ref=e49] [cursor=pointer]
+            - generic [ref=e51] [cursor=pointer]: New Campaign
+          - button "View notifications" [ref=e53] [cursor=pointer]:
+            - generic [ref=e54] [cursor=pointer]: View notifications
+            - img [ref=e55] [cursor=pointer]
+          - button "Open user menu User" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61] [cursor=pointer]: Open user menu
+            - generic [ref=e63] [cursor=pointer]:
+              - paragraph [ref=e64] [cursor=pointer]: User
+              - paragraph
+            - img [ref=e65] [cursor=pointer]
+      - main [ref=e67]:
+        - generic [ref=e70]:
+          - generic [ref=e72]:
+            - generic [ref=e73]:
+              - img [ref=e76]
+              - generic [ref=e80]: Website Analysis
+            - generic [ref=e81]:
+              - img [ref=e84]
+              - generic [ref=e88]: Ad Footprint & Savings
+            - generic [ref=e89]:
+              - img [ref=e92]
+              - generic [ref=e96]: Create Account
+            - generic [ref=e97]:
+              - img [ref=e100]
+              - generic [ref=e105]: Your Business
+            - generic [ref=e106]:
+              - img [ref=e109]
+              - generic [ref=e111]: Connect Platforms
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - heading "Create your account" [level=2] [ref=e115]
+              - paragraph [ref=e116]: Sign up to save your campaign insights
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - generic [ref=e119]: Business Name
+                - textbox "Acme Corp" [ref=e120]
+              - generic [ref=e121]:
+                - generic [ref=e122]: Email
+                - textbox "you@company.com" [ref=e123]
+              - generic [ref=e124]:
+                - generic [ref=e125]: Password
+                - textbox "••••••••" [ref=e126]
+              - button "Create Account & Continue" [disabled] [ref=e127]:
+                - text: Create Account & Continue
+                - img [ref=e128]
+      - button "Open campaign chat" [ref=e130] [cursor=pointer]:
+        - img [ref=e131] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e138] [cursor=pointer]:
+    - img [ref=e139] [cursor=pointer]
+  - alert [ref=e142]
 ```

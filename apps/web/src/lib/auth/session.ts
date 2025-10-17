@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function getCurrentUser() {
   const cookieStore = await cookies();
-  const sessionToken = cookieStore.get('session_token')?.value;
+  const sessionToken = cookieStore.get('synter_session')?.value;
 
   if (!sessionToken) {
     return null;

@@ -80,12 +80,13 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     { name: 'Launch Campaign', href: '/workflow', icon: PlayIcon },
     { name: 'PPC Manager', href: '/ppc', icon: ChartIcon, adminOnly: true },
     { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
+    { name: 'Waitlist', href: '/admin/waitlist', icon: UserGroupIcon, adminOnly: true },
     { name: 'Conversions', href: '/conversions', icon: DocumentTextIcon },
     { name: 'Settings', href: '/settings/apps', icon: CogIcon },
     { name: 'Team', href: '/team', icon: UserGroupIcon, adminOnly: true },
   ].map(item => ({
     ...item,
-    current: pathname === item.href || (item.href === '/ppc' && pathname.startsWith('/ppc')) || (pathname === '/' && item.href === '/'),
+    current: pathname === item.href || (item.href === '/ppc' && pathname.startsWith('/ppc')) || (pathname === '/admin/waitlist' && pathname.startsWith('/admin/waitlist')) || (pathname === '/' && item.href === '/'),
   }));
 
   const filteredNavigation = navigation.filter(item => 

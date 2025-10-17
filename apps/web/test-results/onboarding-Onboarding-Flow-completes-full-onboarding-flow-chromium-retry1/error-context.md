@@ -1,18 +1,96 @@
 # Page snapshot
 
 ```yaml
-- main [ref=e3]:
-  - paragraph [ref=e4]:
-    - generic [ref=e5]:
-      - strong [ref=e6]: "404"
-      - text: ": NOT_FOUND"
-    - generic [ref=e7]:
-      - text: "Code:"
-      - code [ref=e8]: "`DEPLOYMENT_NOT_FOUND`"
-    - generic [ref=e9]:
-      - text: "ID:"
-      - code [ref=e10]: "`pdx1::cvgdm-1760487504752-7b7ae4108a36`"
-  - link "This deployment cannot be found. For more information and troubleshooting, see our documentation." [ref=e11] [cursor=pointer]:
-    - /url: https://vercel.com/docs/errors/platform-error-codes#deployment_not_found
-    - generic [ref=e12] [cursor=pointer]: This deployment cannot be found. For more information and troubleshooting, see our documentation.
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6] [cursor=pointer]:
+          - img [ref=e9] [cursor=pointer]
+          - generic [ref=e12] [cursor=pointer]:
+            - generic [ref=e13] [cursor=pointer]: Synter
+            - generic [ref=e14] [cursor=pointer]: AI Media Agent
+        - navigation [ref=e15]:
+          - link "Dashboard" [ref=e16] [cursor=pointer]:
+            - /url: /
+            - img [ref=e17] [cursor=pointer]
+            - generic [ref=e19] [cursor=pointer]: Dashboard
+          - link "Campaigns" [ref=e20] [cursor=pointer]:
+            - /url: /campaigns
+            - img [ref=e21] [cursor=pointer]
+            - generic [ref=e23] [cursor=pointer]: Campaigns
+          - link "Launch Campaign" [ref=e24] [cursor=pointer]:
+            - /url: /workflow
+            - img [ref=e25] [cursor=pointer]
+            - generic [ref=e27] [cursor=pointer]: Launch Campaign
+          - link "Conversions" [ref=e28] [cursor=pointer]:
+            - /url: /conversions
+            - img [ref=e29] [cursor=pointer]
+            - generic [ref=e31] [cursor=pointer]: Conversions
+          - link "Settings" [ref=e32] [cursor=pointer]:
+            - /url: /settings/apps
+            - img [ref=e33] [cursor=pointer]
+            - generic [ref=e36] [cursor=pointer]: Settings
+    - generic [ref=e37]:
+      - generic [ref=e40]:
+        - generic [ref=e42]:
+          - generic [ref=e43]: Oct 15
+          - generic [ref=e45]: 16:08 UTC
+        - generic [ref=e46]:
+          - link "New Campaign" [ref=e48] [cursor=pointer]:
+            - /url: /campaigns/new
+            - img [ref=e49] [cursor=pointer]
+            - generic [ref=e51] [cursor=pointer]: New Campaign
+          - button "View notifications" [ref=e53] [cursor=pointer]:
+            - generic [ref=e54] [cursor=pointer]: View notifications
+            - img [ref=e55] [cursor=pointer]
+          - button "Open user menu User" [ref=e60] [cursor=pointer]:
+            - generic [ref=e61] [cursor=pointer]: Open user menu
+            - generic [ref=e63] [cursor=pointer]:
+              - paragraph [ref=e64] [cursor=pointer]: User
+              - paragraph
+            - img [ref=e65] [cursor=pointer]
+      - main [ref=e67]:
+        - generic [ref=e70]:
+          - generic [ref=e72]:
+            - generic [ref=e73]:
+              - img [ref=e76]
+              - generic [ref=e79]: Website Analysis
+            - generic [ref=e80]:
+              - img [ref=e83]
+              - generic [ref=e86]: Ad Footprint & Savings
+            - generic [ref=e87]:
+              - img [ref=e90]
+              - generic [ref=e94]: Create Account
+            - generic [ref=e95]:
+              - img [ref=e98]
+              - generic [ref=e103]: Your Business
+            - generic [ref=e104]:
+              - img [ref=e107]
+              - generic [ref=e109]: Connect Platforms
+          - generic [ref=e111]:
+            - generic [ref=e112]:
+              - heading "Analyzing your website..." [level=2] [ref=e113]
+              - paragraph [ref=e114]: Using AI to understand your business and audience
+            - generic [ref=e115]:
+              - generic [ref=e116]:
+                - generic [ref=e117]: Business Type
+                - textbox [ref=e118]: B2B SaaS
+              - generic [ref=e119]:
+                - generic [ref=e120]: Industry
+                - textbox [ref=e121]: Technology
+              - generic [ref=e122]:
+                - generic [ref=e123]: Product/Service Description
+                - textbox "Describe what you offer..." [ref=e124]
+              - generic [ref=e125]:
+                - generic [ref=e126]: Target Audience
+                - textbox [ref=e127]: Business professionals and decision makers
+              - button "Continue to Account Creation" [ref=e128] [cursor=pointer]:
+                - text: Continue to Account Creation
+                - img [ref=e129] [cursor=pointer]
+      - button "Open campaign chat" [ref=e131] [cursor=pointer]:
+        - img [ref=e132] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e139] [cursor=pointer]:
+    - img [ref=e140] [cursor=pointer]
+  - alert [ref=e143]
 ```

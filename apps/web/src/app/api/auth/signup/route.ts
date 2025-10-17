@@ -41,6 +41,21 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Add to waitlist
+    await db.waitlistLead.upsert({
+      where: { email },
+      update: {
+        user_id: user.id,
+        status: 'JOINED',
+      },
+      create: {
+        user_id: user.id,
+        email,
+        status: 'JOINED',
+        source: 'signup',
+      },
+    });
+
     // Create session
     const sessionToken = authService.generateSessionToken();
     const expiresAt = authService.getSessionExpiry();

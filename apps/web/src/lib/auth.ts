@@ -100,40 +100,96 @@ export function getSessionCookieOptions(isProduction: boolean = false): CookieOp
 export const SYNTER_SESSION_COOKIE = 'synter_session'
 
 // Email service
-// Database functions (stub implementations)
+// Database functions (Prisma implementations)
 export async function getSessionUser(sessionToken: string) {
-  // TODO: Implement session lookup in database
-  return null
+  const { db } = await import('./db');
+  const session = await db.session.findFirst({
+    where: {
+      session_token: sessionToken,
+      expires_at: {
+        gt: new Date(),
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  return session?.user || null;
 }
 
 export async function deleteSession(sessionToken: string) {
-  // TODO: Implement session deletion in database
-  return true
+  const { db } = await import('./db');
+  await db.session.deleteMany({
+    where: { session_token: sessionToken },
+  });
+  return true;
 }
 
 export async function getUserByEmail(email: string) {
-  // TODO: Implement user lookup by email in database
-  return null
+  const { db } = await import('./db');
+  return await db.user.findUnique({
+    where: { email },
+  });
 }
 
-export async function createUser(email: string, name?: string, role: string = 'viewer') {
-  // TODO: Implement user creation in database
-  return { id: 1, email, name, role }
+export async function createUser({ email, passwordHash, name, role }: {
+  email: string;
+  passwordHash: string | null;
+  name: string | null;
+  role: string;
+}) {
+  const { db } = await import('./db');
+  return await db.user.create({
+    data: {
+      email,
+      password_hash: passwordHash,
+      name,
+      role: role.toUpperCase() as any, // Convert to Prisma enum
+    },
+  });
 }
 
-export async function createMagicLink(userId: number, token: string, expiresAt: Date) {
-  // TODO: Implement magic link creation in database
-  return { id: 1, userId, token, expiresAt }
+export async function createMagicLink({ userId, token, expiresAt }: {
+  userId: number;
+  token: string;
+  expiresAt: Date;
+}) {
+  const { db } = await import('./db');
+  return await db.magicLink.create({
+    data: {
+      user_id: userId,
+      token,
+      expires_at: expiresAt,
+    },
+  });
 }
 
 export async function getMagicLinkUser(token: string) {
-  // TODO: Implement magic link lookup in database
-  return null
+  const { db } = await import('./db');
+  const magicLink = await db.magicLink.findFirst({
+    where: {
+      token,
+      expires_at: {
+        gt: new Date(),
+      },
+      used_at: null, // Only unused links
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  return magicLink?.user || null;
 }
 
 export async function markMagicLinkAsUsed(token: string) {
-  // TODO: Implement magic link usage marking in database
-  return true
+  const { db } = await import('./db');
+  await db.magicLink.updateMany({
+    where: { token },
+    data: { used_at: new Date() },
+  });
+  return true;
 }
 
 export async function createSession({
@@ -147,15 +203,19 @@ export async function createSession({
   userAgent?: string
   ip?: string
 }) {
+  const { db } = await import('./db');
   const auth = new AuthService(process.env.JWT_SECRET!)
   const expiresAt = auth.getSessionExpiry()
-  
-  // TODO: Implement session creation in database
-  // For now, return mock data - replace with actual DB insert when Prisma is wired up
-  return {
-    sessionToken,
-    expiresAt,
-  }
+
+  return await db.session.create({
+    data: {
+      user_id: userId,
+      session_token: sessionToken,
+      expires_at: expiresAt,
+      user_agent: userAgent,
+      ip,
+    },
+  });
 }
 
 export class EmailService {

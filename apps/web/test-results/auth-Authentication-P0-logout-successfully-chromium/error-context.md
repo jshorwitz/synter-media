@@ -1,18 +1,11 @@
 # Page snapshot
 
 ```yaml
-- main [ref=e3]:
-  - paragraph [ref=e4]:
-    - generic [ref=e5]:
-      - strong [ref=e6]: "404"
-      - text: ": NOT_FOUND"
-    - generic [ref=e7]:
-      - text: "Code:"
-      - code [ref=e8]: "`DEPLOYMENT_NOT_FOUND`"
-    - generic [ref=e9]:
-      - text: "ID:"
-      - code [ref=e10]: "`pdx1::dvpwl-1760487425824-1cf25f7a0f31`"
-  - link "This deployment cannot be found. For more information and troubleshooting, see our documentation." [ref=e11] [cursor=pointer]:
-    - /url: https://vercel.com/docs/errors/platform-error-codes#deployment_not_found
-    - generic [ref=e12] [cursor=pointer]: This deployment cannot be found. For more information and troubleshooting, see our documentation.
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "404" [level=1] [ref=e4]
+    - heading "This page could not be found." [level=2] [ref=e6]
+  - button "Open Next.js Dev Tools" [ref=e12] [cursor=pointer]:
+    - img [ref=e13] [cursor=pointer]
+  - alert [ref=e16]
 ```

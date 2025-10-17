@@ -1,18 +1,247 @@
 # Page snapshot
 
 ```yaml
-- main [ref=e3]:
-  - paragraph [ref=e4]:
-    - generic [ref=e5]:
-      - strong [ref=e6]: "404"
-      - text: ": NOT_FOUND"
-    - generic [ref=e7]:
-      - text: "Code:"
-      - code [ref=e8]: "`DEPLOYMENT_NOT_FOUND`"
-    - generic [ref=e9]:
-      - text: "ID:"
-      - code [ref=e10]: "`pdx1::ljk5c-1760487425810-deb02949f54c`"
-  - link "This deployment cannot be found. For more information and troubleshooting, see our documentation." [ref=e11] [cursor=pointer]:
-    - /url: https://vercel.com/docs/errors/platform-error-codes#deployment_not_found
-    - generic [ref=e12] [cursor=pointer]: This deployment cannot be found. For more information and troubleshooting, see our documentation.
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e7] [cursor=pointer]:
+    - img [ref=e8] [cursor=pointer]
+  - alert [ref=e11]
+  - generic [ref=e12]:
+    - complementary [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e16] [cursor=pointer]:
+          - img [ref=e19] [cursor=pointer]
+          - generic [ref=e22] [cursor=pointer]:
+            - generic [ref=e23] [cursor=pointer]: Synter
+            - generic [ref=e24] [cursor=pointer]: AI Media Agent
+        - navigation [ref=e25]:
+          - link "Dashboard" [ref=e26] [cursor=pointer]:
+            - /url: /
+            - img [ref=e27] [cursor=pointer]
+            - generic [ref=e29] [cursor=pointer]: Dashboard
+          - link "Campaigns" [ref=e30] [cursor=pointer]:
+            - /url: /campaigns
+            - img [ref=e31] [cursor=pointer]
+            - generic [ref=e33] [cursor=pointer]: Campaigns
+          - link "Launch Campaign" [ref=e34] [cursor=pointer]:
+            - /url: /workflow
+            - img [ref=e35] [cursor=pointer]
+            - generic [ref=e37] [cursor=pointer]: Launch Campaign
+          - link "Conversions" [ref=e38] [cursor=pointer]:
+            - /url: /conversions
+            - img [ref=e39] [cursor=pointer]
+            - generic [ref=e41] [cursor=pointer]: Conversions
+          - link "Settings" [ref=e42] [cursor=pointer]:
+            - /url: /settings/apps
+            - img [ref=e43] [cursor=pointer]
+            - generic [ref=e46] [cursor=pointer]: Settings
+    - generic [ref=e47]:
+      - generic [ref=e50]:
+        - generic [ref=e52]:
+          - generic [ref=e53]: Oct 15
+          - generic [ref=e55]: 16:07 UTC
+        - generic [ref=e56]:
+          - link "New Campaign" [ref=e58] [cursor=pointer]:
+            - /url: /campaigns/new
+            - img [ref=e59] [cursor=pointer]
+            - generic [ref=e61] [cursor=pointer]: New Campaign
+          - button "View notifications" [ref=e63] [cursor=pointer]:
+            - generic [ref=e64] [cursor=pointer]: View notifications
+            - img [ref=e65] [cursor=pointer]
+          - button "Open user menu E E2E Test User VIEWER" [ref=e70] [cursor=pointer]:
+            - generic [ref=e71] [cursor=pointer]: Open user menu
+            - generic [ref=e73] [cursor=pointer]: E
+            - generic [ref=e74] [cursor=pointer]:
+              - paragraph [ref=e75] [cursor=pointer]: E2E Test User
+              - paragraph [ref=e76] [cursor=pointer]: VIEWER
+            - img [ref=e77] [cursor=pointer]
+      - main [ref=e79]:
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - heading "Dashboard Overview" [level=1] [ref=e84]
+              - paragraph [ref=e85]:
+                - text: Welcome back,
+                - generic [ref=e86]: E2E Test User
+              - generic [ref=e87]: All systems operational
+            - generic [ref=e89]:
+              - generic [ref=e90]: "Time Range:"
+              - combobox "Time Range:" [ref=e91]:
+                - option "Last 24 hours"
+                - option "Last 7 days" [selected]
+                - option "Last 30 days"
+                - option "Last 90 days"
+              - button "Refresh data" [ref=e92] [cursor=pointer]:
+                - img [ref=e93] [cursor=pointer]
+          - generic [ref=e95]:
+            - generic [ref=e98]:
+              - generic [ref=e100]:
+                - generic [ref=e101]:
+                  - paragraph [ref=e102]: Total Spend
+                  - paragraph [ref=e103]: $45,230.5
+                - img [ref=e105]
+              - generic [ref=e116]:
+                - img [ref=e117]
+                - generic [ref=e119]: +8.2%
+                - generic [ref=e120]: vs last period
+              - generic [ref=e122]:
+                - generic [ref=e123]: "Target: 50,000"
+                - generic [ref=e124]: 90%
+            - generic [ref=e129]:
+              - generic [ref=e131]:
+                - generic [ref=e132]:
+                  - paragraph [ref=e133]: Total Clicks
+                  - paragraph [ref=e134]: 18,420
+                - img [ref=e136]
+              - generic [ref=e147]:
+                - img
+                - generic [ref=e149]: +12.5%
+                - generic [ref=e150]: vs last period
+              - generic [ref=e152]:
+                - generic [ref=e153]: "Target: 20,000"
+                - generic [ref=e154]: 92%
+            - generic [ref=e159]:
+              - generic [ref=e161]:
+                - generic [ref=e162]:
+                  - paragraph [ref=e163]: Conversions
+                  - paragraph [ref=e164]: "892"
+                - img [ref=e166]
+              - generic [ref=e177]:
+                - img
+                - generic [ref=e179]: +15.3%
+                - generic [ref=e180]: vs last period
+              - generic [ref=e182]:
+                - generic [ref=e183]: "Target: 1,000"
+                - generic [ref=e184]: 89%
+            - generic [ref=e189]:
+              - generic [ref=e192]:
+                - paragraph [ref=e193]: CAC
+                - paragraph [ref=e194]: $50.70
+              - generic [ref=e195]:
+                - img [ref=e196]
+                - generic [ref=e198]: "-5.2%"
+                - generic [ref=e199]: vs last period
+              - generic [ref=e201]:
+                - generic [ref=e202]: "Target: 45"
+                - generic [ref=e203]: 113%
+            - generic [ref=e208]:
+              - generic [ref=e211]:
+                - paragraph [ref=e212]: ROAS
+                - paragraph [ref=e213]: 4.2x
+              - generic [ref=e214]:
+                - img
+                - generic [ref=e216]: +18.7%
+                - generic [ref=e217]: vs last period
+              - generic [ref=e219]:
+                - generic [ref=e220]: "Target: 5"
+                - generic [ref=e221]: 84%
+            - generic [ref=e226]:
+              - generic [ref=e228]:
+                - generic [ref=e229]:
+                  - paragraph [ref=e230]: Revenue
+                  - paragraph [ref=e231]: $189,680.4
+                - img [ref=e233]
+              - generic [ref=e244]:
+                - img
+                - generic [ref=e246]: +22.1%
+                - generic [ref=e247]: vs last period
+              - generic [ref=e249]:
+                - generic [ref=e250]: "Target: 200,000"
+                - generic [ref=e251]: 95%
+          - generic [ref=e255]:
+            - generic [ref=e256]:
+              - img [ref=e258]
+              - generic [ref=e262]:
+                - heading "Refer & Earn 50 Credits" [level=3] [ref=e263]
+                - paragraph [ref=e264]: Your friend gets 50 credits too • 0 referrals • 0 credits earned
+            - button "Copy Link" [ref=e265] [cursor=pointer]:
+              - img [ref=e266] [cursor=pointer]
+              - text: Copy Link
+          - generic [ref=e269]:
+            - generic [ref=e270]:
+              - heading "📈 Daily Spend Trend" [level=3] [ref=e271]
+              - img [ref=e273]:
+                - generic [ref=e274]:
+                  - generic [ref=e277]:
+                    - generic [ref=e279]: Jan 01
+                    - generic [ref=e281]: Jan 02
+                    - generic [ref=e283]: Jan 03
+                    - generic [ref=e285]: Jan 04
+                    - generic [ref=e287]: Jan 05
+                    - generic [ref=e289]: Jan 06
+                  - generic [ref=e290]:
+                    - generic [ref=e292]: $0.0
+                    - generic [ref=e294]: $2.0k
+                    - generic [ref=e296]: $4.0k
+                    - generic [ref=e298]: $6.0k
+                    - generic [ref=e300]: $8.0k
+                    - generic [ref=e302]: $10k
+            - heading "🎯 Platform Mix" [level=3] [ref=e305]
+          - heading "💰 Top Campaign Revenue" [level=3] [ref=e308]
+          - generic [ref=e311]:
+            - generic [ref=e313]:
+              - generic [ref=e314]:
+                - heading "Conversion Tracking" [level=3] [ref=e315]
+                - paragraph [ref=e316]: Campaign performance and conversions
+              - link "View all →" [ref=e317] [cursor=pointer]:
+                - /url: /conversions
+            - table [ref=e320]:
+              - rowgroup [ref=e321]:
+                - row "Campaign Clicks Conv. Spend CAC ROAS" [ref=e322]:
+                  - cell "Campaign" [ref=e323]
+                  - cell "Clicks" [ref=e324]
+                  - cell "Conv." [ref=e325]
+                  - cell "Spend" [ref=e326]
+                  - cell "CAC" [ref=e327]
+                  - cell "ROAS" [ref=e328]
+              - rowgroup [ref=e329]:
+                - row "Brand Search Google 8.4K 420 $21,400.00 $51.00 4.80x" [ref=e330]:
+                  - cell "Brand Search Google" [ref=e331]:
+                    - generic [ref=e332]:
+                      - generic [ref=e333]: Brand Search
+                      - generic [ref=e335]: Google
+                  - cell "8.4K" [ref=e336]
+                  - cell "420" [ref=e337]
+                  - cell "$21,400.00" [ref=e338]
+                  - cell "$51.00" [ref=e339]:
+                    - generic [ref=e340]: $51.00
+                  - cell "4.80x" [ref=e341]:
+                    - generic [ref=e342]: 4.80x
+                - row "Search Network Microsoft 6.2K 310 $15,600.00 $50.30 3.90x" [ref=e343]:
+                  - cell "Search Network Microsoft" [ref=e344]:
+                    - generic [ref=e345]:
+                      - generic [ref=e346]: Search Network
+                      - generic [ref=e348]: Microsoft
+                  - cell "6.2K" [ref=e349]
+                  - cell "310" [ref=e350]
+                  - cell "$15,600.00" [ref=e351]
+                  - cell "$50.30" [ref=e352]:
+                    - generic [ref=e353]: $50.30
+                  - cell "3.90x" [ref=e354]:
+                    - generic [ref=e355]: 3.90x
+                - row "B2B Targeting LinkedIn 2.8K 112 $7,200.00 $64.30 3.20x" [ref=e356]:
+                  - cell "B2B Targeting LinkedIn" [ref=e357]:
+                    - generic [ref=e358]:
+                      - generic [ref=e359]: B2B Targeting
+                      - generic [ref=e361]: LinkedIn
+                  - cell "2.8K" [ref=e362]
+                  - cell "112" [ref=e363]
+                  - cell "$7,200.00" [ref=e364]
+                  - cell "$64.30" [ref=e365]:
+                    - generic [ref=e366]: $64.30
+                  - cell "3.20x" [ref=e367]:
+                    - generic [ref=e368]: 3.20x
+                - row "Tech Communities Reddit 1.0K 50 $1,030.00 $20.60 3.00x" [ref=e369]:
+                  - cell "Tech Communities Reddit" [ref=e370]:
+                    - generic [ref=e371]:
+                      - generic [ref=e372]: Tech Communities
+                      - generic [ref=e374]: Reddit
+                  - cell "1.0K" [ref=e375]
+                  - cell "50" [ref=e376]
+                  - cell "$1,030.00" [ref=e377]
+                  - cell "$20.60" [ref=e378]:
+                    - generic [ref=e379]: $20.60
+                  - cell "3.00x" [ref=e380]:
+                    - generic [ref=e381]: 3.00x
+      - button "Open campaign chat" [ref=e382] [cursor=pointer]:
+        - img [ref=e383] [cursor=pointer]
 ```
