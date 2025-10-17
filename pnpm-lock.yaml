@@ -75,6 +75,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
+      loops:
+        specifier: ^6.0.1
+        version: 6.0.1
       lucide-react:
         specifier: ^0.469.0
         version: 0.469.0(react@19.1.0)
@@ -3992,6 +3995,10 @@ packages:
 
   long@5.3.2:
     resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==}
+
+  loops@6.0.1:
+    resolution: {integrity: sha512-ds2CwBA2WuAv50yyHmIpTAzWa4dbVyuSwR9NWtqnlE+78FINILCaxJjDgqNqVYLU1rYioj7mRJNkb6k2/L1EtQ==}
+    engines: {node: '>=18'}
 
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
@@ -9945,6 +9952,8 @@ snapshots:
   lodash.once@4.1.1: {}
 
   long@5.3.2: {}
+
+  loops@6.0.1: {}
 
   loose-envify@1.4.0:
     dependencies:
