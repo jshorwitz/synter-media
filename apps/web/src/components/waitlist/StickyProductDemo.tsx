@@ -110,7 +110,7 @@ export function StickyProductDemo() {
             {scenes.map((scene, i) => (
               <motion.div
                 key={i}
-                className="demo-scene min-h-[60vh] flex flex-col justify-center"
+                className="demo-scene min-h-[50vh] flex flex-col justify-center"
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}

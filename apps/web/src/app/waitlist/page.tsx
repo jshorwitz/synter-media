@@ -95,7 +95,7 @@ export default function WaitlistPage() {
         <StickyProductDemo />
 
         {/* ROI Calculator */}
-        <section className="relative py-32 px-6">
+        <section className="relative py-20 px-6">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ export default function WaitlistPage() {
         </section>
 
         {/* Value Props Section */}
-        <section className="relative py-32 px-6">
+        <section className="relative py-20 px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
