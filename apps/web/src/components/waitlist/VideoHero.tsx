@@ -87,21 +87,22 @@ export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
           </button>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.5 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2"
-        >
-          <div className="flex flex-col items-center gap-2 text-text-muted">
-            <span className="text-xs font-mono uppercase tracking-wider">Scroll to explore</span>
-            <svg className="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-            </svg>
-          </div>
-        </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.5 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+      >
+        <div className="flex flex-col items-center gap-2 text-text-muted">
+          <span className="text-xs font-mono uppercase tracking-wider">Scroll to explore</span>
+          <svg className="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+          </svg>
+        </div>
+      </motion.div>
     </section>
   );
 }

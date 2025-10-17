@@ -281,27 +281,33 @@ export default function WaitlistPage() {
       </section>
 
         {/* Final CTA */}
-        <section className="relative py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="panel p-12">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-4">
-              Ready to Transform Your Ad Operations?
-            </h2>
-            <p className="text-lg text-text-mid mb-8 max-w-2xl mx-auto">
-              Join hundreds of performance marketing teams already on the waitlist.
-            </p>
-            <button
-              onClick={handleSignup}
-              className="btn-tactical-primary px-8 py-4 text-base"
+        <section className="relative py-40 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="panel p-16 bg-gradient-to-br from-accent-cyan/10 to-accent-lime/10 border-accent-cyan/30"
             >
-              Join the Waitlist
-              <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-              </svg>
-            </button>
+              <h2 className="font-display text-5xl md:text-6xl font-bold text-text-hi mb-6 leading-tight">
+                Ready to Transform Your Ad Operations?
+              </h2>
+              <p className="text-xl text-text-mid mb-10 max-w-2xl mx-auto">
+                Join performance marketing teams already on the waitlist.
+              </p>
+              <button
+                onClick={handleSignup}
+                className="btn-tactical-primary px-12 py-6 text-lg group"
+              >
+                Join the Waitlist
+                <svg className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
         {/* Footer */}
         <footer className="border-t border-stroke-1 py-8 px-6">
