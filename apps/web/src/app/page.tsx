@@ -15,6 +15,10 @@ import { FeaturesSection } from '@/components/sections/FeaturesSection';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export default function HomePage() {
+  // Redirect to waitlist
+  if (typeof window !== 'undefined') {
+    window.location.href = '/waitlist';
+  }
   const { user, loading } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('login');

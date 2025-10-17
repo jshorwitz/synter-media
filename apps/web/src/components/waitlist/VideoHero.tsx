@@ -54,27 +54,38 @@ export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
           Stop paying 10% agency fees. Let frontier AI models optimize your campaigns across Google, LinkedIn, Reddit, X, and Microsoft.
         </motion.p>
 
-        {/* Email Capture */}
+        {/* Waitlist Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
           className="max-w-2xl mx-auto"
         >
-          <div className="panel p-2 flex flex-col sm:flex-row gap-2">
-            <input
-              type="email"
-              placeholder="Enter your email to get started..."
-              className="flex-1 bg-carbon-800 border-none rounded px-6 py-4 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  onSignup();
-                }
-              }}
-            />
+          <div className="panel p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <input
+                type="text"
+                placeholder="Full name"
+                className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+              />
+              <input
+                type="email"
+                placeholder="Email address"
+                className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+              />
+            </div>
+            
+            <div className="mb-4">
+              <input
+                type="url"
+                placeholder="Company website (optional)"
+                className="w-full bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+              />
+            </div>
+
             <button
               onClick={onSignup}
-              className="btn-tactical-primary px-8 py-4 text-base group whitespace-nowrap"
+              className="btn-tactical-primary w-full px-8 py-4 text-base group"
             >
               Join Waitlist
               <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
