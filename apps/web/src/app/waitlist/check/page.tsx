@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { TopNav } from '@/components/layout/TopNav';
 import { motion } from 'framer-motion';
 
-export default function WaitlistCheckPage() {
+function WaitlistCheckContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   
@@ -184,5 +184,17 @@ export default function WaitlistCheckPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function WaitlistCheckPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-carbon-900 flex items-center justify-center">
+        <div className="text-text-mid">Loading...</div>
+      </div>
+    }>
+      <WaitlistCheckContent />
+    </Suspense>
   );
 }
