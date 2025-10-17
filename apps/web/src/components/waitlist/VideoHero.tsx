@@ -10,19 +10,10 @@ interface VideoHeroProps {
 export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Video background placeholder - will be replaced with actual product demo video */}
-      <div className="absolute inset-0 bg-gradient-to-br from-carbon-900 via-carbon-850 to-carbon-900">
-        {/* Animated grid overlay */}
-        <div className="absolute inset-0 synter-grid opacity-30"></div>
-        
-        {/* Gradient accents */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-accent-cyan/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-accent-lime/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
-        
-        {/* Scanlines effect */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(77, 214, 255, 0.03) 2px, rgba(77, 214, 255, 0.03) 4px)',
-        }}></div>
+      {/* Gradient accents - semi-transparent to show particle background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-accent-cyan/8 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-accent-lime/8 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
 
       {/* Content */}
