@@ -86,63 +86,63 @@ export default function WaitlistPage() {
         {/* Navigation */}
         <TopNav onLogin={handleLogin} onSignup={handleSignup} />
 
-      {/* Hero Section */}
-      <WaitlistHero onSignup={handleSignup} onLogin={handleLogin} />
+        {/* Hero Section */}
+        <WaitlistHero onSignup={handleSignup} onLogin={handleLogin} />
 
-      {/* ROI Calculator */}
-      <section className="relative py-16 px-6">
-        <ROICalculator />
-      </section>
+        {/* ROI Calculator */}
+        <section className="relative py-16 px-6">
+          <ROICalculator />
+        </section>
 
         {/* Screenshot Gallery */}
         <ScreenshotGallery />
 
         {/* Value Props Section */}
-      <section className="relative py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-text-hi mb-4">
-              Why Performance Teams Choose Synter
-            </h2>
-            <p className="text-lg text-text-mid max-w-2xl mx-auto">
-              Stop managing platforms in silos. Let AI orchestrate your entire media strategy.
-            </p>
-          </div>
+        <section className="relative py-24 px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="font-display text-4xl md:text-5xl font-bold text-text-hi mb-4">
+                Why Performance Teams Choose Synter
+              </h2>
+              <p className="text-lg text-text-mid max-w-2xl mx-auto">
+                Stop managing platforms in silos. Let AI orchestrate your entire media strategy.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                title: 'Cross-Platform Intelligence',
-                description: 'Learn from your entire ad portfolio. Share insights between Google, LinkedIn, Reddit, X, and Microsoft.',
-              },
-              {
-                title: 'Frontier Model Research',
-                description: 'Advanced AI continuously researches your market, competitors, and audience—delivering strategic recommendations backed by deep analysis.',
-              },
-              {
-                title: 'Autonomous Optimization',
-                description: 'Set your goals and guardrails, then let Synter handle budget allocation, bid adjustments, and creative testing in real-time.',
-              },
-              {
-                title: 'Unified Attribution',
-                description: 'Track conversions across the entire customer journey with multi-touch attribution that works seamlessly across all channels.',
-              }
-            ].map((item, i) => (
-              <div key={i} className="panel p-6 group hover:border-accent-cyan/30 transition-colors">
-                <h3 className="font-display text-xl font-semibold text-text-hi mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-text-mid leading-relaxed text-sm">
-                  {item.description}
-                </p>
-              </div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: 'Cross-Platform Intelligence',
+                  description: 'Learn from your entire ad portfolio. Share insights between Google, LinkedIn, Reddit, X, and Microsoft.',
+                },
+                {
+                  title: 'Frontier Model Research',
+                  description: 'Advanced AI continuously researches your market, competitors, and audience—delivering strategic recommendations backed by deep analysis.',
+                },
+                {
+                  title: 'Autonomous Optimization',
+                  description: 'Set your goals and guardrails, then let Synter handle budget allocation, bid adjustments, and creative testing in real-time.',
+                },
+                {
+                  title: 'Unified Attribution',
+                  description: 'Track conversions across the entire customer journey with multi-touch attribution that works seamlessly across all channels.',
+                }
+              ].map((item, i) => (
+                <div key={i} className="panel p-6 group hover:border-accent-cyan/30 transition-colors">
+                  <h3 className="font-display text-xl font-semibold text-text-hi mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-text-mid leading-relaxed text-sm">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Pricing Section */}
-      <section className="relative py-24 px-6 bg-carbon-850/50">
+        {/* Pricing Section */}
+        <section className="relative py-24 px-6 bg-carbon-850/50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-4">
@@ -201,8 +201,8 @@ export default function WaitlistPage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="relative py-24 px-6">
+        {/* FAQ Section */}
+        <section className="relative py-24 px-6">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-12 text-center">
             Frequently Asked Questions
@@ -239,8 +239,8 @@ export default function WaitlistPage() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative py-24 px-6">
+        {/* Final CTA */}
+        <section className="relative py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <div className="panel p-12">
             <h2 className="font-display text-3xl md:text-4xl font-bold text-text-hi mb-4">
@@ -262,12 +262,13 @@ export default function WaitlistPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-stroke-1 py-8 px-6">
-        <div className="max-w-7xl mx-auto text-center text-text-muted text-sm font-mono">
-          <p>© 2025 Synter. Built for performance marketing teams.</p>
-        </div>
-      </footer>
+        {/* Footer */}
+        <footer className="border-t border-stroke-1 py-8 px-6">
+          <div className="max-w-7xl mx-auto text-center text-text-muted text-sm font-mono">
+            <p>© 2025 Synter. Built for performance marketing teams.</p>
+          </div>
+        </footer>
+      </div>
 
       {/* Auth Modal */}
       <AuthModal
