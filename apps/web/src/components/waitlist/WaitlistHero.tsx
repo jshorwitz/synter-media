@@ -58,21 +58,6 @@ export function WaitlistHero({ onSignup, onLogin }: WaitlistHeroProps) {
             Already have an account?
           </button>
         </div>
-
-        {/* Key benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: '400ms' }}>
-          {[
-            { label: 'Multi-Platform', icon: '🌐' },
-            { label: 'Real-Time Optimization', icon: '⚡' },
-            { label: 'Unified Attribution', icon: '📊' },
-            { label: 'Minutes to Deploy', icon: '🚀' }
-          ].map((benefit, i) => (
-            <div key={i} className="flex flex-col items-center gap-2 p-4 rounded-lg border border-stroke-1 bg-carbon-850/30 backdrop-blur-sm">
-              <span className="text-2xl">{benefit.icon}</span>
-              <span className="text-xs font-mono text-text-mid text-center">{benefit.label}</span>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
