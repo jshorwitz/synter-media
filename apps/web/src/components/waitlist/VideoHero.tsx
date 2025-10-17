@@ -63,28 +63,41 @@ export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
           Stop paying 10% agency fees. Let frontier AI models optimize your campaigns across Google, LinkedIn, Reddit, X, and Microsoft.
         </motion.p>
 
-        {/* CTAs */}
+        {/* Email Capture */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          className="max-w-2xl mx-auto"
         >
-          <button
-            onClick={onSignup}
-            className="btn-tactical-primary px-10 py-5 text-lg w-full sm:w-auto group"
-          >
-            Join the Waitlist
-            <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
-          </button>
-          <button
-            onClick={onLogin}
-            className="btn-tactical-ghost px-10 py-5 text-lg w-full sm:w-auto"
-          >
-            Sign In
-          </button>
+          <div className="panel p-2 flex flex-col sm:flex-row gap-2">
+            <input
+              type="email"
+              placeholder="Enter your email to get started..."
+              className="flex-1 bg-carbon-800 border-none rounded px-6 py-4 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onSignup();
+                }
+              }}
+            />
+            <button
+              onClick={onSignup}
+              className="btn-tactical-primary px-8 py-4 text-base group whitespace-nowrap"
+            >
+              Join Waitlist
+              <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+          </div>
+          
+          <p className="mt-4 text-sm text-text-muted text-center">
+            Already have an account?{' '}
+            <button onClick={onLogin} className="text-accent-cyan hover:underline">
+              Sign in
+            </button>
+          </p>
         </motion.div>
 
       </div>
