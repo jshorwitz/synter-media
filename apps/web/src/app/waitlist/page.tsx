@@ -169,14 +169,14 @@ export default function WaitlistPage() {
             {[
               {
                 q: 'How does the waitlist work?',
-                a: 'Sign up now to secure early access. We're rolling out invites in batches, prioritizing teams with the highest ad spend and platform diversity.'
+                a: 'Sign up now to secure early access. We are rolling out invites in batches, prioritizing teams with the highest ad spend and platform diversity.'
               },
               {
                 q: 'Which platforms does Synter support?',
                 a: 'Currently: Google Ads, LinkedIn Ads, Reddit Ads, X (Twitter) Ads, and Microsoft Advertising. More platforms coming soon.'
               },
               {
-                q: 'What's included in early access?',
+                q: 'What is included in early access?',
                 a: 'Full platform access, dedicated onboarding support, and direct input into our product roadmap. Early access users get lifetime priority support.'
               },
               {
