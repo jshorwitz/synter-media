@@ -9,7 +9,7 @@ interface VideoHeroProps {
 
 export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
       {/* Gradient accents - semi-transparent to show particle background */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-accent-cyan/8 rounded-full blur-[120px] animate-pulse"></div>
@@ -109,14 +109,11 @@ export function VideoHero({ onSignup, onLogin }: VideoHeroProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
-        <div className="flex flex-col items-center gap-2 text-text-muted">
-          <span className="text-xs font-mono uppercase tracking-wider">Scroll to explore</span>
-          <svg className="w-6 h-6 animate-bounce" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-          </svg>
-        </div>
+        <svg className="w-6 h-6 animate-bounce text-text-muted" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+        </svg>
       </motion.div>
     </section>
   );
