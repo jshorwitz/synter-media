@@ -4,22 +4,24 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 interface VideoHeroProps {
-  onSubmit: (data: { name: string; email: string; website?: string }) => void;
+  onSubmit: (data: { name: string; email: string; website?: string; firstName?: string; lastName?: string }) => void;
   onLogin: () => void;
 }
 
 export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [website, setWebsite] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) return;
+    if (!firstName || !email) return;
     
     setLoading(true);
-    await onSubmit({ name, email, website: website || undefined });
+    const name = `${firstName} ${lastName}`.trim();
+    await onSubmit({ name, email, website: website || undefined, firstName, lastName });
     setLoading(false);
   };
   return (
@@ -94,22 +96,30 @@ export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <input
                 type="text"
-                placeholder="Full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                placeholder="First name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
                 className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
               />
+              <input
+                type="text"
+                placeholder="Last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+              />
+            </div>
+            <div className="mb-4">
               <input
                 type="email"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
+                className="w-full bg-carbon-800 border border-stroke-1 rounded px-4 py-3 text-base text-text-hi placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-cyan"
               />
             </div>
-            
             <div className="mb-4">
               <input
                 type="text"

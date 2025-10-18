@@ -3,10 +3,11 @@ export async function sendWaitlistEmail(
   position: number,
   total: number,
   checkUrl?: string,
-  referralCode?: string
+  referralCode?: string,
+  firstName?: string
 ) {
   const url = checkUrl || `https://syntermedia.ai/waitlist/check?email=${encodeURIComponent(email)}`;
-  return sendWaitlistWelcomeEmail(email, position, total, url, referralCode);
+  return sendWaitlistWelcomeEmail(email, position, total, url, referralCode, firstName);
 }
 
 export async function sendWaitlistWelcomeEmail(
@@ -14,7 +15,8 @@ export async function sendWaitlistWelcomeEmail(
   position: number,
   total: number,
   checkUrl: string,
-  referralCode?: string
+  referralCode?: string,
+  firstName?: string
 ) {
   if (!process.env.LOOPS_API_KEY) {
     console.warn('LOOPS_API_KEY not set, skipping email');
@@ -51,6 +53,7 @@ export async function sendWaitlistWelcomeEmail(
       email,
       transactionalId: templateId,
       dataVariables: {
+        FirstName: firstName || 'there',
         position: position.toString(),
         total_waiting: total.toString(),
         check_url: checkUrl,

@@ -7,7 +7,7 @@ import { generateReferralCode, GHOST_HEAD, MOVE_PER_REFERRAL } from '@/lib/refer
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, website, company, role, ad_spend, source = 'waitlist', notes, ref } = body;
+    const { name, email, website, company, role, ad_spend, source = 'waitlist', notes, ref, firstName, lastName } = body;
 
     if (!email) {
       return NextResponse.json(
@@ -115,7 +115,8 @@ export async function POST(request: NextRequest) {
         positionData.position, 
         positionData.total,
         undefined,
-        lead.referral_code || undefined
+        lead.referral_code || undefined,
+        firstName
       );
     } else {
       console.error('Failed to get position data for email:', email, positionData);
