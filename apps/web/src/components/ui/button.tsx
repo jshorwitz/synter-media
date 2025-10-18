@@ -17,11 +17,11 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const base = 'inline-flex items-center justify-center rounded-md transition-colors';
+  const base = 'inline-flex items-center justify-center rounded-md transition-colors font-medium';
   const variants: Record<string, string> = {
     default: 'bg-blue-600 text-white hover:bg-blue-700',
-    outline: 'border border-slate-300 text-slate-700 hover:bg-slate-50',
-    ghost: 'text-slate-700 hover:bg-slate-50',
+    outline: 'border-2 border-slate-600 text-slate-200 hover:bg-slate-800 hover:border-slate-500',
+    ghost: 'text-slate-300 hover:bg-slate-800',
     destructive: 'bg-red-600 text-white hover:bg-red-700',
   };
   const sizes: Record<string, string> = {

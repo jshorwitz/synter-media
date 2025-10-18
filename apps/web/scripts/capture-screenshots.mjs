@@ -22,37 +22,52 @@ async function captureScreenshots() {
 
   const baseUrl = process.env.BASE_URL || 'https://syntermedia.ai';
 
-  console.log('📸 Capturing PPC Recommendations screenshot...');
-  
-  try {
-    // Navigate to recommendations page
-    await page.goto(`${baseUrl}/ppc/recommendations`, {
-      waitUntil: 'networkidle',
-      timeout: 30000
-    });
+  const screenshots = [
+    {
+      name: 'ppc-dashboard',
+      url: `${baseUrl}/ppc`,
+      selector: 'text=PPC Manager',
+      description: 'PPC Dashboard'
+    },
+    {
+      name: 'ppc-recommendations',
+      url: `${baseUrl}/ppc/recommendations`,
+      selector: 'text=Total Recommendations',
+      description: 'AI Recommendations'
+    }
+  ];
 
-    // Wait for content to load
-    await page.waitForSelector('text=Total Recommendations', { timeout: 10000 });
-    await page.waitForTimeout(2000); // Extra time for animations
-
-    // Take screenshot
-    const screenshotPath = path.join(
-      __dirname,
-      '../public/screenshots/ppc-recommendations.png'
-    );
+  for (const shot of screenshots) {
+    console.log(`📸 Capturing ${shot.description} screenshot...`);
     
-    await page.screenshot({
-      path: screenshotPath,
-      fullPage: false,
-    });
+    try {
+      await page.goto(shot.url, {
+        waitUntil: 'networkidle',
+        timeout: 30000
+      });
 
-    console.log('✅ Screenshot saved to:', screenshotPath);
-  } catch (error) {
-    console.error('❌ Error capturing screenshot:', error);
-    throw error;
-  } finally {
-    await browser.close();
+      // Wait for content to load
+      await page.waitForSelector(shot.selector, { timeout: 10000 });
+      await page.waitForTimeout(2000); // Extra time for animations
+
+      // Take screenshot
+      const screenshotPath = path.join(
+        __dirname,
+        `../public/screenshots/${shot.name}.png`
+      );
+      
+      await page.screenshot({
+        path: screenshotPath,
+        fullPage: false,
+      });
+
+      console.log(`✅ ${shot.description} saved to: ${screenshotPath}`);
+    } catch (error) {
+      console.error(`❌ Error capturing ${shot.description}:`, error);
+    }
   }
+
+  await browser.close();
 }
 
 captureScreenshots().catch(console.error);
