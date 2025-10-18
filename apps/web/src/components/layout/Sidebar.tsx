@@ -75,15 +75,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const { user } = useAuth();
 
   const navigation: NavigationItem[] = [
-    { name: 'Dashboard', href: '/', icon: HomeIcon },
+    { name: 'Dashboard', href: '/ppc', icon: HomeIcon },
     { name: 'Campaigns', href: '/campaigns', icon: MegaphoneIcon },
     { name: 'Launch Campaign', href: '/workflow', icon: PlayIcon },
-    { name: 'PPC Manager', href: '/ppc', icon: ChartIcon, adminOnly: true },
-    { name: 'Agents', href: '/agents', icon: BeakerIcon, adminOnly: true },
-    { name: 'Waitlist', href: '/admin/waitlist', icon: UserGroupIcon, adminOnly: true },
     { name: 'Conversions', href: '/conversions', icon: DocumentTextIcon },
     { name: 'Settings', href: '/settings/apps', icon: CogIcon },
-    { name: 'Team', href: '/team', icon: UserGroupIcon, adminOnly: true },
   ].map(item => ({
     ...item,
     current: pathname === item.href || (item.href === '/ppc' && pathname.startsWith('/ppc')) || (pathname === '/admin/waitlist' && pathname.startsWith('/admin/waitlist')) || (pathname === '/' && item.href === '/'),
@@ -134,6 +130,43 @@ export function Sidebar({ open, onClose }: SidebarProps) {
             </Link>
           );
         })}
+
+        {/* Admin Section */}
+        {(user?.role === 'ADMIN' || user?.role === 'ANALYST') && (
+          <>
+            <div className="pt-6 pb-2 px-4">
+              <div className="text-xs font-mono uppercase tracking-wider text-text-low">Admin</div>
+            </div>
+            <Link
+              href="/admin/waitlist"
+              className={cn(
+                'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
+                pathname === '/admin/waitlist'
+                  ? 'bg-synter-volt/10 text-synter-volt'
+                  : 'text-synter-ink-2 hover:text-synter-ink hover:bg-synter-hover hover:translate-x-1'
+              )}
+              onClick={onClose}
+            >
+              <UserGroupIcon className="h-5 w-5 flex-shrink-0" />
+              <span>Waitlist</span>
+            </Link>
+            <Link
+              href="/admin/credits"
+              className={cn(
+                'flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200',
+                pathname === '/admin/credits'
+                  ? 'bg-synter-volt/10 text-synter-volt'
+                  : 'text-synter-ink-2 hover:text-synter-ink hover:bg-synter-hover hover:translate-x-1'
+              )}
+              onClick={onClose}
+            >
+              <svg className="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              <span>Credits</span>
+            </Link>
+          </>
+        )}
       </nav>
     </>
   );
