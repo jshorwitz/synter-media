@@ -211,12 +211,34 @@ function WaitlistCheckContent() {
                     </p>
 
                     {/* OG Image Preview */}
-                    <div className="mb-6 rounded-lg overflow-hidden border-2 border-stroke-1">
-                      <img 
-                        src={`/api/waitlist/og?code=${referralCode}`}
-                        alt="Share Card"
-                        className="w-full"
-                      />
+                    <div className="mb-6 rounded-lg overflow-hidden border-2 border-stroke-1 bg-gradient-to-br from-carbon-800 to-carbon-900 p-12">
+                      <div className="text-center space-y-6">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-cyan/30 bg-accent-cyan/10">
+                          <span className="w-2 h-2 rounded-full bg-accent-cyan"></span>
+                          <span className="text-xs font-mono text-accent-cyan uppercase tracking-widest">
+                            Synter Waitlist
+                          </span>
+                        </div>
+                        <div className="text-8xl font-black bg-gradient-to-r from-accent-cyan to-accent-lime bg-clip-text text-transparent">
+                          #{position}
+                        </div>
+                        <div className="text-xl text-text-mid">
+                          of {total?.toLocaleString()} waiting
+                        </div>
+                        <div className="pt-4 space-y-2">
+                          <div className="text-lg font-semibold text-text-hi">
+                            Help me jump the line
+                          </div>
+                          <div className="text-text-mid">
+                            Each invite = 7 spots 🚀
+                          </div>
+                        </div>
+                        {referralsCount > 0 && (
+                          <div className="pt-4 text-accent-lime">
+                            🎯 {referralsCount} referrals • {referralsCount * 7} spots gained
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Referral Link */}
