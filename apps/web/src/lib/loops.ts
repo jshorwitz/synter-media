@@ -21,10 +21,8 @@ export async function sendWaitlistWelcomeEmail(
     return false;
   }
 
-  if (!process.env.LOOPS_WAITLIST_TEMPLATE_ID) {
-    console.warn('LOOPS_WAITLIST_TEMPLATE_ID not set, skipping email');
-    return false;
-  }
+  // Use hardcoded template ID if env var not set
+  const templateId = process.env.LOOPS_WAITLIST_TEMPLATE_ID || 'cmgvgka1o1y52zt0i2ksq7mmo';
 
   try {
     // First, add contact to Loops
@@ -51,7 +49,7 @@ export async function sendWaitlistWelcomeEmail(
     // Send transactional email
     const emailData: any = {
       email,
-      transactionalId: process.env.LOOPS_WAITLIST_TEMPLATE_ID,
+      transactionalId: templateId,
       dataVariables: {
         position: position.toString(),
         total_waiting: total.toString(),
