@@ -11,15 +11,26 @@ const REDIRECT_URI = process.env.GOOGLE_ADS_REDIRECT_URI || `${process.env.NEXT_
 
 async function getUserFromRequest(request: NextRequest): Promise<number | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get('auth-token')?.value;
+  const sessionToken = cookieStore.get('synter_session')?.value;
   
-  if (!token) {
+  if (!sessionToken) {
     return null;
   }
 
   try {
-    const decoded = verify(token, JWT_SECRET) as { userId: number };
-    return decoded.userId;
+    const session = await prisma.session.findFirst({
+      where: {
+        session_token: sessionToken,
+        expires_at: {
+          gt: new Date(),
+        },
+      },
+      include: {
+        user: true,
+      },
+    });
+    
+    return session?.user_id || null;
   } catch {
     return null;
   }

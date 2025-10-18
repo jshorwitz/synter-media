@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface User {
   id: number;
@@ -35,6 +36,7 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -77,6 +79,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (response.ok) {
         setUser(data.user);
+        // Redirect to onboarding after successful login
+        router.push('/onboarding');
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Login failed' };
@@ -102,6 +106,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (response.ok) {
         setUser(data.user);
+        // Redirect to onboarding after successful signup
+        router.push('/onboarding');
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Signup failed' };
@@ -145,6 +151,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       console.error('Logout error:', error);
     } finally {
       setUser(null);
+      // Redirect to homepage after logout
+      router.push('/');
     }
   };
 
