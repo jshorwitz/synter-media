@@ -128,24 +128,15 @@ function WaitlistCheckContent() {
               <h1 className="font-display text-4xl font-bold text-text-hi mb-4">
                 Check Your Waitlist Position
               </h1>
-              <p className="text-text-mid">
-                Enter your email to see where you are in line
-              </p>
+              {position === null && (
+                <p className="text-text-mid">
+                  Enter your email to see where you are in line
+                </p>
+              )}
             </div>
 
             {position !== null ? (
               <div className="space-y-6">
-                <div className="panel bg-gradient-to-br from-accent-cyan/10 to-accent-lime/10 border-accent-cyan/30 p-8 text-center">
-                  <div className="text-sm font-mono uppercase tracking-wider text-text-low mb-2">
-                    Your Position
-                  </div>
-                  <div className="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan to-accent-lime mb-2">
-                    #{position}
-                  </div>
-                  <div className="text-text-mid">
-                    of {total} waiting
-                  </div>
-                </div>
 
                 <div className="panel bg-accent-cyan/5 border-accent-cyan/20 p-6">
                   <div className="flex items-start gap-3 mb-4">
@@ -203,9 +194,6 @@ function WaitlistCheckContent() {
                 {/* Viral Share Section */}
                 {referralCode && (
                   <div className="panel bg-gradient-to-br from-accent-lime/10 to-accent-amber/10 border-accent-lime/30 p-8">
-                    <h3 className="font-display text-2xl font-bold text-text-hi mb-4 text-center">
-                      🚀 Jump the Line
-                    </h3>
                     <p className="text-text-mid text-center mb-6">
                       Share your referral link. Each person who joins = <strong className="text-accent-lime">7 spots up</strong>!
                     </p>
@@ -230,7 +218,7 @@ function WaitlistCheckContent() {
                             Help me jump the line
                           </div>
                           <div className="text-text-mid">
-                            Each invite = 7 spots 🚀
+                            Each invite = 7 spots
                           </div>
                         </div>
                         {referralsCount > 0 && (
