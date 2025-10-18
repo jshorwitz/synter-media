@@ -10,6 +10,9 @@ import { Separator } from "@/components/ui/separator"
 import { Play, Pause, DollarSign, Minus, RefreshCw, CheckCircle, XCircle, Clock } from "lucide-react"
 import BarChart from "@/components/charts/BarChart"
 import Treemap from "@/components/charts/Treemap"
+import { ppcMock } from "@/data/ppcMock"
+
+const DEMO_MODE = true // Set to false to use real API
 
 // Types matching backend shape
 interface BackendRecommendation {
@@ -96,10 +99,34 @@ export default function RecommendationsPage() {
   async function fetchRecs() {
     setLoading(true)
     try {
-      const res = await fetch(`/api/ppc/recommendations?status=${statusFilter === "all" ? "all" : statusFilter}`)
-      const json = await res.json()
-      const recs: BackendRecommendation[] = json.recommendations || []
-      setItems(recs.map(adapt))
+      if (DEMO_MODE) {
+        // Use mock data and convert to BackendRecommendation format
+        const mockRecs: BackendRecommendation[] = ppcMock.recommendations.map(rec => ({
+          id: rec.id,
+          type: rec.type === 'keywords' ? 'pause_keyword' : rec.type === 'budgets' ? 'budget_shift' : 'negative_keyword',
+          target_level: 'campaign',
+          target_id: rec.campaign,
+          details: {
+            keyword_text: rec.title,
+            campaign_name: rec.campaign,
+            adgroup_name: rec.adGroup,
+            rationale: rec.description,
+            suggested_change_pct: rec.impact.expectedCPAChangePct
+          },
+          projected_impact: rec.potentialSavingsUSD,
+          risk: 0.5,
+          priority: rec.priority,
+          status: rec.status === 'applied' ? 'applied' : rec.status === 'dismissed' ? 'dismissed' : 'proposed',
+          created_at: rec.createdAt,
+          updated_at: rec.createdAt
+        }));
+        setItems(mockRecs.map(adapt));
+      } else {
+        const res = await fetch(`/api/ppc/recommendations?status=${statusFilter === "all" ? "all" : statusFilter}`)
+        const json = await res.json()
+        const recs: BackendRecommendation[] = json.recommendations || []
+        setItems(recs.map(adapt))
+      }
     } catch (e) {
       console.error(e)
     } finally {
