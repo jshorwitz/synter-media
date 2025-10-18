@@ -24,14 +24,20 @@ async function captureScreenshots() {
 
   const screenshots = [
     {
-      name: 'ppc-dashboard',
-      url: `${baseUrl}/ppc`,
-      selector: 'text=PPC Manager',
-      description: 'PPC Dashboard'
+      name: 'dashboard-overview',
+      url: `${baseUrl}/dashboard`,
+      selector: 'text=Dashboard',
+      description: 'Dashboard Overview'
+    },
+    {
+      name: 'optimizations',
+      url: `${baseUrl}/optimizations`,
+      selector: 'text=Optimizations',
+      description: 'AI Optimizations'
     },
     {
       name: 'ppc-recommendations',
-      url: `${baseUrl}/ppc/recommendations`,
+      url: `${baseUrl}/optimizations/recommendations`,
       selector: 'text=Total Recommendations',
       description: 'AI Recommendations'
     }

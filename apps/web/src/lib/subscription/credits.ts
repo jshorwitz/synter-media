@@ -58,40 +58,47 @@ export type CreditPackage = {
 
 export const CREDIT_PACKAGES: CreditPackage[] = [
   {
-    id: 'mini',
-    credits: 50,
-    price: 5,
-    bonus: 0,
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_MINI_PRICE_ID,
-  },
-  {
-    id: 'starter',
+    id: 'tier_10',
     credits: 100,
     price: 10,
     bonus: 0,
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_STARTER_PRICE_ID,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_TIER_10_PRICE_ID,
   },
   {
-    id: 'growth',
+    id: 'tier_20',
+    credits: 200,
+    price: 20,
+    bonus: 0,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_TIER_20_PRICE_ID,
+  },
+  {
+    id: 'tier_30',
+    credits: 300,
+    price: 30,
+    bonus: 0,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_TIER_30_PRICE_ID,
+  },
+  {
+    id: 'tier_40',
+    credits: 400,
+    price: 40,
+    bonus: 0,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_TIER_40_PRICE_ID,
+  },
+  {
+    id: 'tier_50',
     credits: 500,
-    price: 45,
-    bonus: 50, // 10% bonus
-    popular: true,
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_GROWTH_PRICE_ID,
+    price: 50,
+    bonus: 0,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_TIER_50_PRICE_ID,
   },
   {
-    id: 'scale',
+    id: 'tier_100_bonus',
     credits: 1000,
-    price: 80,
-    bonus: 150, // 15% bonus
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_SCALE_PRICE_ID,
-  },
-  {
-    id: 'enterprise',
-    credits: 5000,
-    price: 350,
-    bonus: 1000, // 20% bonus
-    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_ENTERPRISE_PRICE_ID,
+    price: 100,
+    bonus: 100, // 10% bonus = 1,100 total credits
+    popular: true,
+    stripePriceId: process.env.NEXT_PUBLIC_STRIPE_CREDITS_TIER_100_PRICE_ID,
   },
 ];
 
