@@ -10,14 +10,14 @@ datasource db {
 
 // Auth & User Management Tables
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique @db.VarChar(320)
-  password_hash String? @db.VarChar(255)
-  name         String?  @db.VarChar(128)
-  role         Role     @default(VIEWER)
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime @updatedAt @db.Timestamptz(6)
-  is_active    Boolean  @default(true)
+  id            Int      @id @default(autoincrement())
+  email         String   @unique @db.VarChar(320)
+  password_hash String?  @db.VarChar(255)
+  name          String?  @db.VarChar(128)
+  role          Role     @default(VIEWER)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @updatedAt @db.Timestamptz(6)
+  is_active     Boolean  @default(true)
 
   // Relations
   sessions            Session[]
@@ -29,7 +29,7 @@ model User {
   credit_transactions CreditTransaction[]
   team_members        TeamMember[]
   team_invites        TeamInvite[]
-  referral            Referral?  @relation("Referrer")
+  referral            Referral?           @relation("Referrer")
   referred_by         ReferredUser[]
 
   @@map("users")
@@ -51,11 +51,11 @@ model Session {
 }
 
 model MagicLink {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   user_id    Int
-  token      String   @unique @db.Char(64)
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  expires_at DateTime @db.Timestamptz(6)
+  token      String    @unique @db.Char(64)
+  created_at DateTime  @default(now()) @db.Timestamptz(6)
+  expires_at DateTime  @db.Timestamptz(6)
   used_at    DateTime? @db.Timestamptz(6)
 
   // Relations
@@ -65,12 +65,12 @@ model MagicLink {
 }
 
 model OAuthAccount {
-  id               Int      @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   user_id          Int
-  provider         String   @db.VarChar(32) // 'google'
-  provider_user_id String   @db.VarChar(128)
-  access_token     String?  @db.Text
-  refresh_token    String?  @db.Text
+  provider         String    @db.VarChar(32) // 'google'
+  provider_user_id String    @db.VarChar(128)
+  access_token     String?   @db.Text
+  refresh_token    String?   @db.Text
   expires_at       DateTime? @db.Timestamptz(6)
 
   // Relations
@@ -82,14 +82,14 @@ model OAuthAccount {
 
 // Agent Management Tables
 model AgentRun {
-  id          Int      @id @default(autoincrement())
-  agent       String   @db.VarChar(64)
-  run_id      String   @db.VarChar(64)
-  started_at  DateTime @default(now()) @db.Timestamptz(6)
+  id          Int       @id @default(autoincrement())
+  agent       String    @db.VarChar(64)
+  run_id      String    @db.VarChar(64)
+  started_at  DateTime  @default(now()) @db.Timestamptz(6)
   finished_at DateTime? @db.Timestamptz(6)
   ok          Boolean?
   stats       Json?
-  watermark   String?  @db.VarChar(64)
+  watermark   String?   @db.VarChar(64)
 
   @@unique([agent, run_id])
   @@map("agent_runs")
@@ -97,18 +97,18 @@ model AgentRun {
 
 // Analytics Data Tables (simplified - main analytics in BigQuery)
 model AdMetrics {
-  id           Int      @id @default(autoincrement())
-  platform     String   @db.VarChar(32) // 'google', 'reddit', 'x'
-  date         DateTime @db.Date
-  account_id   String   @db.VarChar(64)
-  campaign_id  String   @db.VarChar(64)
-  adgroup_id   String?  @db.VarChar(64)
-  ad_id        String?  @db.VarChar(64)
-  impressions  Int      @default(0)
-  clicks       Int      @default(0)
-  spend        Decimal  @default(0) @db.Decimal(10,2)
-  conversions  Int      @default(0)
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  id          Int      @id @default(autoincrement())
+  platform    String   @db.VarChar(32) // 'google', 'reddit', 'x'
+  date        DateTime @db.Date
+  account_id  String   @db.VarChar(64)
+  campaign_id String   @db.VarChar(64)
+  adgroup_id  String?  @db.VarChar(64)
+  ad_id       String?  @db.VarChar(64)
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  spend       Decimal  @default(0) @db.Decimal(10, 2)
+  conversions Int      @default(0)
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
 
   @@unique([platform, date, account_id, campaign_id, adgroup_id, ad_id])
   @@map("ad_metrics")
@@ -128,45 +128,45 @@ model Touchpoint {
 }
 
 model Conversion {
-  id           Int      @id @default(autoincrement())
-  user_id      String?  @db.VarChar(255)
-  timestamp    DateTime @db.Timestamptz(6)
-  action       String   @db.VarChar(128)
-  value        Decimal? @db.Decimal(10,2)
-  currency     String?  @db.VarChar(3)
+  id            Int       @id @default(autoincrement())
+  user_id       String?   @db.VarChar(255)
+  timestamp     DateTime  @db.Timestamptz(6)
+  action        String    @db.VarChar(128)
+  value         Decimal?  @db.Decimal(10, 2)
+  currency      String?   @db.VarChar(3)
   touchpoint_id Int?
-  uploaded_at  DateTime? @db.Timestamptz(6)
+  uploaded_at   DateTime? @db.Timestamptz(6)
 
   @@map("conversions")
 }
 
 // Campaign Management
 model Campaign {
-  id                 Int            @id @default(autoincrement())
+  id                 Int              @id @default(autoincrement())
   user_id            Int
-  name               String         @db.VarChar(255)
+  name               String           @db.VarChar(255)
   platform           CampaignPlatform
-  daily_budget_cents Int            // Budget in cents
-  status             CampaignStatus @default(DRAFT)
-  objective          String?        @db.VarChar(128)
-  target_audience    String?        @db.Text
-  creative_brief     String?        @db.Text
-  created_at         DateTime       @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime       @updatedAt @db.Timestamptz(6)
-  launched_at        DateTime?      @db.Timestamptz(6)
+  daily_budget_cents Int // Budget in cents
+  status             CampaignStatus   @default(DRAFT)
+  objective          String?          @db.VarChar(128)
+  target_audience    String?          @db.Text
+  creative_brief     String?          @db.Text
+  created_at         DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime         @updatedAt @db.Timestamptz(6)
+  launched_at        DateTime?        @db.Timestamptz(6)
 
   @@map("campaigns")
 }
 
 model CampaignPolicy {
-  id            Int     @id @default(autoincrement())
-  platform      String  @db.VarChar(32)
-  campaign_id   String  @db.VarChar(64)
-  target_cac    Decimal? @db.Decimal(10,2)
-  max_cac       Decimal? @db.Decimal(10,2)
-  min_budget    Decimal? @db.Decimal(10,2)
-  max_budget    Decimal? @db.Decimal(10,2)
-  auto_optimize Boolean @default(false)
+  id            Int      @id @default(autoincrement())
+  platform      String   @db.VarChar(32)
+  campaign_id   String   @db.VarChar(64)
+  target_cac    Decimal? @db.Decimal(10, 2)
+  max_cac       Decimal? @db.Decimal(10, 2)
+  min_budget    Decimal? @db.Decimal(10, 2)
+  max_budget    Decimal? @db.Decimal(10, 2)
+  auto_optimize Boolean  @default(false)
   created_at    DateTime @default(now()) @db.Timestamptz(6)
   updated_at    DateTime @updatedAt @db.Timestamptz(6)
 
@@ -175,19 +175,50 @@ model CampaignPolicy {
 }
 
 // Subscription & Billing Tables
+model Purchase {
+  id                       Int      @id @default(autoincrement())
+  user_id                  Int
+  stripe_payment_intent_id String   @unique @db.VarChar(255)
+  stripe_session_id        String?  @unique @db.VarChar(255)
+  amount_cents             Int // Amount paid in cents
+  credits_awarded          Int // Total credits given (base + bonus)
+  package_id               String   @db.VarChar(64)
+  status                   String   @db.VarChar(32) // 'succeeded', 'pending', 'failed'
+  metadata                 Json?
+  created_at               DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([user_id, created_at])
+  @@map("purchases")
+}
+
+model WebhookEvent {
+  id           Int       @id @default(autoincrement())
+  provider     String    @db.VarChar(32) // 'stripe'
+  event_id     String    @unique @db.VarChar(255)
+  event_type   String    @db.VarChar(128)
+  processed_at DateTime? @db.Timestamptz(6)
+  status       String    @db.VarChar(32) // 'processing', 'success', 'failed'
+  error        String?   @db.Text
+  payload_hash String    @db.VarChar(64)
+  created_at   DateTime  @default(now()) @db.Timestamptz(6)
+
+  @@index([provider, created_at])
+  @@map("webhook_events")
+}
+
 model Subscription {
-  id                     Int      @id @default(autoincrement())
-  user_id                Int      @unique
-  tier                   PlanTier @default(FREE)
-  stripe_customer_id     String?  @unique @db.VarChar(255)
-  stripe_subscription_id String?  @unique @db.VarChar(255)
-  stripe_price_id        String?  @db.VarChar(255)
+  id                     Int                @id @default(autoincrement())
+  user_id                Int                @unique
+  tier                   PlanTier           @default(FREE)
+  stripe_customer_id     String?            @unique @db.VarChar(255)
+  stripe_subscription_id String?            @unique @db.VarChar(255)
+  stripe_price_id        String?            @db.VarChar(255)
   status                 SubscriptionStatus @default(ACTIVE)
-  current_period_start   DateTime? @db.Timestamptz(6)
-  current_period_end     DateTime? @db.Timestamptz(6)
-  cancel_at_period_end   Boolean  @default(false)
-  created_at             DateTime @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime @updatedAt @db.Timestamptz(6)
+  current_period_start   DateTime?          @db.Timestamptz(6)
+  current_period_end     DateTime?          @db.Timestamptz(6)
+  cancel_at_period_end   Boolean            @default(false)
+  created_at             DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime           @updatedAt @db.Timestamptz(6)
 
   // Relations
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -196,12 +227,12 @@ model Subscription {
 }
 
 model UsageRecord {
-  id          Int      @id @default(autoincrement())
-  user_id     Int
-  feature     String   @db.VarChar(64) // 'campaigns', 'chat_queries', etc.
-  count       Int      @default(1)
-  period      String   @db.VarChar(10) // 'YYYY-MM' for monthly tracking
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  feature    String   @db.VarChar(64) // 'campaigns', 'chat_queries', etc.
+  count      Int      @default(1)
+  period     String   @db.VarChar(10) // 'YYYY-MM' for monthly tracking
+  created_at DateTime @default(now()) @db.Timestamptz(6)
 
   // Relations
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -212,12 +243,12 @@ model UsageRecord {
 
 // Credit System Tables
 model CreditBalance {
-  id          Int      @id @default(autoincrement())
-  user_id     Int      @unique
-  balance     Int      @default(0) // Current credit balance
-  lifetime    Int      @default(0) // Total credits ever purchased/earned
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime @updatedAt @db.Timestamptz(6)
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @unique
+  balance    Int      @default(0) // Current credit balance
+  lifetime   Int      @default(0) // Total credits ever purchased/earned
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @updatedAt @db.Timestamptz(6)
 
   // Relations
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -226,13 +257,13 @@ model CreditBalance {
 }
 
 model CreditTransaction {
-  id          Int      @id @default(autoincrement())
+  id          Int                   @id @default(autoincrement())
   user_id     Int
-  amount      Int      // Positive for credits added, negative for credits spent
+  amount      Int // Positive for credits added, negative for credits spent
   type        CreditTransactionType
-  description String?  @db.VarChar(255)
-  metadata    Json?    // Purchase details, action info, etc.
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  description String?               @db.VarChar(255)
+  metadata    Json? // Purchase details, action info, etc.
+  created_at  DateTime              @default(now()) @db.Timestamptz(6)
 
   // Relations
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -243,12 +274,12 @@ model CreditTransaction {
 
 // Team & Collaboration Tables
 model TeamMember {
-  id          Int      @id @default(autoincrement())
-  user_id     Int
-  email       String   @db.VarChar(320)
-  role        TeamRole @default(MEMBER)
-  invited_by  Int?
-  joined_at   DateTime @default(now()) @db.Timestamptz(6)
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  email      String   @db.VarChar(320)
+  role       TeamRole @default(MEMBER)
+  invited_by Int?
+  joined_at  DateTime @default(now()) @db.Timestamptz(6)
 
   // Relations
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
@@ -258,14 +289,14 @@ model TeamMember {
 }
 
 model TeamInvite {
-  id          Int      @id @default(autoincrement())
-  email       String   @db.VarChar(320)
-  role        TeamRole @default(MEMBER)
+  id          Int       @id @default(autoincrement())
+  email       String    @db.VarChar(320)
+  role        TeamRole  @default(MEMBER)
   invited_by  Int
-  token       String   @unique @db.Char(64)
-  expires_at  DateTime @db.Timestamptz(6)
+  token       String    @unique @db.Char(64)
+  expires_at  DateTime  @db.Timestamptz(6)
   accepted_at DateTime? @db.Timestamptz(6)
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
 
   // Relations
   inviter User @relation(fields: [invited_by], references: [id], onDelete: Cascade)
@@ -275,15 +306,15 @@ model TeamInvite {
 
 // Referral System
 model Referral {
-  id              Int      @id @default(autoincrement())
-  referrer_id     Int      @unique
-  referral_code   String   @unique @db.VarChar(32)
-  referred_count  Int      @default(0)
-  credits_earned  Int      @default(0)
-  created_at      DateTime @default(now()) @db.Timestamptz(6)
+  id             Int      @id @default(autoincrement())
+  referrer_id    Int      @unique
+  referral_code  String   @unique @db.VarChar(32)
+  referred_count Int      @default(0)
+  credits_earned Int      @default(0)
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
 
   // Relations
-  referrer User @relation("Referrer", fields: [referrer_id], references: [id], onDelete: Cascade)
+  referrer       User           @relation("Referrer", fields: [referrer_id], references: [id], onDelete: Cascade)
   referred_users ReferredUser[]
 
   @@map("referrals")
@@ -367,20 +398,20 @@ enum ConnectionStatus {
 
 // Platform Connections (OAuth)
 model PlatformConnection {
-  id                 Int      @id @default(autoincrement())
-  user_id            Int
-  platform           CampaignPlatform
-  provider_account_id String  @db.VarChar(255) // External account/customer ID
-  provider_account_name String? @db.VarChar(255)
-  access_token       String?  @db.Text // Encrypted
-  refresh_token      String?  @db.Text // Encrypted
-  token_expires_at   DateTime? @db.Timestamptz(6)
-  scopes             String[] // Array of granted scopes
-  status             ConnectionStatus @default(ACTIVE)
-  metadata           Json?    // Provider-specific data
-  created_at         DateTime @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime @updatedAt @db.Timestamptz(6)
-  last_synced_at     DateTime? @db.Timestamptz(6)
+  id                    Int              @id @default(autoincrement())
+  user_id               Int
+  platform              CampaignPlatform
+  provider_account_id   String           @db.VarChar(255) // External account/customer ID
+  provider_account_name String?          @db.VarChar(255)
+  access_token          String?          @db.Text // Encrypted
+  refresh_token         String?          @db.Text // Encrypted
+  token_expires_at      DateTime?        @db.Timestamptz(6)
+  scopes                String[] // Array of granted scopes
+  status                ConnectionStatus @default(ACTIVE)
+  metadata              Json? // Provider-specific data
+  created_at            DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime         @updatedAt @db.Timestamptz(6)
+  last_synced_at        DateTime?        @db.Timestamptz(6)
 
   @@unique([user_id, platform, provider_account_id])
   @@map("platform_connections")
@@ -388,15 +419,15 @@ model PlatformConnection {
 
 // Onboarding Ad Footprint Detection
 model OnboardingScan {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   user_id     Int?
-  scan_id     String   @unique @db.VarChar(64)
-  url         String   @db.VarChar(512)
-  domain      String   @db.VarChar(255)
-  status      String   @db.VarChar(32) // 'queued', 'discovering', 'analyzing', 'done', 'error'
-  progress    Int      @default(0)
-  error       String?  @db.Text
-  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  scan_id     String    @unique @db.VarChar(64)
+  url         String    @db.VarChar(512)
+  domain      String    @db.VarChar(255)
+  status      String    @db.VarChar(32) // 'queued', 'discovering', 'analyzing', 'done', 'error'
+  progress    Int       @default(0)
+  error       String?   @db.Text
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
   finished_at DateTime? @db.Timestamptz(6)
 
   // Relations
@@ -411,7 +442,7 @@ model OnboardingScanPlatform {
   platform        String   @db.VarChar(32) // 'google', 'meta', 'linkedin', 'x', 'reddit', 'microsoft'
   detected        Boolean  @default(false)
   confidence      Int      @default(0) // 0-100
-  tags            Json?    // Array of detected tags/technologies
+  tags            Json? // Array of detected tags/technologies
   estimated_spend Int      @default(0) // Monthly spend in cents
   created_at      DateTime @default(now()) @db.Timestamptz(6)
 
@@ -424,33 +455,33 @@ model OnboardingScanPlatform {
 
 // Waitlist Management
 model WaitlistLead {
-  id                      Int              @id @default(autoincrement())
-  user_id                 Int?
-  email                   String           @db.VarChar(320)
-  name                    String?          @db.VarChar(255)
-  website                 String?          @db.VarChar(512)
-  company                 String?          @db.VarChar(255)
-  role                    String?          @db.VarChar(64)
-  ad_spend                Int?             // Monthly spend in cents
-  source                  String?          @db.VarChar(64) // e.g., 'waitlist', 'twitter', 'partner'
-  notes                   Json?
-  status                  WaitlistStatus   @default(JOINED)
-  invite_token            String?          @db.VarChar(128)
-  invited_at              DateTime?        @db.Timestamptz(6)
-  invited_by              Int?
-  activated_at            DateTime?        @db.Timestamptz(6)
-  created_at              DateTime         @default(now()) @db.Timestamptz(6)
-  updated_at              DateTime         @updatedAt @db.Timestamptz(6)
-  
+  id           Int            @id @default(autoincrement())
+  user_id      Int?
+  email        String         @db.VarChar(320)
+  name         String?        @db.VarChar(255)
+  website      String?        @db.VarChar(512)
+  company      String?        @db.VarChar(255)
+  role         String?        @db.VarChar(64)
+  ad_spend     Int? // Monthly spend in cents
+  source       String?        @db.VarChar(64) // e.g., 'waitlist', 'twitter', 'partner'
+  notes        Json?
+  status       WaitlistStatus @default(JOINED)
+  invite_token String?        @db.VarChar(128)
+  invited_at   DateTime?      @db.Timestamptz(6)
+  invited_by   Int?
+  activated_at DateTime?      @db.Timestamptz(6)
+  created_at   DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime       @updatedAt @db.Timestamptz(6)
+
   // Referral system
-  referral_code           String?          @unique @db.VarChar(12)
-  referrer_id             Int?
-  referrals_count         Int              @default(0)
-  base_points             Int              @default(0)
-  bonus_points            Int              @default(0)
-  is_ghost                Boolean          @default(false)
-  persona_name            String?          @db.VarChar(128)
-  avatar_seed             Int?
+  referral_code   String? @unique @db.VarChar(12)
+  referrer_id     Int?
+  referrals_count Int     @default(0)
+  base_points     Int     @default(0)
+  bonus_points    Int     @default(0)
+  is_ghost        Boolean @default(false)
+  persona_name    String? @db.VarChar(128)
+  avatar_seed     Int?
 
   @@index([email])
   @@index([status])
