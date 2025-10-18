@@ -1,17 +1,14 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
-import { db } from '@/lib/db';
-import { getWaitlistPositionByEmail } from '@/lib/waitlist';
+
+export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
     const code = searchParams.get('code');
 
-    console.log('OG Image request for code:', code);
-
     if (!code) {
-      console.error('No code provided');
       return new Response('Missing code parameter', { status: 400 });
     }
 
@@ -20,26 +17,18 @@ export async function GET(request: NextRequest) {
     let referralsCount = 0;
 
     try {
-      // Find user by referral code
-      const lead = await db.waitlistLead.findFirst({
-        where: { referral_code: code },
-      });
-
-      console.log('Found lead:', lead?.id, lead?.email);
-
-      if (lead && lead.email) {
-        // Get position
-        const positionData = await getWaitlistPositionByEmail(lead.email);
-        console.log('Position data:', positionData);
-
-        if (positionData && positionData.position && positionData.total) {
-          position = positionData.position;
-          total = positionData.total;
-          referralsCount = positionData.lead?.referrals_count || 0;
-        }
+      // Fetch position data from API endpoint
+      const baseUrl = request.nextUrl.origin;
+      const response = await fetch(`${baseUrl}/api/waitlist/position?code=${code}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        position = data.position || position;
+        total = data.total || total;
+        referralsCount = data.referralsCount || 0;
       }
-    } catch (dbError) {
-      console.error('Database error, using fallback values:', dbError);
+    } catch (error) {
+      console.error('Error fetching position data:', error);
     }
 
     // Generate gradient based on position

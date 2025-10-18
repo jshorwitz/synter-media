@@ -5,10 +5,11 @@ import { SynterLogo } from '@/components/ui/SynterLogo';
 
 interface TopNavProps {
   onLogin: () => void;
-  onSignup: () => void;
+  onSignup?: () => void;
+  hideSignup?: boolean;
 }
 
-export function TopNav({ onLogin, onSignup }: TopNavProps) {
+export function TopNav({ onLogin, onSignup, hideSignup = false }: TopNavProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -28,12 +29,14 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
             >
               Log in
             </button>
-            <button
-              onClick={onSignup}
-              className="btn-tactical-primary text-xs px-4 py-2"
-            >
-              Sign up
-            </button>
+            {!hideSignup && onSignup && (
+              <button
+                onClick={onSignup}
+                className="btn-tactical-primary text-xs px-4 py-2"
+              >
+                Sign up
+              </button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -69,18 +72,20 @@ export function TopNav({ onLogin, onSignup }: TopNavProps) {
               >
                 Log in
               </button>
-              <button
-                onClick={() => {
-                  onSignup();
-                  setMobileMenuOpen(false);
-                }}
-                className="synter-btn synter-btn-primary w-full justify-center"
-              >
-                Sign up
-                <svg className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
-              </button>
+              {!hideSignup && onSignup && (
+                <button
+                  onClick={() => {
+                    onSignup();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="synter-btn synter-btn-primary w-full justify-center"
+                >
+                  Sign up
+                  <svg className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         )}

@@ -29,8 +29,8 @@ export default function HomePage() {
   };
 
   const handleSignup = () => {
-    setAuthModalTab('signup');
-    setAuthModalOpen(true);
+    // Redirect to waitlist instead of opening signup modal
+    window.location.href = '/waitlist';
   };
 
   const handleGetStarted = (websiteUrl: string) => {

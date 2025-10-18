@@ -39,7 +39,7 @@ export default function WaitlistPendingPage() {
   return (
     <div className="min-h-screen bg-carbon-900 synter-grid">
       {/* Navigation */}
-      <TopNav onLogin={() => {}} onSignup={() => {}} />
+      <TopNav onLogin={() => {}} hideSignup={true} />
 
       <div className="flex items-center justify-center min-h-screen px-6">
         <div className="panel max-w-2xl w-full p-12 text-center">

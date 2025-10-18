@@ -56,7 +56,7 @@ export default function WaitlistPage() {
       {/* Content */}
       <div className="relative z-10">
         {/* Navigation */}
-        <TopNav onLogin={handleLogin} onSignup={handleLogin} />
+        <TopNav onLogin={handleLogin} hideSignup={true} />
 
         {/* Hero Section */}
         <VideoHero onSubmit={handleWaitlistSubmit} onLogin={handleLogin} />

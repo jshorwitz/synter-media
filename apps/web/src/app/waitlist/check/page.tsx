@@ -115,7 +115,7 @@ function WaitlistCheckContent() {
       <div className="absolute inset-0 synter-grid opacity-20"></div>
       
       <div className="relative z-10">
-        <TopNav onLogin={() => {}} onSignup={() => {}} />
+        <TopNav onLogin={() => {}} hideSignup={true} />
         
         <div className="min-h-screen flex items-center justify-center px-6 py-24">
           <motion.div
