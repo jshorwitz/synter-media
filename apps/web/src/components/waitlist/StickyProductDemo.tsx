@@ -74,19 +74,42 @@ export function StickyProductDemo() {
               </div>
 
               {/* Screenshot */}
-              <div className={`relative ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <div className="panel p-2 bg-carbon-850/50 backdrop-blur-sm">
+              <motion.div 
+                className={`relative ${i % 2 === 1 ? 'lg:order-1' : ''}`}
+                initial={{ opacity: 0, x: i % 2 === 0 ? 60 : -60, rotateY: i % 2 === 0 ? -15 : 15 }}
+                whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+                transition={{ 
+                  duration: 1, 
+                  delay: 0.2,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                viewport={{ once: true, amount: 0.3 }}
+              >
+                <motion.div 
+                  className="panel p-2 bg-carbon-850/50 backdrop-blur-sm"
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: "0 25px 50px -12px rgba(77, 214, 255, 0.2)"
+                  }}
+                  transition={{ duration: 0.4 }}
+                >
                   <div className="relative aspect-[16/10] overflow-hidden rounded">
-                    <Image
-                      src={scene.screenshot}
-                      alt={scene.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                    <motion.div
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                      className="w-full h-full"
+                    >
+                      <Image
+                        src={scene.screenshot}
+                        alt={scene.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </motion.div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </motion.div>
           ))}
         </div>

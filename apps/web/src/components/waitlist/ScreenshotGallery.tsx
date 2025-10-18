@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 interface Screenshot {
   src: string;
@@ -59,49 +60,88 @@ export function ScreenshotGallery() {
         {/* Screenshot grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* First screenshot spans full width */}
-          <div className="lg:col-span-2 panel overflow-hidden group">
+          <motion.div 
+            initial={{ opacity: 0, y: 60, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, amount: 0.2 }}
+            className="lg:col-span-2 panel overflow-hidden group"
+          >
             <div className="aspect-video relative bg-carbon-800 rounded-lg overflow-hidden">
-              <Image
-                src={screenshots[0].src}
-                alt={screenshots[0].alt}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                priority
-              />
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <Image
+                  src={screenshots[0].src}
+                  alt={screenshots[0].alt}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                  priority
+                />
+              </motion.div>
             </div>
-            <div className="p-6">
+            <motion.div 
+              className="p-6"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              viewport={{ once: true }}
+            >
               <h3 className="font-display text-xl font-semibold text-text-hi mb-2">
                 {screenshots[0].title}
               </h3>
               <p className="text-text-mid text-sm">
                 {screenshots[0].description}
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Remaining screenshots in grid */}
           {screenshots.slice(1).map((screenshot, i) => (
-            <div key={i} className="panel overflow-hidden group">
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ 
+                duration: 0.7, 
+                delay: i * 0.15,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+              viewport={{ once: true, amount: 0.2 }}
+              className="panel overflow-hidden group"
+            >
               <div className="aspect-video relative bg-carbon-800 rounded-lg overflow-hidden">
-                <Image
-                  src={screenshot.src}
-                  alt={screenshot.alt}
-                  fill
-                  className="object-cover object-top"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                  loading="lazy"
-                />
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <Image
+                    src={screenshot.src}
+                    alt={screenshot.alt}
+                    fill
+                    className="object-cover object-top"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                    loading="lazy"
+                  />
+                </motion.div>
               </div>
-              <div className="p-6">
+              <motion.div 
+                className="p-6"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ delay: 0.2 + i * 0.1, duration: 0.6 }}
+                viewport={{ once: true }}
+              >
                 <h3 className="font-display text-lg font-semibold text-text-hi mb-2">
                   {screenshot.title}
                 </h3>
                 <p className="text-text-mid text-sm">
                   {screenshot.description}
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           ))}
         </div>
 
