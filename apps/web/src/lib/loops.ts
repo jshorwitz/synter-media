@@ -65,7 +65,7 @@ export async function sendWaitlistWelcomeEmail(
       emailData.dataVariables.referral_url = `https://syntermedia.ai/r/${referralCode}`;
     }
 
-    console.log('Sending email to Loops:', emailData);
+    console.log('Sending email to Loops:', JSON.stringify(emailData, null, 2));
 
     const response = await fetch('https://app.loops.so/api/v1/transactional', {
       method: 'POST',
@@ -76,13 +76,16 @@ export async function sendWaitlistWelcomeEmail(
       body: JSON.stringify(emailData),
     });
 
+    const responseText = await response.text();
+    console.log('Loops response status:', response.status);
+    console.log('Loops response body:', responseText);
+
     if (!response.ok) {
-      const error = await response.text();
-      console.error('Loops API error:', response.status, error);
-      return false;
+      console.error('Loops API error:', response.status, response.statusText, responseText);
+      throw new Error(`Loops API error: ${response.status} ${responseText}`);
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
     console.log('Loops email sent successfully:', data);
     return true;
   } catch (error) {
