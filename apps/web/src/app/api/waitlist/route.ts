@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { sendWaitlistEmail } from '@/lib/loops';
-import { getWaitlistPosition } from '@/lib/waitlist';
+import { getWaitlistPositionByEmail } from '@/lib/waitlist';
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     if (existingLead) {
       // Return existing position without adding duplicate
-      const position = await getWaitlistPosition(email);
+      const positionData = await getWaitlistPositionByEmail(email);
       return NextResponse.json({
         success: true,
         alreadyExists: true,
@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
           email: existingLead.email,
           status: existingLead.status,
         },
-        position: position?.position,
-        total: position?.total,
+        position: positionData?.position,
+        total: positionData?.total,
       });
     }
 
@@ -74,9 +74,9 @@ export async function POST(request: NextRequest) {
     });
 
     // Get position and send email
-    const position = await getWaitlistPosition(email);
-    if (position) {
-      await sendWaitlistEmail(email, position.position, position.total);
+    const positionData = await getWaitlistPositionByEmail(email);
+    if (positionData && positionData.position && positionData.total) {
+      await sendWaitlistEmail(email, positionData.position, positionData.total);
     }
 
     return NextResponse.json({
@@ -86,8 +86,8 @@ export async function POST(request: NextRequest) {
         email: lead.email,
         status: lead.status,
       },
-      position: position?.position,
-      total: position?.total,
+      position: positionData?.position,
+      total: positionData?.total,
     });
   } catch (error) {
     console.error('Waitlist signup error:', error);
