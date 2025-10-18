@@ -112,7 +112,7 @@ export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
             
             <div className="mb-4">
               <input
-                type="url"
+                type="text"
                 placeholder="Company website (optional)"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if email already exists
-    const existingLead = await db.waitlistLead.findUnique({
+    const existingLead = await db.waitlistLead.findFirst({
       where: { email },
     });
 
