@@ -109,7 +109,16 @@ export async function POST(request: NextRequest) {
     // Get position and send email
     const positionData = await getWaitlistPositionByEmail(email);
     if (positionData && positionData.position && positionData.total) {
-      await sendWaitlistEmail(email, positionData.position, positionData.total);
+      console.log('Sending waitlist email to:', email, 'Position:', positionData.position, 'Referral code:', lead.referral_code);
+      await sendWaitlistEmail(
+        email, 
+        positionData.position, 
+        positionData.total,
+        undefined,
+        lead.referral_code || undefined
+      );
+    } else {
+      console.error('Failed to get position data for email:', email, positionData);
     }
 
     return NextResponse.json({
