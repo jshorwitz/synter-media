@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { randomBytes } from 'crypto';
 import { createMagicLink, getUserByEmail, createUser } from '@/lib/auth';
-import { sendMagicLinkEmail } from '@/lib/email';
+import { sendMagicLinkEmail } from '@/lib/loops';
 
 const magicLinkSchema = z.object({
   email: z.string().email(),
@@ -37,7 +37,15 @@ export async function POST(request: NextRequest) {
 
     // Send email
     const magicUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/auth/magic?token=${token}`;
-    await sendMagicLinkEmail(email, magicUrl);
+    const emailSent = await sendMagicLinkEmail(email, magicUrl, user.name || undefined);
+
+    if (!emailSent) {
+      console.error('Failed to send magic link email');
+      return NextResponse.json(
+        { error: 'Failed to send email. Please contact support.' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,

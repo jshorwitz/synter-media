@@ -1,3 +1,47 @@
+export async function sendMagicLinkEmail(email: string, magicUrl: string, firstName?: string) {
+  if (!process.env.LOOPS_API_KEY) {
+    console.warn('LOOPS_API_KEY not set, skipping magic link email');
+    return false;
+  }
+
+  const templateId = process.env.LOOPS_MAGIC_LINK_TEMPLATE_ID || 'cmlw8qyx201i7rh0icuby5hq3';
+
+  try {
+    const emailData = {
+      email,
+      transactionalId: templateId,
+      dataVariables: {
+        FirstName: firstName || email.split('@')[0],
+        magic_url: magicUrl,
+      },
+    };
+
+    console.log('Sending magic link email to Loops:', email);
+
+    const response = await fetch('https://app.loops.so/api/v1/transactional', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.LOOPS_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData),
+    });
+
+    const responseText = await response.text();
+    console.log('Loops magic link response:', response.status, responseText);
+
+    if (!response.ok) {
+      console.error('Loops API error:', response.status, responseText);
+      throw new Error(`Loops API error: ${response.status}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error sending magic link email via Loops:', error);
+    return false;
+  }
+}
+
 export async function sendWaitlistEmail(
   email: string,
   position: number,
