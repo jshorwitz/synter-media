@@ -424,27 +424,39 @@ model OnboardingScanPlatform {
 
 // Waitlist Management
 model WaitlistLead {
-  id              Int              @id @default(autoincrement())
-  user_id         Int?
-  email           String           @db.VarChar(320)
-  name            String?          @db.VarChar(255)
-  website         String?          @db.VarChar(512)
-  company         String?          @db.VarChar(255)
-  role            String?          @db.VarChar(64)
-  ad_spend        Int?             // Monthly spend in cents
-  source          String?          @db.VarChar(64) // e.g., 'waitlist', 'twitter', 'partner'
-  notes           Json?
-  status          WaitlistStatus   @default(JOINED)
-  invite_token    String?          @db.VarChar(128)
-  invited_at      DateTime?        @db.Timestamptz(6)
-  invited_by      Int?
-  activated_at    DateTime?        @db.Timestamptz(6)
-  created_at      DateTime         @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime         @updatedAt @db.Timestamptz(6)
+  id                      Int              @id @default(autoincrement())
+  user_id                 Int?
+  email                   String           @db.VarChar(320)
+  name                    String?          @db.VarChar(255)
+  website                 String?          @db.VarChar(512)
+  company                 String?          @db.VarChar(255)
+  role                    String?          @db.VarChar(64)
+  ad_spend                Int?             // Monthly spend in cents
+  source                  String?          @db.VarChar(64) // e.g., 'waitlist', 'twitter', 'partner'
+  notes                   Json?
+  status                  WaitlistStatus   @default(JOINED)
+  invite_token            String?          @db.VarChar(128)
+  invited_at              DateTime?        @db.Timestamptz(6)
+  invited_by              Int?
+  activated_at            DateTime?        @db.Timestamptz(6)
+  created_at              DateTime         @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime         @updatedAt @db.Timestamptz(6)
+  
+  // Referral system
+  referral_code           String?          @unique @db.VarChar(12)
+  referrer_id             Int?
+  referrals_count         Int              @default(0)
+  base_points             Int              @default(0)
+  bonus_points            Int              @default(0)
+  is_ghost                Boolean          @default(false)
+  persona_name            String?          @db.VarChar(128)
+  avatar_seed             Int?
 
   @@index([email])
   @@index([status])
   @@index([invite_token])
+  @@index([referral_code])
+  @@index([base_points, created_at])
   @@map("waitlist_leads")
 }
 
