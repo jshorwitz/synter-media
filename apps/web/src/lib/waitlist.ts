@@ -9,27 +9,41 @@ export async function getWaitlistPosition(leadId: number) {
     return { position: null, total: null };
   }
 
-  // Calculate effective points (lower is better)
+  // Calculate effective points (lower is better/earlier in line)
   const effectivePoints = (lead.base_points || 0) - (lead.bonus_points || 0);
 
-  // Count leads ahead of this one (by effective_points, then created_at for tie-breaking)
-  const position = await db.waitlistLead.count({
+  // Count how many leads have LOWER effective points (i.e., are ahead in line) + 1 for this person
+  const position = 1 + await db.waitlistLead.count({
     where: {
       status: 'JOINED',
       OR: [
         {
+          // Lower effective points = better position (ahead in line)
           base_points: {
-            lte: effectivePoints + (lead.bonus_points || 0)
+            lt: lead.base_points
           },
           bonus_points: {
-            gte: lead.bonus_points || 0
+            lte: lead.bonus_points
           }
         },
-        { 
+        {
+          // Same base_points, more bonus = ahead
+          base_points: lead.base_points,
+          bonus_points: {
+            gt: lead.bonus_points
+          }
+        },
+        {
+          // Tie-breaker: same points, earlier created_at or lower ID
           base_points: lead.base_points,
           bonus_points: lead.bonus_points,
-          created_at: { lte: lead.created_at },
-          id: { lte: lead.id }
+          OR: [
+            { created_at: { lt: lead.created_at } },
+            {
+              created_at: lead.created_at,
+              id: { lt: lead.id }
+            }
+          ]
         }
       ],
     },
