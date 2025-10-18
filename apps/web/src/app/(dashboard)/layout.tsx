@@ -27,8 +27,9 @@ export default function DashboardGroupLayout({ children }: { children: React.Rea
         const response = await fetch('/api/waitlist/status')
         const data = await response.json()
 
-        // If not activated, redirect to pending page
-        if (data.status && data.status !== 'ACTIVATED') {
+        // If on waitlist but not activated, redirect to pending page
+        // NOT_FOUND means they're not on the waitlist, so let them through
+        if (data.status && data.status !== 'ACTIVATED' && data.status !== 'NOT_FOUND') {
           router.push('/waitlist-pending')
           return
         }
