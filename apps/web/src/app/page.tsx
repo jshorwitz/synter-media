@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { TopNav } from '@/components/layout/TopNav';
 import { AuthModal } from '@/components/auth/AuthModal';
@@ -15,11 +16,20 @@ import { FeaturesSection } from '@/components/sections/FeaturesSection';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 export default function HomePage() {
-  // Redirect to waitlist
-  if (typeof window !== 'undefined') {
+  const router = useRouter();
+  const { user, loading } = useAuth();
+  
+  // Redirect logged-in users to dashboard
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace('/dashboard');
+    }
+  }, [loading, user, router]);
+  
+  // Redirect to waitlist for non-logged-in users
+  if (typeof window !== 'undefined' && !loading && !user) {
     window.location.href = '/waitlist';
   }
-  const { user, loading } = useAuth();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'signup'>('login');
 
