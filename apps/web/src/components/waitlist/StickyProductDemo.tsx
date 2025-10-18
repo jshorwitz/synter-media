@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { DeviceFrame } from './DeviceFrame';
 
 interface Scene {
   title: string;
@@ -40,146 +38,57 @@ const scenes: Scene[] = [
 ];
 
 export function StickyProductDemo() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const demoRef = useRef<HTMLDivElement>(null);
-  const screenshotRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const currentSceneRef = useRef(0);
-
-  useEffect(() => {
-    let ctx: any;
-    
-    (async () => {
-      const gsap = (await import('gsap')).default;
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
-
-      if (!containerRef.current || !demoRef.current) return;
-
-      const sceneElements = gsap.utils.toArray<HTMLElement>('.demo-scene');
-      
-      ctx = gsap.context(() => {
-        // Pin the demo panel
-        ScrollTrigger.create({
-          trigger: containerRef.current,
-          start: 'top top',
-          end: () => `+=${window.innerHeight * (scenes.length - 0.5)}`,
-          pin: demoRef.current,
-          pinSpacing: false,
-        });
-
-        // Swap screenshots on scroll
-        sceneElements.forEach((scene, i) => {
-          ScrollTrigger.create({
-            trigger: scene,
-            start: 'top center',
-            end: 'bottom center',
-            onEnter: () => setActiveScene(i),
-            onEnterBack: () => setActiveScene(i),
-          });
-        });
-      });
-    })();
-
-    function setActiveScene(index: number) {
-      if (currentSceneRef.current === index) return;
-      currentSceneRef.current = index;
-      
-      screenshotRefs.current.forEach((ref, i) => {
-        if (!ref) return;
-        if (i === index) {
-          ref.style.opacity = '1';
-          ref.style.transform = 'scale(1)';
-        } else {
-          ref.style.opacity = '0';
-          ref.style.transform = 'scale(0.95)';
-        }
-      });
-    }
-
-    return () => {
-      ctx?.revert();
-    };
-  }, []);
-
   return (
-    <section ref={containerRef} className="relative min-h-[400vh] py-8">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
-          {/* Left: Scrolling scenes */}
-          <div className="lg:col-span-5">
-            {scenes.map((scene, i) => (
-              <motion.div
-                key={i}
-                className="demo-scene min-h-screen flex flex-col justify-center py-[40vh]"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-stroke-1 bg-carbon-850/50 backdrop-blur-sm mb-6 w-fit">
+    <section className="relative py-16 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="space-y-24">
+          {scenes.map((scene, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, amount: 0.2 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+            >
+              {/* Text Content */}
+              <div className={`space-y-6 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-stroke-1 bg-carbon-850/50 backdrop-blur-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan"></span>
                   <span className="text-xs font-mono text-text-low uppercase tracking-wider">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
                 
-                <h3 className="font-display text-4xl md:text-5xl font-bold text-text-hi mb-4 leading-tight">
+                <h3 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-text-hi leading-tight">
                   {scene.title}
                 </h3>
                 
-                <p className="text-xl text-accent-cyan font-mono mb-6">
+                <p className="text-lg md:text-xl text-accent-cyan font-mono">
                   {scene.subtitle}
                 </p>
                 
-                <p className="text-lg text-text-mid leading-relaxed max-w-xl">
+                <p className="text-base md:text-lg text-text-mid leading-relaxed">
                   {scene.description}
                 </p>
-              </motion.div>
-            ))}
-          </div>
+              </div>
 
-          {/* Right: Sticky demo */}
-          <div className="lg:col-span-7 relative h-screen hidden lg:block">
-            <div ref={demoRef} className="sticky top-0 h-screen flex items-center justify-center py-12">
-              <div className="relative w-full max-w-5xl">
-                {/* Stacked device frames */}
-                {scenes.map((scene, i) => (
-                  <div
-                    key={i}
-                    ref={(el) => { screenshotRefs.current[i] = el; }}
-                    className="absolute inset-0 transition-all duration-700 ease-out"
-                    style={{
-                      opacity: i === 0 ? 1 : 0,
-                      transform: i === 0 ? 'scale(1)' : 'scale(0.95)',
-                    }}
-                  >
-                    <DeviceFrame
+              {/* Screenshot */}
+              <div className={`relative ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
+                <div className="panel p-2 bg-carbon-850/50 backdrop-blur-sm">
+                  <div className="relative aspect-[16/10] overflow-hidden rounded">
+                    <Image
                       src={scene.screenshot}
                       alt={scene.title}
-                      type="laptop"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile: Static grid */}
-          <div className="lg:hidden space-y-12">
-            {scenes.map((scene, i) => (
-              <div key={i} className="panel overflow-hidden">
-                <div className="aspect-video relative bg-carbon-800">
-                  <Image
-                    src={scene.screenshot}
-                    alt={scene.title}
-                    fill
-                    className="object-cover object-top"
-                    sizes="100vw"
-                  />
                 </div>
               </div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
