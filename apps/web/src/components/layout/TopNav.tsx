@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { SynterLogo } from '@/components/ui/SynterLogo';
 
 interface TopNavProps {
@@ -17,9 +18,9 @@ export function TopNav({ onLogin, onSignup, hideSignup = false }: TopNavProps) {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center animate-slide-right">
+          <Link href="/waitlist" className="flex items-center animate-slide-right">
             <SynterLogo />
-          </div>
+          </Link>
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-3">
