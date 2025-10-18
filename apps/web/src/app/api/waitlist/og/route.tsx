@@ -3,14 +3,15 @@ import { NextRequest } from 'next/server';
 import { db } from '@/lib/db';
 import { getWaitlistPositionByEmail } from '@/lib/waitlist';
 
-export const runtime = 'edge';
-
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = request.nextUrl;
     const code = searchParams.get('code');
 
+    console.log('OG Image request for code:', code);
+
     if (!code) {
+      console.error('No code provided');
       return new Response('Missing code parameter', { status: 400 });
     }
 
@@ -19,14 +20,20 @@ export async function GET(request: NextRequest) {
       where: { referral_code: code },
     });
 
+    console.log('Found lead:', lead?.id, lead?.email);
+
     if (!lead || !lead.email) {
+      console.error('Lead not found for code:', code);
       return new Response('Invalid code', { status: 404 });
     }
 
     // Get position
     const positionData = await getWaitlistPositionByEmail(lead.email);
     
+    console.log('Position data:', positionData);
+
     if (!positionData || !positionData.position || !positionData.total) {
+      console.error('Position data incomplete:', positionData);
       return new Response('Position not found', { status: 404 });
     }
 
