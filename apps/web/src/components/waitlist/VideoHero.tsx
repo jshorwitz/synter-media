@@ -23,7 +23,7 @@ export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
     setLoading(false);
   };
   return (
-    <section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden py-12">
+    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden py-8">
       {/* Gradient accents - semi-transparent to show particle background */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-accent-cyan/8 rounded-full blur-[120px] animate-pulse"></div>

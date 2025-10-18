@@ -62,24 +62,6 @@ export function InteractiveBackground() {
       ctx.fillStyle = 'rgba(11, 14, 18, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw grid
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
-      ctx.lineWidth = 1;
-      
-      const gridSize = 50;
-      for (let x = 0; x < canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < canvas.height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
       // Update and draw particles
       particlesRef.current.forEach((particle, i) => {
         // Update position

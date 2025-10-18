@@ -1,3 +1,13 @@
+export async function sendWaitlistEmail(
+  email: string,
+  position: number,
+  total: number,
+  checkUrl?: string
+) {
+  const url = checkUrl || `https://syntermedia.ai/waitlist/check?email=${encodeURIComponent(email)}`;
+  return sendWaitlistWelcomeEmail(email, position, total, url);
+}
+
 export async function sendWaitlistWelcomeEmail(
   email: string,
   position: number,

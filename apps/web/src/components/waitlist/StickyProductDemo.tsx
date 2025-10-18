@@ -102,7 +102,7 @@ export function StickyProductDemo() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative min-h-[400vh] py-12">
+    <section ref={containerRef} className="relative min-h-[400vh] py-8">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left: Scrolling scenes */}
