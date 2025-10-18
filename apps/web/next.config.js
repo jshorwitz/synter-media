@@ -13,6 +13,20 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   outputFileTracingRoot: path.join(__dirname, '../../'),
+  async redirects() {
+    return [
+      {
+        source: '/ppc',
+        destination: '/optimizations',
+        permanent: true,
+      },
+      {
+        source: '/ppc/:path*',
+        destination: '/optimizations/:path*',
+        permanent: true,
+      },
+    ]
+  },
   async rewrites() {
     return [
       {
