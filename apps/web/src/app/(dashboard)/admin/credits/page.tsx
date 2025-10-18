@@ -37,7 +37,7 @@ export default function AdminCreditsPage() {
   useEffect(() => {
     if (!user) return;
     
-    if (user.role !== 'ADMIN') {
+    if (user.role !== 'ADMIN' && user.role !== 'admin') {
       router.push('/');
       return;
     }
@@ -58,7 +58,7 @@ export default function AdminCreditsPage() {
     }
   };
 
-  if (!user || user.role !== 'ADMIN') {
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'admin')) {
     return null;
   }
 

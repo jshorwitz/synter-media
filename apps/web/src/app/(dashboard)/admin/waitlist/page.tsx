@@ -49,7 +49,7 @@ export default function AdminWaitlistPage() {
 
   // Redirect non-admins
   useEffect(() => {
-    if (user && user.role !== 'ADMIN') {
+    if (user && user.role !== 'ADMIN' && user.role !== 'admin') {
       router.push('/dashboard');
     }
   }, [user, router]);
@@ -90,7 +90,7 @@ export default function AdminWaitlistPage() {
   };
 
   useEffect(() => {
-    if (user?.role === 'ADMIN') {
+    if (user?.role === 'ADMIN' || user?.role === 'admin') {
       fetchLeads();
       fetchMetrics();
     }
@@ -160,7 +160,7 @@ export default function AdminWaitlistPage() {
     );
   };
 
-  if (!user || user.role !== 'ADMIN') {
+  if (!user || (user.role !== 'ADMIN' && user.role !== 'admin')) {
     return null;
   }
 

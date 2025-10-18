@@ -29,16 +29,19 @@ export async function GET(request: NextRequest) {
     // Create session token
     const sessionToken = await createSession(user.id, request);
     
-    // Create JWT for API access
-    const jwtToken = jwt.sign(
-      { 
-        userId: user.id, 
-        email: user.email, 
-        role: user.role 
-      },
-      process.env.JWT_SECRET!,
-      { expiresIn: '30d' }
-    );
+    // Create JWT for API access (optional)
+    let jwtToken = undefined;
+    if (process.env.JWT_SECRET) {
+      jwtToken = jwt.sign(
+        { 
+          userId: user.id, 
+          email: user.email, 
+          role: user.role 
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+      );
+    }
 
     // Set session cookie
     const response = NextResponse.json({
@@ -50,14 +53,14 @@ export async function GET(request: NextRequest) {
         role: user.role,
         created_at: user.created_at,
       },
-      token: jwtToken,
+      ...(jwtToken && { token: jwtToken }),
     });
 
     response.cookies.set('synter_session', sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: 60 * 60 * 24, // 24 hours (in seconds)
       path: '/',
     });
 

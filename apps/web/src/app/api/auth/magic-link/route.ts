@@ -36,7 +36,8 @@ export async function POST(request: NextRequest) {
     });
 
     // Send email
-    const magicUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/auth/magic?token=${token}`;
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.nextUrl.origin;
+    const magicUrl = `${baseUrl}/auth/magic?token=${token}`;
     
     console.log('Magic link details:', {
       email,
@@ -49,6 +50,17 @@ export async function POST(request: NextRequest) {
 
     if (!emailSent) {
       console.error('Failed to send magic link email');
+      
+      // In development, still return success so devs can use console link
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('⚠️  Email not sent (dev mode). Use this link to sign in:');
+        console.warn(`🔗 ${magicUrl}`);
+        return NextResponse.json({
+          success: true,
+          message: 'Magic link generated (check console in dev mode)',
+        });
+      }
+      
       return NextResponse.json(
         { error: 'Failed to send email. Please contact support.' },
         { status: 500 }
