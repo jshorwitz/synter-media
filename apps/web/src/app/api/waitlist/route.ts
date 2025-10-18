@@ -107,17 +107,30 @@ export async function POST(request: NextRequest) {
     }
 
     // Get position and send email
+    console.log('=== WAITLIST SIGNUP DEBUG ===');
+    console.log('Email:', email);
+    console.log('FirstName:', firstName);
+    console.log('Lead created with ID:', lead.id);
+    console.log('Referral code:', lead.referral_code);
+    
     const positionData = await getWaitlistPositionByEmail(email);
+    console.log('Position data retrieved:', JSON.stringify(positionData, null, 2));
+    
     if (positionData && positionData.position && positionData.total) {
-      console.log('Sending waitlist email to:', email, 'Position:', positionData.position, 'Referral code:', lead.referral_code);
-      await sendWaitlistEmail(
-        email, 
-        positionData.position, 
-        positionData.total,
-        undefined,
-        lead.referral_code || undefined,
-        firstName
-      );
+      console.log('Attempting to send email via Loops...');
+      try {
+        await sendWaitlistEmail(
+          email, 
+          positionData.position, 
+          positionData.total,
+          undefined,
+          lead.referral_code || undefined,
+          firstName
+        );
+        console.log('Email send completed');
+      } catch (emailError) {
+        console.error('Email send FAILED:', emailError);
+      }
     } else {
       console.error('Failed to get position data for email:', email, positionData);
     }
