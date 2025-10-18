@@ -106,11 +106,11 @@ export function StickyProductDemo() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Left: Scrolling scenes */}
-          <div className="lg:col-span-5 space-y-[80vh]">
+          <div className="lg:col-span-5">
             {scenes.map((scene, i) => (
               <motion.div
                 key={i}
-                className="demo-scene min-h-[50vh] flex flex-col justify-center"
+                className="demo-scene min-h-screen flex flex-col justify-center py-[40vh]"
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}

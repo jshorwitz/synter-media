@@ -427,6 +427,7 @@ model WaitlistLead {
   id              Int              @id @default(autoincrement())
   user_id         Int?
   email           String           @db.VarChar(320)
+  name            String?          @db.VarChar(255)
   website         String?          @db.VarChar(512)
   company         String?          @db.VarChar(255)
   role            String?          @db.VarChar(64)
