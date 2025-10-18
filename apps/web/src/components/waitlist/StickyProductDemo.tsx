@@ -27,7 +27,7 @@ const scenes: Scene[] = [
     title: 'Cross-Channel Orchestration',
     subtitle: 'Share Learnings',
     description: 'Insights from Google inform LinkedIn. Reddit performance shapes X strategy. Everything connected.',
-    screenshot: '/screenshots/optimizations.png',
+    screenshot: '/screenshots/ppc-dashboard.png',
   },
   {
     title: 'One-Click Integration',
