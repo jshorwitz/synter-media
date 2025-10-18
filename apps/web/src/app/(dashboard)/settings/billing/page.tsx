@@ -140,34 +140,56 @@ export default function BillingPage() {
           <h2 className="panel-title mb-4">Quick Top-Up</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <button
-              onClick={() => handleQuickPurchase('mini')}
+              onClick={() => handleQuickPurchase('tier_10')}
               className="panel hover:border-accent-cyan/50 transition-all text-left"
-            >
-              <div className="text-3xl font-bold font-display text-text-hi mb-1">50</div>
-              <div className="text-xs text-text-low font-mono mb-3 uppercase tracking-wide">credits</div>
-              <div className="bg-accent-cyan/20 text-accent-cyan px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-cyan/40">
-                $5
-              </div>
-            </button>
-
-            <button
-              onClick={() => handleQuickPurchase('starter')}
-              className="panel hover:border-accent-lime/50 transition-all text-left"
             >
               <div className="text-3xl font-bold font-display text-text-hi mb-1">100</div>
               <div className="text-xs text-text-low font-mono mb-3 uppercase tracking-wide">credits</div>
-              <div className="bg-accent-lime/20 text-accent-lime px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-lime/40">
+              <div className="bg-accent-cyan/20 text-accent-cyan px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-cyan/40">
                 $10
               </div>
             </button>
 
-            <Link
-              href="/credits"
-              className="panel border-accent-red/50 hover:border-accent-red transition-all flex flex-col justify-center items-center"
+            <button
+              onClick={() => handleQuickPurchase('tier_20')}
+              className="panel hover:border-accent-lime/50 transition-all text-left"
             >
-              <Plus className="w-8 h-8 text-accent-red mb-2" />
-              <div className="text-xs font-mono font-bold text-text-hi uppercase tracking-wide">View All Packages</div>
-            </Link>
+              <div className="text-3xl font-bold font-display text-text-hi mb-1">200</div>
+              <div className="text-xs text-text-low font-mono mb-3 uppercase tracking-wide">credits</div>
+              <div className="bg-accent-lime/20 text-accent-lime px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-lime/40">
+                $20
+              </div>
+            </button>
+
+            <button
+              onClick={() => handleQuickPurchase('tier_100_bonus')}
+              className="panel border-accent-amber/50 hover:border-accent-amber transition-all text-left relative"
+            >
+              <div className="absolute -top-2 -right-2 bg-accent-amber text-carbon-900 text-[10px] font-mono font-bold px-2 py-1 rounded-tactical">
+                +10% BONUS
+              </div>
+              <div className="text-3xl font-bold font-display text-text-hi mb-1">1,100</div>
+              <div className="text-xs text-text-low font-mono mb-3 uppercase tracking-wide">credits <span className="text-accent-amber">(+100 bonus)</span></div>
+              <div className="bg-accent-amber/20 text-accent-amber px-3 py-1 rounded-tactical text-xs font-mono font-bold inline-block border border-accent-amber/40">
+                $100
+              </div>
+            </button>
+          </div>
+          
+          {/* Custom Amount & Contact Sales */}
+          <div className="mt-6 pt-6 border-t border-stroke-1">
+            <div className="text-center">
+              <p className="text-text-mid text-sm mb-4">Need a custom amount or volume discount?</p>
+              <a
+                href="mailto:sales@syntermedia.ai?subject=Custom%20Credit%20Package"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-carbon-800 hover:bg-carbon-700 border border-stroke-1 hover:border-accent-cyan/50 rounded-tactical transition-all text-text-hi text-sm font-mono font-bold"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Contact Sales for Custom Price
+              </a>
+            </div>
           </div>
         </div>
 
