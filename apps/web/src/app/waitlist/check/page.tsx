@@ -264,7 +264,7 @@ function WaitlistCheckContent() {
                         Share on X
                       </a>
                       <a
-                        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://syntermedia.ai/r/${referralCode}`)}`}
+                        href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(`https://syntermedia.ai/r/${referralCode}`)}&title=${encodeURIComponent(`I'm #${position} on the Synter waitlist`)}&summary=${encodeURIComponent(`Help me jump the line! Each person who joins = 7 spots up. Join the waitlist for Synter - AI Media Agent for Cross-Channel Ads.`)}&source=${encodeURIComponent('syntermedia.ai')}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn-tactical-ghost px-6 py-3 flex items-center gap-2"
