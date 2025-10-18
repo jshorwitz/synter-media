@@ -115,27 +115,6 @@ export function InteractiveBackground() {
         });
       });
 
-      // Draw scanning lines effect
-      const time = Date.now() / 1000;
-      const scanY = (Math.sin(time * 0.5) * 0.5 + 0.5) * canvas.height;
-      
-      ctx.beginPath();
-      ctx.moveTo(0, scanY);
-      ctx.lineTo(canvas.width, scanY);
-      ctx.strokeStyle = '#4DD6FF';
-      ctx.globalAlpha = 0.1;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.globalAlpha = 1;
-
-      // Glow effect for scan line
-      const gradient = ctx.createLinearGradient(0, scanY - 20, 0, scanY + 20);
-      gradient.addColorStop(0, 'rgba(77, 214, 255, 0)');
-      gradient.addColorStop(0.5, 'rgba(77, 214, 255, 0.05)');
-      gradient.addColorStop(1, 'rgba(77, 214, 255, 0)');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, scanY - 20, canvas.width, 40);
-
       animationFrameId = requestAnimationFrame(animate);
     };
 

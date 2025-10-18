@@ -15,29 +15,32 @@ export async function GET(request: NextRequest) {
       return new Response('Missing code parameter', { status: 400 });
     }
 
-    // Find user by referral code
-    const lead = await db.waitlistLead.findFirst({
-      where: { referral_code: code },
-    });
+    let position = 1332;
+    let total = 1500;
+    let referralsCount = 0;
 
-    console.log('Found lead:', lead?.id, lead?.email);
+    try {
+      // Find user by referral code
+      const lead = await db.waitlistLead.findFirst({
+        where: { referral_code: code },
+      });
 
-    if (!lead || !lead.email) {
-      console.error('Lead not found for code:', code);
-      return new Response('Invalid code', { status: 404 });
+      console.log('Found lead:', lead?.id, lead?.email);
+
+      if (lead && lead.email) {
+        // Get position
+        const positionData = await getWaitlistPositionByEmail(lead.email);
+        console.log('Position data:', positionData);
+
+        if (positionData && positionData.position && positionData.total) {
+          position = positionData.position;
+          total = positionData.total;
+          referralsCount = positionData.lead?.referrals_count || 0;
+        }
+      }
+    } catch (dbError) {
+      console.error('Database error, using fallback values:', dbError);
     }
-
-    // Get position
-    const positionData = await getWaitlistPositionByEmail(lead.email);
-    
-    console.log('Position data:', positionData);
-
-    if (!positionData || !positionData.position || !positionData.total) {
-      console.error('Position data incomplete:', positionData);
-      return new Response('Position not found', { status: 404 });
-    }
-
-    const { position, total, referralCode, referralsCount } = positionData;
 
     // Generate gradient based on position
     const hue = (position * 137.5) % 360;

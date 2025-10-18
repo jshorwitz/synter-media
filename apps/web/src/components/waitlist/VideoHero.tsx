@@ -34,33 +34,36 @@ export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto text-center px-6">
-        {/* YC Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-stroke-1 bg-carbon-850/80 backdrop-blur-sm mb-4"
-        >
-          <div className="w-6 h-6 rounded bg-accent-amber/20 flex items-center justify-center">
-            <span className="text-accent-amber font-bold text-sm">Y</span>
-          </div>
-          <span className="text-sm text-text-mid">
-            <span className="font-semibold text-text-hi">Not</span> backed by Y Combinator
-          </span>
-        </motion.div>
+        {/* Badges Container */}
+        <div className="flex flex-col items-center gap-3 mb-8">
+          {/* YC Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full border border-stroke-1 bg-carbon-850/80 backdrop-blur-sm"
+          >
+            <div className="w-6 h-6 rounded bg-accent-amber/20 flex items-center justify-center">
+              <span className="text-accent-amber font-bold text-sm">Y</span>
+            </div>
+            <span className="text-sm text-text-mid">
+              <span className="font-semibold text-text-hi">Not</span> backed by Y Combinator
+            </span>
+          </motion.div>
 
-        {/* Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-lime/30 bg-accent-lime/5 backdrop-blur-sm mb-8"
-        >
-          <span className="w-2 h-2 rounded-full bg-accent-lime animate-pulse"></span>
-          <span className="text-xs font-mono text-accent-lime uppercase tracking-widest">
-            Early Access • Limited Spots
-          </span>
-        </motion.div>
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent-lime/30 bg-accent-lime/5 backdrop-blur-sm"
+          >
+            <span className="w-2 h-2 rounded-full bg-accent-lime animate-pulse"></span>
+            <span className="text-xs font-mono text-accent-lime uppercase tracking-widest">
+              Early Access • Limited Spots
+            </span>
+          </motion.div>
+        </div>
 
         {/* Main headline */}
         <motion.h1
@@ -133,7 +136,7 @@ export function VideoHero({ onSubmit, onLogin }: VideoHeroProps) {
             <button
               type="submit"
               disabled={loading}
-              className="btn-tactical-primary w-full px-8 py-4 text-base group disabled:opacity-50"
+              className="btn-tactical-primary w-full px-8 py-4 text-base group disabled:opacity-50 inline-flex items-center justify-center"
             >
               {loading ? 'Joining...' : 'Join Waitlist'}
               <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">

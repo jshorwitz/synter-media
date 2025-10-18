@@ -268,7 +268,7 @@ export default function WaitlistPage() {
               </p>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="btn-tactical-primary px-12 py-6 text-lg group"
+                className="btn-tactical-primary px-12 py-6 text-lg group inline-flex items-center justify-center"
               >
                 Join the Waitlist
                 <svg className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
