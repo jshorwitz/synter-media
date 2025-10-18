@@ -19,10 +19,10 @@ export default function HomePage() {
   const router = useRouter();
   const { user, loading } = useAuth();
   
-  // Redirect logged-in users to PPC dashboard
+  // Redirect logged-in users to dashboard
   useEffect(() => {
     if (!loading && user) {
-      router.replace('/ppc');
+      router.replace('/dashboard');
     }
   }, [loading, user, router]);
   

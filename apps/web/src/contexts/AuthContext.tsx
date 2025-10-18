@@ -79,8 +79,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (response.ok) {
         setUser(data.user);
-        // Redirect to PPC dashboard after successful login
-        router.push('/ppc');
+        // Redirect to dashboard after successful login
+        router.push('/dashboard');
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Login failed' };
@@ -106,8 +106,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (response.ok) {
         setUser(data.user);
-        // Redirect to PPC dashboard after successful signup
-        router.push('/ppc');
+        // Redirect to dashboard after successful signup
+        router.push('/dashboard');
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Signup failed' };
