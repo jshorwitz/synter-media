@@ -17,8 +17,8 @@ export default function DashboardGroupLayout({ children }: { children: React.Rea
         return
       }
 
-      // Skip check for admins
-      if (user.role === 'ADMIN') {
+      // Skip check for admins (handle both uppercase and lowercase)
+      if (user.role === 'ADMIN' || user.role === 'admin') {
         setLoading(false)
         return
       }

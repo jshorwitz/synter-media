@@ -6,7 +6,7 @@ interface User {
   id: number;
   email: string;
   name?: string;
-  role: 'admin' | 'analyst' | 'viewer';
+  role: 'ADMIN' | 'ANALYST' | 'VIEWER' | 'admin' | 'analyst' | 'viewer';
   created_at: string;
 }
 
