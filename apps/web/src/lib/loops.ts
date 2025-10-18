@@ -16,7 +16,13 @@ export async function sendMagicLinkEmail(email: string, magicUrl: string, firstN
       },
     };
 
-    console.log('Sending magic link email to Loops:', email);
+    console.log('Sending magic link email to Loops:', {
+      email,
+      firstName,
+      magicUrl,
+      templateId,
+      dataVariables: emailData.dataVariables,
+    });
 
     const response = await fetch('https://app.loops.so/api/v1/transactional', {
       method: 'POST',

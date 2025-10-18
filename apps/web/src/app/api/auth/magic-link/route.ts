@@ -37,6 +37,14 @@ export async function POST(request: NextRequest) {
 
     // Send email
     const magicUrl = `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/auth/magic?token=${token}`;
+    
+    console.log('Magic link details:', {
+      email,
+      magicUrl,
+      userName: user.name,
+      token: token.substring(0, 10) + '...',
+    });
+    
     const emailSent = await sendMagicLinkEmail(email, magicUrl, user.name || undefined);
 
     if (!emailSent) {
