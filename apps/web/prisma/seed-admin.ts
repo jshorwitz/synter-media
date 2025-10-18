@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 
 const prisma = new PrismaClient();
 
@@ -20,7 +20,12 @@ async function main() {
   }
 
   // Hash password
-  const password_hash = await bcrypt.hash(password, 12);
+  const password_hash = await argon2.hash(password, {
+    type: argon2.argon2id,
+    memoryCost: 65536,
+    timeCost: 3,
+    parallelism: 4
+  });
 
   // Create admin user
   const user = await prisma.user.create({
