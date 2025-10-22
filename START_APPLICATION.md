@@ -1,4 +1,4 @@
-# 🚀 Starting Synter - Complete Application Guide
+# 🚀 Starting Synter Media - Complete Application Guide
 
 This guide will help you start the entire Synter application with the new **unified workflow orchestrator** that connects all components.
 

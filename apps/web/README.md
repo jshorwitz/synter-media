@@ -1,4 +1,4 @@
-# Synter - Unified Cross-Channel Advertising Platform
+# Synter Media Media - Unified Cross-Channel Advertising Platform
 
 ## ✅ Successfully Integrated Application
 

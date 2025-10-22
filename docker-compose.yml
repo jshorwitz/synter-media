@@ -5,9 +5,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_DB: synter
-      POSTGRES_USER: synter_user
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-synter_pass}
+      POSTGRES_DB: synter_media
+      POSTGRES_USER: synter_media_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-synter_media_pass}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./migrations:/docker-entrypoint-initdb.d
@@ -15,7 +15,7 @@ services:
       - "5432:5432"
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U synter_user -d synter"]
+      test: ["CMD-SHELL", "pg_isready -U synter_media_user -d synter_media"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -43,7 +43,7 @@ services:
     environment:
       - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
-      - POSTGRES_URL=postgresql://synter_user:${POSTGRES_PASSWORD:-synter_pass}@postgres:5432/synter
+      - POSTGRES_URL=postgresql://synter_media_user:${POSTGRES_PASSWORD:-synter_media_pass}@postgres:5432/synter_media
       - PORT=3001
       - ENABLE_SCHEDULER=true
       - DRY_RUN=${DRY_RUN:-false}
@@ -78,7 +78,7 @@ services:
       - POSTHOG_HOST=${POSTHOG_HOST:-https://us.posthog.com}
       # BigQuery
       - BIGQUERY_PROJECT_ID=${BIGQUERY_PROJECT_ID}
-      - BIGQUERY_DATASET=${BIGQUERY_DATASET:-synter_analytics}
+      - BIGQUERY_DATASET=${BIGQUERY_DATASET:-synter_media_analytics}
       - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
       # AI
       - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -115,7 +115,7 @@ services:
       - NEXT_PUBLIC_ORCHESTRATOR_API_URL=http://orchestrator:3001
       - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - DATABASE_URL=postgresql://synter_user:${POSTGRES_PASSWORD:-synter_pass}@postgres:5432/synter
+      - DATABASE_URL=postgresql://synter_media_user:${POSTGRES_PASSWORD:-synter_media_pass}@postgres:5432/synter_media
       # OAuth
       - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
       - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
@@ -148,4 +148,4 @@ volumes:
 
 networks:
   default:
-    name: synter-network
+    name: synter-media-network

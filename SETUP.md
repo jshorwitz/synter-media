@@ -1,6 +1,6 @@
-# Synter Setup and Quickstart
+# Synter Media Setup and Quickstart
 
-This guide helps you run Synter - AI Advertising Agency locally. Complete setup includes the marketing homepage, dashboard, API, and background workers for cross-platform ads management.
+This guide helps you run Synter Media - AI Advertising Agency locally. Complete setup includes the marketing homepage, dashboard, API, and background workers for cross-platform ads management.
 
 ## 1) Prerequisites
 

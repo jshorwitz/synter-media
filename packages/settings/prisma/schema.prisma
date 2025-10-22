@@ -1,4 +1,4 @@
-// Synter Settings Schema - SQLite version for local development
+// Synter Media Settings Schema - SQLite version for local development
 generator client {
   provider = "prisma-client-js"
 }

@@ -1,7 +1,7 @@
 {
-  "name": "@synter/settings",
+  "name": "@synter-media/settings",
   "version": "1.0.0",
-  "description": "Synter Settings Panel - Credits, Team, Sharing",
+  "description": "Synter Media Settings Panel - Credits, Team, Sharing",
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
