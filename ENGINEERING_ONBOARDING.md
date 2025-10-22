@@ -1,7 +1,7 @@
 # 🚀 Synter Engineering Onboarding
 
 **Last Updated:** October 18, 2025  
-**Project:** Synter - AI-Powered Cross-Platform Ads Management  
+**Project:** Synter Media - AI-Powered Cross-Platform Ads Management  
 **Repository:** https://github.com/jshorwitz/synter-clean
 
 ---

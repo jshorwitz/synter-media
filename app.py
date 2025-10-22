@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Standalone Synter FastAPI app."""
+"""Standalone Synter Media FastAPI app."""
 
 import os
 from fastapi import FastAPI
@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 # Create FastAPI application
 app = FastAPI(
-    title="Synter - AI Advertising Agency",
+    title="Synter Media - AI Advertising Agency",
     description="Cross-channel ads management with AI agents",
     version="1.0.0"
 )
@@ -24,12 +24,12 @@ app.add_middleware(
 
 @app.get("/", response_class=HTMLResponse)
 async def homepage():
-    """Homepage with Synter branding."""
+    """Homepage with Synter Media branding."""
     return """
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Synter - AI Advertising Agency</title>
+        <title>Synter Media - AI Advertising Agency</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body { 
@@ -65,7 +65,7 @@ async def homepage():
     </head>
     <body>
         <div class="container">
-            <h1>🚀 Synter</h1>
+            <h1>🚀 Synter Media</h1>
             <p class="subtitle">The AI Advertising Agency</p>
             <div class="status">
                 <h3>✅ Successfully Deployed on Railway!</h3>
@@ -97,13 +97,13 @@ async def homepage():
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
-    return {"status": "healthy", "service": "synter"}
+    return {"status": "healthy", "service": "synter-media"}
 
 @app.get("/api/status")
 async def api_status():
     """API status endpoint."""
     return {
-        "service": "Synter - AI Advertising Agency",
+        "service": "Synter Media - AI Advertising Agency",
         "status": "running",
         "version": "1.0.0",
         "message": "Cross-channel ads management with AI agents"

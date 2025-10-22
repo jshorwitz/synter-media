@@ -1,4 +1,4 @@
-// Synter Database Schema
+// Synter Media Database Schema
 generator client {
   provider = "prisma-client-js"
 }

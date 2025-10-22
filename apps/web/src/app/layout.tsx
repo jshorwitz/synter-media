@@ -13,7 +13,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Synter - Unified Cross-Channel Ads Platform",
+  title: "Synter Media - Unified Cross-Channel Ads Platform",
   description: "Run warehouse-centric, cross-platform ads & conversion tracking for Google, Meta, Reddit, X, and more",
 };
 

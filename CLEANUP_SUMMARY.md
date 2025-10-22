@@ -1,4 +1,4 @@
-# Synter Database Cleanup & PostHog Integration - Summary
+# Synter Media Database Cleanup & PostHog Integration - Summary
 
 ## ✅ Completed Tasks
 

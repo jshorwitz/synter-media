@@ -1,8 +1,8 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Synter Settings',
-  description: 'Manage your Synter account settings, billing, team, and sharing preferences',
+  title: 'Synter Media Settings',
+  description: 'Manage your Synter Media account settings, billing, team, and sharing preferences',
 };
 
 export default function RootLayout({

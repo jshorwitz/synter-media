@@ -1,4 +1,4 @@
-# 🚀 Synter - AI Advertising Agency
+# 🚀 Synter Media - AI Advertising Agency
 
 Cross-platform ads management with autonomous agents for Google Ads, Reddit Ads, and X (Twitter) Ads.
 

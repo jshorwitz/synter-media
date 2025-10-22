@@ -1,5 +1,5 @@
 {
-  "name": "@synter/workers",
+  "name": "@synter-media/workers",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
