@@ -24,12 +24,22 @@ def fetch_reddit_ads(start_date, end_date):
         print("  ❌ Reddit Ads credentials not configured")
         return None
     
-    # Check for token file
-    token_file = os.path.join(os.path.dirname(__file__), '../../.reddit_ads_tokens.json')
+    # Check for token file (try multiple locations)
+    token_locations = [
+        os.path.expanduser('~/work/client-tools/ad-management/.reddit_ads_tokens.json'),
+        os.path.join(os.path.dirname(__file__), '../../.reddit_ads_tokens.json')
+    ]
     
-    if not os.path.exists(token_file):
-        print(f"  ❌ Token file not found: {token_file}")
-        print("  💡 Run Reddit Ads OAuth flow to generate tokens")
+    token_file = None
+    for loc in token_locations:
+        if os.path.exists(loc):
+            token_file = loc
+            break
+    
+    if not token_file:
+        print(f"  ❌ Token file not found in any of these locations:")
+        for loc in token_locations:
+            print(f"     - {loc}")
         return None
     
     try:
