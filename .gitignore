@@ -1,6 +1,16 @@
 # env files
 .env
 .env.*
+.env*.local
+.env.production
+
+# secrets
+*.pem
+*.key
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
 
 # local logs
 *.log
@@ -11,4 +21,3 @@
 .DS_Store
 .vercel
 node_modules/
-.env*.local
